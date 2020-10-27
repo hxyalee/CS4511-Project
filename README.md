@@ -1,3 +1,8 @@
+# Setting up
+1. Clone the repo: go to 'Code' > 'clone' > select your preference of http or ssh
+2. In the same directory as the package.json file run `npm install` to get all node_module dependencies
+3. Run expo start
+
 # [Argon React Native](https://creativetimofficial.github.io/argon-react-native/docs/#) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/home?status=Argon%20React%20Native,%20a%20cool%20Argon%20React%20Native%20App%20Template%20%E2%9D%A4%EF%B8%8F%20https%3A//bit.ly/2KAj86H%20%23reactnative%20%23argon%20%23designsystem%20%23developers%20via%20%40CreativeTim)
 
 
