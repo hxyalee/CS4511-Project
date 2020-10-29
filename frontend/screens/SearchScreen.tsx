@@ -27,9 +27,11 @@ export default function SearchScreen() {
   React.useEffect(() => {
     // Make sure input not empty
     if (debouncedFetch) {
-      handleRestaurantSearchRequest({ query }).then((res) =>
-        setListItems(res.restaurnts)
-      );
+      if (isRestaurant)
+        handleRestaurantSearchRequest({ query }).then((res) =>
+          setListItems(res.restaurnts)
+        );
+      else return;
     }
   }, [debouncedFetch]);
 
@@ -54,7 +56,7 @@ export default function SearchScreen() {
           buttons={buttons}
           selectedIndex={isRestaurant ? 1 : 0}
           ref={buttonItem}
-          containerStyle={{ backgroundColor: "green" }}
+          containerStyle={{ backgroundColor: "gray" }}
         />
         <FlatList
           data={listItems}
