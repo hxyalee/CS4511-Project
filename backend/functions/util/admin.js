@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./util/serviceAccountKey.json');
+const serviceAccount = require('./serviceAccountKey.json');
 const firebase = require('firebase');
 const firebaseConfig = {
   apiKey: 'AIzaSyAjIZfL58fKJyBHVYz6oKbI7vE6aGDMW-I',
@@ -18,4 +18,4 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-module.exports({ admin, db, firebase });
+module.exports = { admin, db, firebase, firebaseConfig };
