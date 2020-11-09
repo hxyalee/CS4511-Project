@@ -1,15 +1,15 @@
-import * as React from "react";
-import { StyleSheet, SafeAreaView, FlatList, Button } from "react-native";
-import { SearchBar, ButtonGroup, ElementObject } from "react-native-elements";
+import * as React from 'react';
+import { StyleSheet, SafeAreaView, FlatList, Button } from 'react-native';
+import { SearchBar, ButtonGroup, ElementObject } from 'react-native-elements';
 
-import useDebounce from "../hooks/useDebounce";
-import { Text, View } from "../components/Themed";
-import axios from "axios";
-import { handleRestaurantSearchRequest } from "../requests/search";
-import { SearchItem } from "../components/SearchItem";
+import useDebounce from '../hooks/useDebounce';
+import { Text, View } from '../components/Themed';
+import axios from 'axios';
+import { handleRestaurantSearchRequest } from '../requests/search';
+import { SearchItem } from '../components/SearchItem';
 
 export default function SearchScreen() {
-  const [query, setQuery] = React.useState<string>("");
+  const [query, setQuery] = React.useState<string>('');
   const [isRestaurant, setIsRestaurant] = React.useState<boolean>(false);
   const [noData, setNoData] = React.useState<boolean>(false);
   const [listItems, setListItems] = React.useState<any[]>([]);
@@ -23,7 +23,7 @@ export default function SearchScreen() {
     { element: restaurantText },
   ];
 
-  const debouncedFetch = useDebounce(query, 1000);
+  const debouncedFetch = useDebounce(query, 600);
   React.useEffect(() => {
     // Make sure input not empty
     if (debouncedFetch) {
@@ -36,7 +36,7 @@ export default function SearchScreen() {
   }, [debouncedFetch]);
 
   const handleChangeText = (queryString: React.SetStateAction<string>) => {
-    if (queryString === "") setNoData(true);
+    if (queryString === '') setNoData(true);
     else setNoData(false);
     setQuery(queryString);
   };
@@ -45,7 +45,7 @@ export default function SearchScreen() {
     <SafeAreaView>
       <View style={styles.container}>
         <SearchBar
-          placeholder={`Search for ${isRestaurant ? "restaurants" : "users"}`}
+          placeholder={`Search for ${isRestaurant ? 'restaurants' : 'users'}`}
           onChangeText={handleChangeText}
           value={query}
         />
@@ -56,7 +56,7 @@ export default function SearchScreen() {
           buttons={buttons}
           selectedIndex={isRestaurant ? 1 : 0}
           ref={buttonItem}
-          containerStyle={{ backgroundColor: "gray" }}
+          containerStyle={{ backgroundColor: 'gray' }}
         />
         <FlatList
           data={listItems}
@@ -78,9 +78,9 @@ export default function SearchScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
+    display: 'flex',
   },
   buttongroup: {
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
   },
 });

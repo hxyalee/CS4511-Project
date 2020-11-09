@@ -35,6 +35,10 @@ exports.signup = (request, response) => {
         handle: newUser.handle,
         createdAt: new Date().toISOString(),
         userId: uid,
+        followers: [],
+        following: [],
+        reviews: [],
+        saved: [],
         imageURL: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-image.png?alt=media`,
       };
       console.log(token);
