@@ -21,9 +21,11 @@ export default function App() {
   }, []);
   if (!isLoadingComplete) {
     return null;
-  } else if (token === null) {
-    return <LoginScreen />;
-  } else {
+  } 
+  // else if (token === null) {
+  //   return <LoginScreen />;
+  // } 
+  else {
     return (
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />
