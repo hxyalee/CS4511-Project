@@ -1,0 +1,35 @@
+-- The users 
+Users:
+    userId       int      -- unique account identifier
+    handle:      text     -- unique username
+    email:       text     -- unqiue email
+    password:    text     -- allow access to account
+    name:        text     -- display name
+    description: text     -- profile description
+    followers:   [Users]  -- list of users who follow them
+    following:   [Users]  -- list of users they are following (used for feed page)
+    reviews:     [Reviews]-- list of reviews the user has made
+    saved:       [Reviews]-- list of reviews from others which have been bookmarked
+    imageURL:    image    -- profile picture
+    blocked:     [Users]  -- list of users which you can't see their posts or vice versa
+    createdAt:   DateTime -- when the account was created
+
+Reviews:
+    createdAt:   dateTime -- when the post was uploaded
+    rating:      int      -- between 0 and 5 to indicate restaurant rating
+    userHandle:  User     -- who posted the review 
+    body:        text     -- review description/critique from uploader
+    hearted:     [User]   -- list of users who have heart reacted the post 
+    likeCount:   int      -- number of people who liked/hearted the post
+    saved:       [User]   -- list of users who have saved the post
+    comments:    [Comments]    -- NOTE: not gonna add to final implementation 
+    commentCount:int      -- the amount of comments
+    location:    text     -- the location of the review 
+    dietary:     [DietOptions] -- list of restrictions on the restaurant 
+    cuisine:     [CuisineType] -- the specific cuisine type of the restaurant
+    price:       Cost     -- estimated price for the review (1=cheap, 2=medium, 3=expensive)
+    userImage:   Image    -- image of restaurant/food
+   
+enum DietOptions = {Vegetarian, Vegan, Dairy Free, Nut Free, Kosher, Halal}
+enum CuisineType = {Italian, Thai, Chinese, Mexican, Other}
+

@@ -1,4 +1,7 @@
 const { db } = require('../util/admin');
+
+
+
 // Return a LIST of reivews
 exports.getReviews = (request, response) => {
   db.collection('reviews')
@@ -16,6 +19,9 @@ exports.getReviews = (request, response) => {
     })
     .catch((err) => console.error(err));
 };
+
+
+
 // Return ONE particular review
 exports.getReview = (request, response) => {
   let reviewData = {};
@@ -34,16 +40,27 @@ exports.getReview = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
+
+
+
 exports.createReview = (request, response) => {
   const newReview = {
-    body: request.body.body,
-    userHandle: request.user.handle,
-    userImage: request.user.imageURL,
-    createdAt: new Date().toISOString(),
-    //createdAt: admin.firestore.Timestamp.fromDate(new Date()),
-    likeCount: 0,
+    createdAt:    new Date().toISOString(),
+    rating:       request.body.rating,
+    userHandle:   request.user.handle,
+    body:         request.body.body,
+    hearted:      [],
+    likeCount:    0,
+    saved:        [],
+    comments:     [],     //not implementing
     commentCount: 0,
+    location:     request.body.location,
+    dietary:      [],
+    cuisine:      [],
+    price:        1,
+    userImage:    request.user.imageURL,
   };
+
   db.collection('reviews')
     .add(newReview)
     .then((doc) => {
