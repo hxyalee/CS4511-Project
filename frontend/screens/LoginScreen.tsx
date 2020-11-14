@@ -12,10 +12,15 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
-//import { Touchables } from '@react-navigation/native';
 
+/* export interface Props {
+  email: string;
+  password: string;
+}  */
 
 export default function LoginScreen() {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword ] = React.useState("");
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -23,17 +28,21 @@ export default function LoginScreen() {
           <Text>Social Feed</Text>
           <TextInput
             placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
             style={styles.email}/>
           <TextInput
             placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
             style={styles.password}
             secureTextEntry={true}
           />
           <View style={styles.button}>
-            <Button title="Login" />
+            <Button title="Login"/>
           </View>
           <Text>Don't have an account?
-            <Text style={styles.linkText} /* onPress={Keyboard.dismiss} */> Sign up.</Text>
+            <Text style={styles.linkText} /* onPress={} */> Sign up.</Text>
           </Text>
           
         </View>
@@ -78,3 +87,4 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   }
 })
+
