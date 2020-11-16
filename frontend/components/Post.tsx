@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, Image, StyleSheet, View } from "react-native";
 import { Avatar, Card, Icon } from "react-native-elements";
 
 export default function Post () {
+    const [liked, setLiked] = useState(false);
+    const [saved, setSaved] = useState(false);
+
     return(
         <Card containerStyle={styles.post}>
             <View style={styles.postHeader}>
@@ -18,7 +21,7 @@ export default function Post () {
             />
             <View style={styles.bottomContainer}>
                 <Text>Definitely recommend the carbonara. So creamy! But wish they gave more parmesan...</Text>
-                <PostActionsContainer />
+                <PostActionsContainer liked={liked} setLiked={setLiked} saved={saved} setSaved={setSaved}/>
             </View>
         </Card>
     );
@@ -33,11 +36,26 @@ function PostRating(props: {value: number}) {
     );
 }
 
-function PostActionsContainer() {
+function PostActionsContainer(
+    props: {liked: boolean, setLiked: any, saved: boolean, setSaved: any}) {
+    
+    const heart = (props.liked) ? 'heart' : 'heart-o';
+    const saved = (props.saved) ? 'bookmark' : 'bookmark-o';
+
     return (
         <View style={styles.actionContainer}>
-            <Icon size={40} name='heart-o' type='font-awesome'/>
-            <Icon size={40} name='bookmark-o' type='font-awesome'/>
+            <Icon 
+                size={40}
+                name={heart}
+                type='font-awesome'
+                onPress={() => props.setLiked(!props.liked)}
+            />
+            <Icon
+                size={40}
+                name={saved}
+                type='font-awesome'
+                onPress={() => props.setSaved(!props.saved)}
+            />
         </View>
     );
 }
