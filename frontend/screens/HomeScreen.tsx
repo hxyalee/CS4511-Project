@@ -1,27 +1,28 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { View, Text } from '../components/Themed';
-import FullLogo from '../assets/images/background-circles.svg';
+import Post from '../components/Post';
+import BackgroundDecoration from '../assets/images/background-circles.svg';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <FullLogo />
-      {/* change to flat list */}
-      <ScrollView>
-        <Card containerStyle={styles.post}>
-        <Card.Title>Hello</Card.Title>
-        <Text>This is my card</Text>
-      </Card>
-      <Card containerStyle={styles.post}>
-        <Card.Title>Hello</Card.Title>
-        <Text>This is my card</Text>
-      </Card>
-      </ScrollView>
-    </View>
+      <View style={styles.container}>
+        {/* change to flat list */}
+        <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
+          <BackgroundDecoration style={{
+            position: 'absolute',
+            top: -40,
+            left: -40,
+            right: 0,
+            bottom: 0,
+          }}/>
+          <Post/>
+          <Post/>
+        </ScrollView>
+      </View>
   );
 }
 
@@ -32,17 +33,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'black',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  feed: {
+    alignItems: 'center',
+    margin: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  post: {
-    borderRadius: 10,
-    width: '85%',
-  }
+
 });
