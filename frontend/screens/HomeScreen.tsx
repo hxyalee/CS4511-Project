@@ -1,15 +1,24 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
+import { Card } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View, Text } from '../components/Themed';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
+      {/* change to flat list */}
+      <ScrollView>
+        <Card containerStyle={styles.post}>
+        <Card.Title>Hello</Card.Title>
+        <Text>This is my card</Text>
+      </Card>
+      <Card containerStyle={styles.post}>
+        <Card.Title>Hello</Card.Title>
+        <Text>This is my card</Text>
+      </Card>
+      </ScrollView>
     </View>
   );
 }
@@ -29,4 +38,8 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  post: {
+    borderRadius: 10,
+    width: '85%',
+  }
 });
