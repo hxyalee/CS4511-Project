@@ -4,10 +4,12 @@ import { Card } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { View, Text } from '../components/Themed';
+import FullLogo from '../assets/images/background-circles.svg';
 
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
+      <FullLogo />
       {/* change to flat list */}
       <ScrollView>
         <Card containerStyle={styles.post}>
@@ -28,6 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'black',
   },
   title: {
     fontSize: 20,
