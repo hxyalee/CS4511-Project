@@ -1,16 +1,28 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
+import { Card } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View, Text } from '../components/Themed';
+import Post from '../components/Post';
+import BackgroundDecoration from '../assets/images/background-circles.svg';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
-    </View>
+      <View style={styles.container}>
+        {/* change to flat list */}
+        <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
+          <BackgroundDecoration style={{
+            position: 'absolute',
+            top: -40,
+            left: -40,
+            right: 0,
+            bottom: 0,
+          }}/>
+          <Post/>
+          <Post/>
+        </ScrollView>
+      </View>
   );
 }
 
@@ -19,14 +31,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'black',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  feed: {
+    alignItems: 'center',
+    margin: 10,
   },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+
 });
