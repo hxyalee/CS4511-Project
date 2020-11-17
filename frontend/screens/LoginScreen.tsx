@@ -39,7 +39,7 @@ export default function LoginScreen() {
             secureTextEntry={true}
           />
           <View style={styles.button}>
-            <Button title="Login"/>
+            <Button title=" LOGIN "/>
           </View>
           <Text>Don't have an account?
             <Text style={styles.linkText} /* onPress={} */> Sign up.</Text>
@@ -49,6 +49,8 @@ export default function LoginScreen() {
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
+
+  /* const login = (email, pass) =>  */
 }
 
 const styles = StyleSheet.create({
