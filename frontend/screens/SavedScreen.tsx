@@ -5,6 +5,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function SavedScreen() {
+  let json = require('../testdata/saved.json');
+  console.log(json, 'the json object');
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One123</Text>
@@ -32,3 +34,9 @@ const styles = StyleSheet.create({
 });
 
 
+
+
+
+// fetch('http://localhost:5000/project-4d358/asia-east2/api/getReviews')
+//  method:'POST',
+//  he

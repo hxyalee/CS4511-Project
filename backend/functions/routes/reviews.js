@@ -59,6 +59,7 @@ exports.createReview = (request, response) => {
     cuisine:      [],
     price:        1,
     userImage:    request.user.imageURL,
+    location:     "",
   };
 
   db.collection('reviews')

@@ -22,4 +22,3 @@ exports.getSavedList = (request, response) => {
 }
 */
 
-
