@@ -7,20 +7,7 @@ import { View, Text } from '../components/Themed';
 import Post from '../components/Post';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { getReviews } from '../requests/reviews';
-
-interface Review {
-  createdAt: string,
-  cuisine: string,
-  description: string,
-  dietaryOptions: Array<string>,
-  id: string,
-  imageUrl: string,
-  likes: Array<string>,
-  price: number,
-  rating: number,
-  restaurant: string,
-  userHandle: string,
-};
+import { Review } from '../types';
 
 export default function HomeScreen() {
   const [reviews, setReviews] = useState<Array<Review>>([]);
