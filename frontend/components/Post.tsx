@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, Image, StyleSheet, View } from "react-native";
 import { Avatar, Card, Icon } from "react-native-elements";
 
-export default function Post () {
+import { Review } from '../types';
+
+export default function Post ( props: { data: Review } ) {
+    const [liked, setLiked] = useState(false);
+    const [saved, setSaved] = useState(false);
+
     return(
         <Card containerStyle={styles.post}>
             <View style={styles.postHeader}>
                 <Avatar rounded title="MT" overlayContainerStyle={{backgroundColor: '#BDBDBD'}}/>
-                <Text style={styles.username}>username</Text>
-                <PostRating value={4.5} />
+                <Text style={styles.username}>{ props.data.userHandle }</Text>
+                <PostRating value={props.data.rating} />
             </View>
             <Image
                 source={{
@@ -17,8 +22,8 @@ export default function Post () {
                 style={{ height: 300 }}
             />
             <View style={styles.bottomContainer}>
-                <Text>Definitely recommend the carbonara. So creamy! But wish they gave more parmesan...</Text>
-                <PostActionsContainer />
+                <Text numberOfLines={2} ellipsizeMode='tail'>{ props.data.description }</Text>
+                <PostActionsContainer liked={liked} setLiked={setLiked} saved={saved} setSaved={setSaved}/>
             </View>
         </Card>
     );
@@ -33,11 +38,28 @@ function PostRating(props: {value: number}) {
     );
 }
 
-function PostActionsContainer() {
+function PostActionsContainer(
+    props: {liked: boolean, setLiked: any, saved: boolean, setSaved: any}) {
+    
+    const heart = (props.liked) ? 'heart' : 'heart-o';
+    const heartColor = (props.liked) ? '#DC0000' : '#000000';
+    const saved = (props.saved) ? 'bookmark' : 'bookmark-o';
+
     return (
         <View style={styles.actionContainer}>
-            <Icon size={40} name='heart-o' type='font-awesome'/>
-            <Icon size={40} name='bookmark-o' type='font-awesome'/>
+            <Icon 
+                size={40}
+                name={heart}
+                type='font-awesome'
+                color={heartColor}
+                onPress={() => props.setLiked(!props.liked)}
+            />
+            <Icon
+                size={40}
+                name={saved}
+                type='font-awesome'
+                onPress={() => props.setSaved(!props.saved)}
+            />
         </View>
     );
 }

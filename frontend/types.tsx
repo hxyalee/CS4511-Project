@@ -27,3 +27,17 @@ export type SavedScreenParamList = {
 export type ProfileScreenParamList = {
   Profile: undefined;
 };
+
+export interface Review {
+  createdAt: string,
+  cuisine: string,
+  description: string,
+  dietaryOptions: Array<string>,
+  id: string,
+  imageUrl: string,
+  likes: Array<string>,
+  price: number,
+  rating: number,
+  restaurant: string,
+  userHandle: string,
+};
