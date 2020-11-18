@@ -2,19 +2,7 @@ import React, { useState } from "react";
 import { Text, Image, StyleSheet, View } from "react-native";
 import { Avatar, Card, Icon } from "react-native-elements";
 
-interface Review {
-    createdAt: string,
-    cuisine: string,
-    description: string,
-    dietaryOptions: Array<string>,
-    id: string,
-    imageUrl: string,
-    likes: Array<string>,
-    price: number,
-    rating: number,
-    restaurant: string,
-    userHandle: string,
-  };
+import { Review } from '../types';
 
 export default function Post ( props: { data: Review } ) {
     const [liked, setLiked] = useState(false);
