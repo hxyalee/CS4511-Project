@@ -1,7 +1,9 @@
 const { db } = require('../util/admin');
 
 
-
+// ------------------------------------------------------------------------------
+// ----------------------------- REVIEWS LSIT -----------------------------------
+// ------------------------------------------------------------------------------
 // Return a LIST of reivews
 exports.getReviews = (request, response) => {
   db.collection('reviews')
@@ -20,8 +22,9 @@ exports.getReviews = (request, response) => {
     .catch((err) => console.error(err));
 };
 
-
-
+// ------------------------------------------------------------------------------
+// --------------------------- INDIVIDUAL REVIEW --------------------------------
+// ------------------------------------------------------------------------------
 // Return ONE particular review
 exports.getReview = (request, response) => {
   let reviewData = {};
@@ -43,17 +46,23 @@ exports.getReview = (request, response) => {
 
 
 
+
+exports.createReview = (request, response) => {
+
+}
+
+/*
 exports.createReview = (request, response) => {
   const newReview = {
     createdAt:    new Date().toISOString(),
     rating:       request.body.rating,
-    userHandle:   request.user.handle,
+    creator:      request.user.username,
     body:         request.body.body,
     hearted:      [],
     likeCount:    0,
     saved:        [],
     comments:     [],     //not implementing
-    commentCount: 0,
+    commentCount: 0,      //not implementing
     location:     request.body.location,
     dietary:      [],
     cuisine:      [],
@@ -71,3 +80,38 @@ exports.createReview = (request, response) => {
       response.status(500).json({ error: 'something went wrong' })
     );
 };
+
+*/
+
+
+
+// ------------------------------------------------------------------------------
+// --------------------------- LIKE/HEART REACT ---------------------------------
+// ------------------------------------------------------------------------------
+// function for user to heart react post
+exports.heartReview = (request, response) => {
+
+}
+
+// ------------------------------------------------------------------------------
+// ------------------------------ SAVE REVIEW -----------------------------------
+// ------------------------------------------------------------------------------
+// save review to see later
+exports.saveReview = (request, response) => {
+
+}
+
+// ------------------------------------------------------------------------------
+// ---------------------------- SEARCH & FILTER ---------------------------------
+// ------------------------------------------------------------------------------
+// display a set of reviews which follow the constraints
+exports.search_filter = (request, response) => {
+  const filter = {
+    handle:        request.body.handle,        // this is the current login person
+    price_range:   request.body.price_range,   // given price range (1 - cheap, 2 - medium, 3 - expensive)
+    location_dist: request.body.location_dist, // within distance
+    rating:        request.body.rating,        // between 0-5 where only accept reviews above
+    dietary_opts:  request.body.dietary_opts,  // array of values ('vegan', 'vegetarian', etc)
+  };
+
+}

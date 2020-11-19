@@ -15,9 +15,10 @@ Users:
     createdAt:   DateTime -- when the account was created
 
 Reviews:
+    reviewId     int      -- unique review identifier
     createdAt:   dateTime -- when the post was uploaded
     rating:      int      -- between 0 and 5 to indicate restaurant rating
-    userHandle:  User     -- who posted the review 
+    creator:     User     -- who posted the review 
     body:        text     -- review description/critique from uploader
     hearted:     [User]   -- list of users who have heart reacted the post 
     likeCount:   int      -- number of people who liked/hearted the post
@@ -29,7 +30,6 @@ Reviews:
     cuisine:     [CuisineType] -- the specific cuisine type of the restaurant
     price:       Cost     -- estimated price for the review (1=cheap, 2=medium, 3=expensive)
     userImage:   Image    -- image of restaurant/food
-    location:    text     -- location of the food
    
 enum DietOptions = {Vegetarian, Vegan, Dairy Free, Nut Free, Kosher, Halal}
 enum CuisineType = {Italian, Thai, Chinese, Mexican, Other}

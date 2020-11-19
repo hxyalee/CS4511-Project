@@ -5,13 +5,19 @@ const app = express();
 const admin = require('firebase-admin');
 
 app.use(cors());
-const { signup, login } = require('./routes/auth');
+const { signup, login, allUsers, addMoreUserDetails, searchUsers, follow, unfollow} = require('./routes/auth');
 const { getUser } = require('./routes/users');
 const { getReviews, createReview, getReview } = require('./routes/reviews');
 const { TokenAuthentication } = require('./util/authMiddleware');
 /* Authorisation related routes */
 app.post('/signup', signup);
 app.post('/login', login);
+app.post('/allUsers', allUsers);
+app.post('/addMoreUserDetails', addMoreUserDetails);
+app.post('/searchUsers', searchUsers);
+app.post('/follow', follow);
+app.post('/unfollow', unfollow)
+
 /* Post Related routes */
 app.post('/getReviews', getReviews);
 app.post('/reivew/:reviewId', getReview);
