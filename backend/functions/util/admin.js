@@ -17,5 +17,5 @@ admin.initializeApp({
   databaseURL: 'https://project-4d358.firebaseio.com',
 });
 const db = admin.firestore();
-
+db.settings({ ignoreUndefinedProperties: true });
 module.exports = { admin, db, firebase, firebaseConfig };
