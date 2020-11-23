@@ -58,7 +58,6 @@ exports.signup = (request, response) => {
     .then((tkn) => {
       const userCredentials = {
         email: newUser.email,
-        password: newUser.password,
         handle: newUser.handle,
         name: newUser.name,
         description: '',
