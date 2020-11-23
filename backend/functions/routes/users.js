@@ -98,3 +98,20 @@ exports.unfollow = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
+
+exports.search = (request, response) => {
+  const query = request.query.q.toLowerCase();
+  db.collection('users')
+    .get()
+    .then((data) => {
+      const users = [];
+      data.forEach((doc) => {
+        const user = doc.data();
+        if (user.handle.toLowerCase().includes(query)) {
+          users.push({ handle: user.handle, name: user.name });
+        }
+      });
+      return response.json({ users: users });
+    })
+    .catch((e) => response.status(500).json({ error: e.code }));
+};

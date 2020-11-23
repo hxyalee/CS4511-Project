@@ -1,4 +1,5 @@
-const { db } = require('../util/admin');
+const { db, admin } = require('../util/admin');
+const { getSavedArray } = require('../util/helpers');
 
 // ------------------------------------------------------------------------------
 // ----------------------------- REVIEWS LSIT -----------------------------------
@@ -71,28 +72,65 @@ exports.createReview = (request, response) => {
     );
 };
 
+exports.getSavedReviews = (request, response) => {
+  getSavedArray(request.user.handle).then((saved) => {
+    let reviews = [];
+    const allReviews = [];
+    db.collection('reviews')
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          allReviews.push({ ...doc.data(), id: doc.id });
+          // allReviews.push({...review.data(), doc.id})
+        });
+      })
+      .then(() => {
+        for (let i = 0; i < allReviews.length; i++) {
+          if (saved.includes(allReviews[i].id)) reviews.push(allReviews[i]);
+        }
+        return response.json({ reviews });
+      });
+  });
+};
+
 // ------------------------------------------------------------------------------
 // --------------------------- LIKE/HEART REACT ---------------------------------
 // ------------------------------------------------------------------------------
 // function for user to heart react post
 exports.heartReview = (request, response) => {};
 
-// ------------------------------------------------------------------------------
-// ------------------------------ SAVE REVIEW -----------------------------------
-// ------------------------------------------------------------------------------
-// save review to see later
-exports.saveReview = (request, response) => {};
-
-// ------------------------------------------------------------------------------
-// ---------------------------- SEARCH & FILTER ---------------------------------
-// ------------------------------------------------------------------------------
-// display a set of reviews which follow the constraints
-exports.search_filter = (request, response) => {
-  const filter = {
-    handle: request.body.handle, // this is the current login person
-    price_range: request.body.price_range, // given price range (1 - cheap, 2 - medium, 3 - expensive)
-    location_dist: request.body.location_dist, // within distance
-    rating: request.body.rating, // between 0-5 where only accept reviews above
-    dietary_opts: request.body.dietary_opts, // array of values ('vegan', 'vegetarian', etc)
-  };
+/**
+ * HEADERS: {token}
+ * BODY: {}
+ */
+exports.saveReview = (request, response) => {
+  const reviewId = request.body.reviewId;
+  const userhandle = request.user.handle;
+  db.collection('reviews')
+    .doc(reviewId)
+    .get()
+    .then((doc) => {
+      if (!doc.exists)
+        return response.status(400).json({ error: 'Review does not exist' });
+      return;
+    })
+    .catch((e) => response.status(400).json({ error: e.code }));
+  db.collection('users')
+    .doc(userhandle)
+    .update({ saved: admin.firestore.FieldValue.arrayUnion(reviewId) })
+    .then((res) => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
+};
+/**
+ * HEADERS: {token}
+ * BODY: {}
+ */
+exports.unsaveReview = (request, response) => {
+  const reviewId = request.body.reviewId;
+  const userhandle = request.user.handle;
+  db.collection('users')
+    .doc(userhandle)
+    .update({ saved: admin.firestore.FieldValue.arrayRemove(reviewId) })
+    .then((res) => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
 };

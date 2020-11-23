@@ -10,23 +10,30 @@ const {
   login,
   allUsers,
   addMoreUserDetails,
-  searchUsers,
 } = require('./routes/auth');
-const { getUser, follow, unfollow } = require('./routes/users');
-const { getReviews, createReview, getReview } = require('./routes/reviews');
+const { getUser, follow, unfollow, search } = require('./routes/users');
+const {
+  getReviews,
+  createReview,
+  getReview,
+  saveReview,
+  unsaveReview,
+  getSavedReviews,
+} = require('./routes/reviews');
 const { TokenAuthentication } = require('./util/authMiddleware');
 /* Authorisation related routes */
 app.post('/signup', signup);
 app.post('/login', login);
-app.post('/allUsers', allUsers);
-app.post('/addMoreUserDetails', addMoreUserDetails);
-app.post('/searchUsers', searchUsers);
 
 /* Post Related routes */
 app.post('/getReviews', getReviews);
 app.post('/review/:reviewId', getReview);
 app.post('/createReview', TokenAuthentication, createReview);
+app.post('/save', TokenAuthentication, saveReview);
+app.post('/unsave', TokenAuthentication, unsaveReview);
+app.post('/reviews/saved', TokenAuthentication, getSavedReviews)
 /* User related routes */
+app.get('/search', search);
 app.get('/user/:handle', getUser);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
