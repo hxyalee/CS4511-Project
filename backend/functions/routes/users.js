@@ -1,4 +1,8 @@
 const { db, admin, firebase, firebaseConfig } = require('../util/admin');
+const {
+  getFollowingUserHandles,
+  getFollowerUserHandles,
+} = require('../util/helpers');
 
 exports.getUser = (request, response) => {
   let user = {};
@@ -62,6 +66,53 @@ exports.follow = (request, response) => {
       });
     })
     .then(() => response.json({}))
+    .catch((err) => {
+      return response.status(500).json({ error: err.code });
+    });
+};
+
+exports.following = (request, response) => {
+  const handle = request.params.handle;
+
+  getFollowingUserHandles(handle)
+    .then((following) => {
+      let ret = [];
+      let allUsers = [];
+      db.collection('users')
+        .get()
+        .then((users) => {
+          users.forEach((user) =>
+            allUsers.push({ ...user.data(), handle: user.id })
+          );
+        })
+        .then(() => {
+          ret = allUsers.filter((user) => following.includes(user.handle));
+          return response.json({ users: ret });
+        });
+    })
+    .catch((err) => {
+      return response.status(500).json({ error: err.code });
+    });
+};
+exports.followers = (request, response) => {
+  const handle = request.params.handle;
+
+  getFollowerUserHandles(handle)
+    .then((following) => {
+      let ret = [];
+      let allUsers = [];
+      db.collection('users')
+        .get()
+        .then((users) => {
+          users.forEach((user) =>
+            allUsers.push({ ...user.data(), handle: user.id })
+          );
+        })
+        .then(() => {
+          ret = allUsers.filter((user) => following.includes(user.handle));
+          return response.json({ users: ret });
+        });
+    })
     .catch((err) => {
       return response.status(500).json({ error: err.code });
     });

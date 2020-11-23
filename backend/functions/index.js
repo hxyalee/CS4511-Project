@@ -11,7 +11,14 @@ const {
   allUsers,
   addMoreUserDetails,
 } = require('./routes/auth');
-const { getUser, follow, unfollow, search } = require('./routes/users');
+const {
+  getUser,
+  follow,
+  unfollow,
+  search,
+  following,
+  followers,
+} = require('./routes/users');
 const {
   getReviews,
   createReview,
@@ -31,10 +38,12 @@ app.post('/review/:reviewId', getReview);
 app.post('/createReview', TokenAuthentication, createReview);
 app.post('/save', TokenAuthentication, saveReview);
 app.post('/unsave', TokenAuthentication, unsaveReview);
-app.post('/reviews/saved', TokenAuthentication, getSavedReviews)
+app.post('/reviews/saved', TokenAuthentication, getSavedReviews);
 /* User related routes */
 app.get('/search', search);
 app.get('/user/:handle', getUser);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
+app.get('/:handle/following', following);
+app.get('/:handle/follower', followers);
 exports.api = functions.region('asia-east2').https.onRequest(app);

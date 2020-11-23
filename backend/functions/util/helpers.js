@@ -17,3 +17,27 @@ exports.getSavedArray = async (user) => {
       return new Promise((res, rej) => res(saved));
     });
 };
+exports.getFollowingUserHandles = async (user) => {
+  let following;
+  return await db
+    .collection('users')
+    .doc(user)
+    .get()
+    .then((doc) => {
+      data = doc.data();
+      following = data.following.slice();
+      return new Promise((res, rej) => res(following));
+    });
+};
+exports.getFollowerUserHandles = async (user) => {
+  let followers;
+  return await db
+    .collection('users')
+    .doc(user)
+    .get()
+    .then((doc) => {
+      data = doc.data();
+      followers = data.followers.slice();
+      return new Promise((res, rej) => res(followers));
+    });
+};

@@ -107,7 +107,7 @@ exports.login = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
-
+/* 
 // ------------------------------------------------------------------------------
 // ----------------------------- ALL USERS --------------------------------------
 // ------------------------------------------------------------------------------
@@ -181,81 +181,4 @@ exports.addMoreUserDetails = (request, response) => {
     })
     .catch((err) => console.error(err));
 };
-
-// ------------------------------------------------------------------------------
-// --------------------------- SEARCH FOR USERS ---------------------------------
-// ------------------------------------------------------------------------------
-// get a list of users given a search input
-exports.searchUsers = (request, response) => {
-  const user = {
-    handle: request.body.handle, // takes in email, should change to use the user's token
-    searchterm: request.body.searchterm, // search term taken from the search bar
-  };
-  // loop through the users for the user matching on e-mail (probably needs to change using userID of somoe sort)
-  db.collection('users')
-    .get()
-    .then((data) => {
-      let users = [];
-      data.forEach((doc) => {
-        // make sure it's not themself AND matches the substring to the username
-        if (
-          user.handle != doc._fieldsProto.handle.stringValue &&
-          doc._fieldsProto.handle.stringValue
-            .toLowerCase()
-            .includes(user.searchterm.toLowerCase())
-        ) {
-          var follow = 0; //variable to check if they are following
-          // check if the user is being followed
-          let followed = [];
-          data.forEach((doc2) => {
-            // get the original sender (inefficient method, probs will refactor)
-            if (user.handle == doc2._fieldsProto.handle.stringValue) {
-              //console.log(doc2._fieldsProto.following.arrayValue);
-              //console.log(doc2._fieldsProto.handle.stringValue);
-              var i;
-              for (
-                i = 0;
-                i < doc2._fieldsProto.following.arrayValue.values.length;
-                i++
-              ) {
-                //console.log(doc2._fieldsProto.following.arrayValue.values[i].stringValue);
-                //console.log(doc._fieldsProto.handle.stringValue);
-                if (
-                  doc2._fieldsProto.following.arrayValue.values[i]
-                    .stringValue == doc._fieldsProto.handle.stringValue
-                ) {
-                  follow = 1;
-                }
-              }
-              if (follow == 1) {
-                console.log(
-                  'following: '.concat(doc._fieldsProto.handle.stringValue)
-                );
-                users.push({
-                  id: doc.id,
-                  name: doc._fieldsProto.name.stringValue,
-                  image: doc._fieldsProto.imageURL.stringValue,
-                  following: 'UNFOLLOW',
-                  ...doc.data,
-                });
-              } else {
-                console.log(
-                  'not following: '.concat(doc._fieldsProto.handle.stringValue)
-                );
-                users.push({
-                  id: doc.id,
-                  name: doc._fieldsProto.name.stringValue,
-                  image: doc._fieldsProto.imageURL.stringValue,
-                  following: 'FOLLOW',
-                  ...doc.data,
-                });
-              }
-            }
-          });
-          console.log(followed);
-        }
-      });
-      return response.json(users);
-    })
-    .catch((err) => console.error(err));
-};
+ */
