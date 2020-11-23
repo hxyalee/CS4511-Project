@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
+import BackgroundDecoration from '../assets/images/login-detail.svg';
 
 /* export interface Props {
   email: string;
@@ -25,6 +26,14 @@ export default function LoginScreen() {
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
+          <BackgroundDecoration style={{
+              position: 'absolute',
+              top: -140,
+              left: -130,
+              right: 0,
+              bottom: 0,
+              
+            }}/>
           <Text>Social Feed</Text>
           <TextInput
             placeholder="Email"
@@ -60,6 +69,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#182359',
   },
   email: {
     borderColor: 'black',
