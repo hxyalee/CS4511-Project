@@ -43,18 +43,18 @@ export default function LoginScreen() {
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
-            style={styles.email}/>
+            style={styles.textInput}/>
           <TextInput
             placeholder="Password"
             onChangeText={(text) => setPassword(text)}
             value={password}
-            style={styles.password}
+            style={styles.textInput}
             secureTextEntry={true}
           />
           <View style={styles.button}>
             <Button title=" LOGIN "/>
           </View>
-          <Text>Don't have an account?
+          <Text style={styles.text}>Don't have an account?
             <Text style={styles.linkText} /* onPress={} */> Sign up.</Text>
           </Text>
           
@@ -75,28 +75,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#182359',
   },
-  email: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 15,
-    width: '50%',
-    height: 40,
+  textInput: {
+    borderRadius: 4,
+    width: '75%',
+    height: 44,
     paddingLeft: 6,
     margin: 5,
-  },
-  password: {
-    margin: 5,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 15,
-    width: '50%',
-    height: 40,
-    paddingLeft: 6,
+    backgroundColor: 'white',
+    top: 58,
+    marginBottom: 17,
   },
   button: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    top: 80,
+    fontSize: 14,
   },
   linkText: {
     fontSize: 14,
@@ -118,7 +112,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: 80,
     position: 'absolute',
+  },
+  text: {
+    color: 'white',
+    top: 90,
   }
-
 })
 
