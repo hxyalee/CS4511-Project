@@ -1,10 +1,9 @@
 const { db } = require('../util/admin');
 
-
 // ------------------------------------------------------------------------------
 // ----------------------------- REVIEWS LSIT -----------------------------------
 // ------------------------------------------------------------------------------
-// Return a LIST of reivews
+// Return a list of all of reivews
 exports.getReviews = (request, response) => {
   db.collection('reviews')
     .orderBy('createdAt', 'desc')
@@ -36,7 +35,7 @@ exports.getReview = (request, response) => {
         return response.status(404).json({ error: 'review not found!' });
       reviewData = doc.data();
       reviewData.reviewId = doc.id;
-      return reviewData;
+      return response.json(reviewData);
     })
     .catch((err) => {
       console.log(err);
@@ -44,62 +43,45 @@ exports.getReview = (request, response) => {
     });
 };
 
-
-
-
-exports.createReview = (request, response) => {
-
-}
-
-/*
 exports.createReview = (request, response) => {
   const newReview = {
-    createdAt:    new Date().toISOString(),
-    rating:       request.body.rating,
-    creator:      request.user.username,
-    body:         request.body.body,
-    hearted:      [],
-    likeCount:    0,
-    saved:        [],
-    comments:     [],     //not implementing
-    commentCount: 0,      //not implementing
-    location:     request.body.location,
-    dietary:      [],
-    cuisine:      [],
-    price:        1,
-    userImage:    request.user.imageURL,
-    location:     "",
+    createdAt: new Date().toISOString(),
+    rating: request.body.rating,
+    userHandle: request.user.handle,
+    body: request.body.body,
+    price: request.body.price,
+    userImage: request.user.imageURL,
+    location: request.body.location,
+    hearted: [],
+    likeCount: 0,
+    saved: [],
+    comments: [], //not implementing
+    commentCount: 0, //not implementing
+    dietary: [],
+    cuisine: [],
   };
 
   db.collection('reviews')
     .add(newReview)
     .then((doc) => {
-      response.json({ status: 'success', id: doc.id });
+      return response.json({ status: 'success', id: doc.id });
     })
     .catch((err) =>
       response.status(500).json({ error: 'something went wrong' })
     );
 };
 
-*/
-
-
-
 // ------------------------------------------------------------------------------
 // --------------------------- LIKE/HEART REACT ---------------------------------
 // ------------------------------------------------------------------------------
 // function for user to heart react post
-exports.heartReview = (request, response) => {
-
-}
+exports.heartReview = (request, response) => {};
 
 // ------------------------------------------------------------------------------
 // ------------------------------ SAVE REVIEW -----------------------------------
 // ------------------------------------------------------------------------------
 // save review to see later
-exports.saveReview = (request, response) => {
-
-}
+exports.saveReview = (request, response) => {};
 
 // ------------------------------------------------------------------------------
 // ---------------------------- SEARCH & FILTER ---------------------------------
@@ -107,11 +89,10 @@ exports.saveReview = (request, response) => {
 // display a set of reviews which follow the constraints
 exports.search_filter = (request, response) => {
   const filter = {
-    handle:        request.body.handle,        // this is the current login person
-    price_range:   request.body.price_range,   // given price range (1 - cheap, 2 - medium, 3 - expensive)
+    handle: request.body.handle, // this is the current login person
+    price_range: request.body.price_range, // given price range (1 - cheap, 2 - medium, 3 - expensive)
     location_dist: request.body.location_dist, // within distance
-    rating:        request.body.rating,        // between 0-5 where only accept reviews above
-    dietary_opts:  request.body.dietary_opts,  // array of values ('vegan', 'vegetarian', etc)
+    rating: request.body.rating, // between 0-5 where only accept reviews above
+    dietary_opts: request.body.dietary_opts, // array of values ('vegan', 'vegetarian', etc)
   };
-
-}
+};
