@@ -71,7 +71,10 @@ exports.createReview = (request, response) => {
       response.status(500).json({ error: 'something went wrong' })
     );
 };
-
+/**
+ * HEADERS = {token}
+ * BODY = {}
+ */
 exports.getSavedReviews = (request, response) => {
   getSavedArray(request.user.handle).then((saved) => {
     let reviews = [];
