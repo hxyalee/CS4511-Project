@@ -16,7 +16,6 @@ app.post('/login', login);
 app.post('/getReviews', getReviews);
 app.post('/reivew/:reviewId', getReview);
 app.post('/createReview', TokenAuthentication, createReview);
-
 /* User related routes */
 app.get('/user/:handle', getUser);
 exports.api = functions.region('asia-east2').https.onRequest(app);
