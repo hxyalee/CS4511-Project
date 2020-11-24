@@ -11,7 +11,14 @@ import AddScreen from '../screens/AddScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SavedScreen from '../screens/SavedScreen';
 import SearchScreen from '../screens/SearchScreen';
-import { BottomTabParamList, HomeScreenParamList, SearchScreenParamList, AddScreenParamList, SavedScreenParamList, ProfileScreenParamList } from '../types';
+import {
+  BottomTabParamList,
+  HomeScreenParamList,
+  SearchScreenParamList,
+  AddScreenParamList,
+  SavedScreenParamList,
+  ProfileScreenParamList,
+} from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -21,40 +28,51 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+    >
       <BottomTab.Screen
         name="Home"
         component={HomeScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-home" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
         name="Search"
         component={SearchScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-search" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-search" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Add"
         component={AddScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-add-circle-outline" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-add-circle-outline" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Saved Posts"
         component={SavedScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-bookmark" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-bookmark" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Profile"
         component={ProfileScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-contact" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-contact" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>

@@ -5,12 +5,15 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function SavedScreen() {
-  let json = require('../testdata/saved.json');
-  console.log(json, 'the json object');
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Tab One</Text>
       <Text style={styles.title}>Tab One123</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
       <EditScreenInfo path="/screens/TabOneScreen.js" />
     </View>
   );
@@ -32,10 +35,6 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
-
-
-
-
 
 // fetch('http://localhost:5000/project-4d358/asia-east2/api/getReviews')
 //  method:'POST',
