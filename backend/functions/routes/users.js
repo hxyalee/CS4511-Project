@@ -193,7 +193,11 @@ exports.search = (request, response) => {
       data.forEach((doc) => {
         const user = doc.data();
         if (user.handle.toLowerCase().includes(query)) {
-          users.push({ handle: user.handle, name: user.name });
+          users.push({
+            handle: user.handle,
+            name: user.name,
+            img: user.imageURL,
+          });
         }
       });
       return response.json({ users: users });
