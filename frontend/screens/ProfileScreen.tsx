@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import {
   StyleSheet,
@@ -14,6 +15,8 @@ import {
 const { width, height } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
+
+const fetchUser = () => {};
 
 const ProfileScreen = () => {
   return (

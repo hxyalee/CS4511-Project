@@ -18,6 +18,7 @@ const {
   search,
   following,
   followers,
+  getSelf,
 } = require('./routes/users');
 const {
   getReviews,
@@ -42,6 +43,7 @@ app.post('/reviews/saved', TokenAuthentication, getSavedReviews);
 /* User related routes */
 app.get('/search', search);
 app.get('/user/:handle', getUser);
+app.get('/user', TokenAuthentication, getSelf);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
 app.get('/:handle/following', following);
