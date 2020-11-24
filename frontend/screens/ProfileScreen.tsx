@@ -28,14 +28,13 @@ const ProfileScreen = () => {
   React.useEffect(() => {
     fetchUser()
       .then((res) => {
-        console.log(res);
-        setName(res.handle);
-        setDesc(res.description);
-        setHandle(res.handle);
-        setFollowing(res.following);
-        setFollowers(res.followers);
+        setName(res.user.handle);
+        setDesc(res.user.description);
+        setHandle(res.user.handle);
+        setFollowing(res.user.following);
+        setFollowers(res.user.followers);
         setReviews(res.reviews);
-        setImg(res.imageURL);
+        setImg(res.user.imageURL);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -47,10 +46,7 @@ const ProfileScreen = () => {
           style={styles.profileContainer}
           imageStyle={styles.profileBackground}
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ width, marginTop: '25%' }}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.profileCard}>
               <View style={styles.avatarContainer}>
                 {img === '' ? (
@@ -189,6 +185,7 @@ const styles = StyleSheet.create({
     width: 124,
     height: 124,
     borderRadius: 100,
+    marginTop: 20,
     borderWidth: 0,
   },
   nameInfo: {
