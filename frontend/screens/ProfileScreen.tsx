@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import {
   StyleSheet,
@@ -11,14 +10,35 @@ import {
   View,
   Text,
 } from 'react-native';
+import Post from '../components/Post';
+import { fetchUser } from '../requests/user';
 
 const { width, height } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-const fetchUser = () => {};
-
 const ProfileScreen = () => {
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [handle, setHandle] = React.useState('');
+  const [following, setFollowing] = React.useState([]);
+  const [followers, setFollowers] = React.useState([]);
+  const [reviews, setReviews] = React.useState<any[]>([]);
+  const [img, setImg] = React.useState('');
+  React.useEffect(() => {
+    fetchUser()
+      .then((res) => {
+        console.log(res);
+        setName(res.handle);
+        setDesc(res.description);
+        setHandle(res.handle);
+        setFollowing(res.following);
+        setFollowers(res.followers);
+        setReviews(res.reviews);
+        setImg(res.imageURL);
+      })
+      .catch((e) => console.log(e));
+  }, []);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
@@ -33,10 +53,25 @@ const ProfileScreen = () => {
           >
             <View style={styles.profileCard}>
               <View style={styles.avatarContainer}>
-                <Image
-                  source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-                  style={styles.avatar}
-                />
+                {img === '' ? (
+                  <Image
+                    source={require('../assets/images/nopic.jpeg')}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Image source={{ uri: img }} style={styles.avatar} />
+                )}
+              </View>
+              <View style={{ display: 'flex', alignItems: 'center' }}>
+                <View style={styles.nameInfo}>
+                  <Text>{handle}</Text>
+                  <Text>Sydney, Australia</Text>
+                </View>
+                <View>
+                  {desc !== '' && (
+                    <Text style={{ textAlign: 'center' }}>{desc}</Text>
+                  )}
+                </View>
               </View>
               <View style={styles.info}>
                 <View
@@ -48,7 +83,7 @@ const ProfileScreen = () => {
                     justifyContent: 'space-evenly',
                   }}
                 >
-                  <Button title="Follow" />
+                  <Button title="Follow" onPress={() => {}} />
                 </View>
                 <View
                   style={{
@@ -65,8 +100,8 @@ const ProfileScreen = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text>15</Text>
-                    <Text>Posts</Text>
+                    <Text>{reviews.length}</Text>
+                    <Text>Reviews</Text>
                   </View>
                   <View
                     style={{
@@ -75,7 +110,7 @@ const ProfileScreen = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text>15</Text>
+                    <Text>{followers.length}</Text>
                     <Text>Followers</Text>
                   </View>
                   <View
@@ -85,27 +120,16 @@ const ProfileScreen = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <Text>15</Text>
+                    <Text>{following.length}</Text>
                     <Text>Following</Text>
                   </View>
                 </View>
               </View>
-              <View style={{ display: 'flex', alignItems: 'center' }}>
-                <View style={styles.nameInfo}>
-                  <Text>Hoya Lee</Text>
-                  <Text>Sydney, Australia</Text>
-                </View>
-                <View style={{ marginTop: 30, marginBottom: 16 }}>
-                  <View style={styles.divider} />
-                </View>
-                <View>
-                  <Text style={{ textAlign: 'center' }}>
-                    This is my bio.... my name is hoya and I am blah b;lah
-                    blaj......
-                  </Text>
-                </View>
-              </View>
             </View>
+            {reviews &&
+              reviews.map((review) => {
+                return <Post key={review.id} data={review} />;
+              })}
           </ScrollView>
         </ImageBackground>
       </View>
@@ -164,7 +188,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 124,
     height: 124,
-    borderRadius: 62,
+    borderRadius: 100,
     borderWidth: 0,
   },
   nameInfo: {

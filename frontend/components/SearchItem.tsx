@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Icon } from "react-native-elements";
+import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 interface SearchItemProps {
   id: number;
   name: string;
@@ -10,10 +10,10 @@ interface SearchItemProps {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#eee",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    backgroundColor: '#eee',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
     marginHorizontal: 10,
@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   subtext: {
-    color: "gray",
+    color: 'gray',
   },
   rating: {
-    position: "absolute",
+    position: 'absolute',
     right: 10,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });
 export const SearchItem: React.FC<SearchItemProps> = ({
@@ -49,16 +49,16 @@ export const SearchItem: React.FC<SearchItemProps> = ({
       ) : (
         <Image
           style={styles.logo}
-          source={require("../static/images/empty_user.png")}
+          source={require('../static/images/empty_user.png')}
         />
       )}
       <View>
-        <Text style={{ color: "black" }}>{name}</Text>
+        <Text style={{ color: 'black' }}>{name}</Text>
         <View
           style={{
-            display: "flex",
-            flexDirection: "row",
-            alignContent: "center",
+            display: 'flex',
+            flexDirection: 'row',
+            alignContent: 'center',
           }}
         >
           <Icon
@@ -82,6 +82,44 @@ export const SearchItem: React.FC<SearchItemProps> = ({
         )}
 
         <Text>{parseInt(rating) !== 0 && rating}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+interface UserItemProps {
+  id: number;
+  name: string;
+  handle: string;
+  img: string;
+}
+export const UserSearchItem: React.FC<UserItemProps> = ({
+  id,
+  img,
+  name,
+  handle,
+}) => {
+  return (
+    <TouchableOpacity style={styles.container}>
+      {img ? (
+        <Image style={styles.logo} source={{ uri: img }} />
+      ) : (
+        <Image
+          style={styles.logo}
+          source={require('../static/images/empty_user.png')}
+        />
+      )}
+      <View>
+        <Text style={{ color: 'black' }}>{handle}</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignContent: 'center',
+          }}
+        >
+          <Text style={styles.subtext}>{name}</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );

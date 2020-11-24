@@ -22,7 +22,6 @@ exports.getUser = (request, response) => {
       }
     })
     .then((data) => {
-      if (!data.exists) return response.json(user);
       user.reviews = [];
       data.forEach((doc) => {
         user.reviews.push({
@@ -56,7 +55,7 @@ exports.getSelf = (request, response) => {
       }
     })
     .then((data) => {
-      if (!data.exists) return response.json(user);
+      console.log(data);
       user.reviews = [];
       data.forEach((doc) => {
         user.reviews.push({
