@@ -15,6 +15,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import BackgroundDecoration from '../assets/images/login-detail.svg';
 import BurgerIcon from '../assets/images/burger.svg';
 import BurgerHeart from '../assets/images/burgerheart.svg';
+import PasswordIcon from '../assets/images/passwordIcon.svg';
+import UsernameIcon from '../assets/images/usernameIcon.svg';
 
 /* export interface Props {
   email: string;
@@ -43,7 +45,10 @@ export default function LoginScreen() {
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
-            style={styles.textInput}/>
+            style={styles.textInput}>
+
+            </TextInput>
+          {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
             onChangeText={(text) => setPassword(text)}
@@ -51,6 +56,7 @@ export default function LoginScreen() {
             style={styles.textInput}
             secureTextEntry={true}
           />
+          {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
             <Button title=" LOGIN "/>
           </View>
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: '75%',
     height: 44,
-    paddingLeft: 6,
+    paddingLeft: 35,
     margin: 5,
     backgroundColor: 'white',
     top: 58,
@@ -116,6 +122,15 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
     top: 90,
+  },
+  passwordicon: {
+    position: 'absolute',
+    left: 60,
+    bottom: 269,
+  },
+  emailIcon: {
+    position: 'absolute',
+    left: 60,
   }
 })
 
