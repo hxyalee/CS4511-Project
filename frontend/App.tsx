@@ -22,13 +22,15 @@ export default function App() {
   }, []);
   if (!isLoadingComplete) {
     return null;
-  } else if (token === null) {
-    return (
-      <SafeAreaProvider>
-        <AuthNavigation />
-      </SafeAreaProvider>
-    );
-  } else {
+  }
+  // else if (token === null) {
+  //   return (
+  //     <SafeAreaProvider>
+  //       <AuthNavigation />
+  //     </SafeAreaProvider>
+  //   );
+  // }
+  else {
     return (
       <SafeAreaProvider>
         <Navigation colorScheme={colorScheme} />

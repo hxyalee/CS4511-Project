@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
   subtext: {
     color: 'gray',
+    fontSize: 12,
   },
   rating: {
     position: 'absolute',
@@ -68,21 +69,27 @@ export const SearchItem: React.FC<SearchItemProps> = ({
             size={12}
             iconStyle={{ marginRight: 10 }}
           />
-          <Text style={styles.subtext}>{location.locality_verbose}</Text>
+          <View
+            style={{
+              width: '70%',
+            }}
+          >
+            <Text style={styles.subtext}>{location.locality_verbose} </Text>
+          </View>
         </View>
       </View>
-      <View style={styles.rating}>
-        {parseInt(rating) !== 0 && (
+      {parseInt(rating) !== 0 && (
+        <View style={styles.rating}>
           <Icon
             name="star"
             type="font-awesome-5"
             size={16}
             iconStyle={{ marginRight: 10 }}
           />
-        )}
 
-        <Text>{parseInt(rating) !== 0 && rating}</Text>
-      </View>
+          <Text>{rating}</Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 };

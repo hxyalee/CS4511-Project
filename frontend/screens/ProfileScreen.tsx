@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Post from '../components/Post';
 import { fetchUser } from '../requests/user';
+import BackgroundDecoration from '../assets/images/background-circles.svg';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -41,93 +42,92 @@ const ProfileScreen = () => {
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
-        <ImageBackground
+        {/* <ImageBackground
           source={require('../assets/images/profile-screen-bg.png')}
           style={styles.profileContainer}
           imageStyle={styles.profileBackground}
-        >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.profileCard}>
-              <View style={styles.avatarContainer}>
-                {img === '' ? (
-                  <Image
-                    source={require('../assets/images/nopic.jpeg')}
-                    style={styles.avatar}
-                  />
-                ) : (
-                  <Image source={{ uri: img }} style={styles.avatar} />
+        > */}
+        <BackgroundDecoration
+          style={{
+            position: 'absolute',
+            top: -40,
+            left: -40,
+            right: 0,
+            bottom: 0,
+          }}
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.profileCard}>
+            <View style={styles.avatarContainer}>
+              {img === '' ? (
+                <Image
+                  source={require('../assets/images/nopic.jpeg')}
+                  style={styles.avatar}
+                />
+              ) : (
+                <Image source={{ uri: img }} style={styles.avatar} />
+              )}
+            </View>
+            <View style={{ display: 'flex', alignItems: 'center' }}>
+              <View style={styles.nameInfo}>
+                <Text>{handle}</Text>
+                <Text>Sydney, Australia</Text>
+              </View>
+              <View>
+                {desc !== '' && (
+                  <Text style={{ textAlign: 'center' }}>{desc}</Text>
                 )}
               </View>
-              <View style={{ display: 'flex', alignItems: 'center' }}>
-                <View style={styles.nameInfo}>
-                  <Text>{handle}</Text>
-                  <Text>Sydney, Australia</Text>
-                </View>
-                <View>
-                  {desc !== '' && (
-                    <Text style={{ textAlign: 'center' }}>{desc}</Text>
-                  )}
-                </View>
-              </View>
-              <View style={styles.info}>
+            </View>
+            <View style={styles.info}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  marginTop: 20,
+                }}
+              >
                 <View
                   style={{
-                    marginTop: 20,
-                    paddingBottom: 24,
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
-                  <Button title="Follow" onPress={() => {}} />
+                  <Text>{reviews.length}</Text>
+                  <Text>Reviews</Text>
                 </View>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>{reviews.length}</Text>
-                    <Text>Reviews</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>{followers.length}</Text>
-                    <Text>Followers</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>{following.length}</Text>
-                    <Text>Following</Text>
-                  </View>
+                  <Text>{followers.length}</Text>
+                  <Text>Followers</Text>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>{following.length}</Text>
+                  <Text>Following</Text>
                 </View>
               </View>
             </View>
             {reviews &&
               reviews.map((review) => {
-                return <Post key={review.id} data={review} />;
+                return <Post key={review.reviewId} data={review} />;
               })}
-          </ScrollView>
-        </ImageBackground>
+          </View>
+        </ScrollView>
+        {/* </ImageBackground> */}
       </View>
     </View>
   );
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     // marginBottom: -HeaderHeight * 2,
     flex: 1,
     display: 'flex',
+    backgroundColor: '#333',
   },
   profileContainer: {
     width: width,
@@ -158,11 +159,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     position: 'relative',
+    marginBottom: 20,
     // padding: theme.SIZES.BASE,
     // marginHorizontal: theme.SIZES.BASE,
     marginTop: 65,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
+    borderRadius: 10,
     // backgroundColor: theme.COLORS.WHITE,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 0 },

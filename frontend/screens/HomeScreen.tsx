@@ -11,66 +11,61 @@ import { Review } from '../types';
 
 export default function HomeScreen() {
   const [reviews, setReviews] = useState<Array<Review>>([]);
-  const [loadingState, setLoadingState] = useState("loading");
+  const [loadingState, setLoadingState] = useState('loading');
 
   React.useEffect(() => {
     getReviews()
-      .then(res => {
+      .then((res) => {
         setReviews(res);
-        setLoadingState("success");
+        setLoadingState('success');
       })
       .catch((e) => {
         console.log('Error getting feed: ', e);
-        setLoadingState("failed");
+        setLoadingState('failed');
       });
   }, []);
 
-  if (loadingState === "loading") {
+  if (loadingState === 'loading') {
     return (
       <View style={styles.container}>
-          <BackgroundDecoration style={{
+        <BackgroundDecoration
+          style={{
             position: 'absolute',
-            top: -40,
-            left: -40,
-            right: 0,
-            bottom: 0,
-          }}/>
-          <Text>Loading...</Text>
+          }}
+        />
+        <Text>Loading...</Text>
       </View>
     );
   }
 
-  if (loadingState === "failed") {
+  if (loadingState === 'failed') {
     return (
       <View style={styles.container}>
-          <BackgroundDecoration style={{
+        <BackgroundDecoration
+          style={{
             position: 'absolute',
-            top: -40,
-            left: -40,
-            right: 0,
-            bottom: 0,
-          }}/>
-          <Text>There was a problem getting the feed.</Text>
+          }}
+        />
+        <Text>There was a problem getting the feed.</Text>
       </View>
     );
   }
 
   return (
-      <View style={styles.container}>
-        {/* change to flat list */}
-        <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
-          <BackgroundDecoration style={{
+    <View style={styles.container}>
+      {/* change to flat list */}
+      <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
+        <BackgroundDecoration
+          style={{
             position: 'absolute',
-            top: -40,
-            left: -40,
-            right: 0,
-            bottom: 0,
-          }}/>
-          { reviews && reviews.map((review) => {
-            return <Post key={review.id} data={review}/>
+          }}
+        />
+        {reviews &&
+          reviews.map((review) => {
+            return <Post key={review.id} data={review} />;
           })}
-        </ScrollView>
-      </View>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -79,11 +74,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#333',
   },
   feed: {
     alignItems: 'center',
     margin: 10,
   },
-
 });

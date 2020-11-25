@@ -28,7 +28,10 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{
+        activeTintColor: Colors[colorScheme].tint,
+        style: { backgroundColor: '#333' },
+      }}
     >
       <BottomTab.Screen
         name="Home"
@@ -95,7 +98,9 @@ function HomeScreenNavigator() {
       <HomeScreenStack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerTitle: 'Feed' }}
+        options={{
+          headerTitle: 'Feed',
+        }}
       />
     </HomeScreenStack.Navigator>
   );

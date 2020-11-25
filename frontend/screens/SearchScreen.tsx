@@ -72,6 +72,7 @@ export default function SearchScreen() {
         />
         <FlatList
           data={listItems}
+          keyExtractor={(item) => (isRestaurant ? item.id : item.handle)}
           renderItem={(item) =>
             isRestaurant ? (
               <SearchItem
@@ -80,17 +81,17 @@ export default function SearchScreen() {
                 img={item.item.img}
                 location={item.item.location}
                 rating={item.item.rating}
+                key={item.item.id}
               />
             ) : (
               <UserSearchItem
+                key={item.item.handle}
                 name={item.item.name}
                 handle={item.item.handle}
                 img={item.item.img}
-                id={item.item.handle}
               />
             )
           }
-          keyExtractor={(item) => item.id}
         />
       </View>
     </SafeAreaView>
@@ -100,6 +101,8 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    backgroundColor: '#333',
+    height: '100%',
   },
   buttongroup: {
     alignSelf: 'stretch',
