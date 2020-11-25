@@ -25,7 +25,7 @@ export type SavedScreenParamList = {
 };
 
 export type ProfileScreenParamList = {
-  Profile: undefined;
+  Profile: { username: null | string };
 };
 
 export type AuthStackParamList = {

@@ -11,14 +11,24 @@ import {
   Text,
 } from 'react-native';
 import Post from '../components/Post';
-import { fetchUser } from '../requests/user';
+import { getSelf, getUser } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
+import { NavigationScreenProp } from 'react-navigation';
 
 const { width, height } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-const ProfileScreen = () => {
+interface ProfileScreenProps {
+  navigation: any;
+  props: any;
+}
+interface RouteProps {
+  route: any;
+}
+const ProfileScreen = (props: any) => {
+  const navigation = props.navigation;
+  const username = props.route.params.username;
   const [name, setName] = React.useState('');
   const [desc, setDesc] = React.useState('');
   const [handle, setHandle] = React.useState('');
@@ -26,18 +36,35 @@ const ProfileScreen = () => {
   const [followers, setFollowers] = React.useState([]);
   const [reviews, setReviews] = React.useState<any[]>([]);
   const [img, setImg] = React.useState('');
+
+  console.log(username);
   React.useEffect(() => {
-    fetchUser()
-      .then((res) => {
-        setName(res.user.handle);
-        setDesc(res.user.description);
-        setHandle(res.user.handle);
-        setFollowing(res.user.following);
-        setFollowers(res.user.followers);
-        setReviews(res.reviews);
-        setImg(res.user.imageURL);
-      })
-      .catch((e) => console.log(e));
+    if (username) {
+      getUser(username)
+        .then((res) => {
+          console.log(res);
+          setName(res.user.handle);
+          setDesc(res.user.description);
+          setHandle(res.user.handle);
+          setFollowing(res.user.following);
+          setFollowers(res.user.followers);
+          setReviews(res.reviews);
+          setImg(res.user.imageURL);
+        })
+        .catch((e) => console.log(e));
+    } else {
+      getSelf()
+        .then((res) => {
+          setName(res.user.handle);
+          setDesc(res.user.description);
+          setHandle(res.user.handle);
+          setFollowing(res.user.following);
+          setFollowers(res.user.followers);
+          setReviews(res.reviews);
+          setImg(res.user.imageURL);
+        })
+        .catch((e) => console.log(e));
+    }
   }, []);
   return (
     <View style={styles.profile}>

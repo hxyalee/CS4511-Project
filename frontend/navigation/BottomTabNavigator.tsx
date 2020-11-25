@@ -153,6 +153,7 @@ function ProfileScreenNavigator() {
       <ProfileScreenStack.Screen
         name="Profile"
         component={ProfileScreen}
+        initialParams={{ username: null }}
         options={{ headerTitle: 'Profile' }}
       />
     </ProfileScreenStack.Navigator>
