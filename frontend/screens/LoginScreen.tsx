@@ -8,46 +8,45 @@ import {
   Alert,
   KeyboardAvoidingView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import { Button, withTheme } from 'react-native-elements';
-import { StackScreenProps } from '@react-navigation/stack';
 import BackgroundDecoration from '../assets/images/login-detail.svg';
 import BurgerIcon from '../assets/images/burger.svg';
 import BurgerHeart from '../assets/images/burgerheart.svg';
 import PasswordIcon from '../assets/images/passwordIcon.svg';
 import UsernameIcon from '../assets/images/usernameIcon.svg';
+import { NavigationScreenProp } from 'react-navigation';
 
-/* export interface Props {
-  email: string;
-  password: string;
-}  */
+interface LoginScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
 
-export default function LoginScreen() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword ] = React.useState("");
+export default function LoginScreen({ navigation }: LoginScreenProps) {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          <BackgroundDecoration style={{
+          <BackgroundDecoration
+            style={{
               position: 'absolute',
               top: -160,
               left: -135,
               right: 0,
               bottom: 0,
-              
-            }}/>
+            }}
+          />
           <Text style={styles.feedlogo}>Feed</Text>
-          <BurgerHeart style={styles.burgerheart}/>
-          <BurgerIcon style={styles.burgericon}/>
+          <BurgerHeart style={styles.burgerheart} />
+          <BurgerIcon style={styles.burgericon} />
           <TextInput
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
-            style={styles.textInput}>
-
-            </TextInput>
+            style={styles.textInput}
+          ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
@@ -58,12 +57,20 @@ export default function LoginScreen() {
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button title=" LOGIN "/>
+            <Button
+              title=" LOGIN "
+              onPress={() => console.log('LOG USER IN')}
+            />
           </View>
-          <Text style={styles.text}>Don't have an account?
-            <Text style={styles.linkText} /* onPress={} */> Sign up.</Text>
+          <Text style={styles.text}>
+            Don't have an account?
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate('Register')}
+            >
+              Sign up.
+            </Text>
           </Text>
-          
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -103,12 +110,12 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
   burgericon: {
-    position:'absolute',
+    position: 'absolute',
     alignItems: 'center',
     top: 205,
   },
   burgerheart: {
-    position:'absolute',
+    position: 'absolute',
     top: 185,
     left: 130,
   },
@@ -131,6 +138,5 @@ const styles = StyleSheet.create({
   emailIcon: {
     position: 'absolute',
     left: 60,
-  }
-})
-
+  },
+});

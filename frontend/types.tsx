@@ -7,7 +7,7 @@ export type BottomTabParamList = {
   Home: undefined;
   Search: undefined;
   Add: undefined;
-  "Saved Posts": undefined;
+  'Saved Posts': undefined;
   Profile: undefined;
 };
 
@@ -21,23 +21,28 @@ export type AddScreenParamList = {
   Add: undefined;
 };
 export type SavedScreenParamList = {
-  "Saved Posts": undefined;
+  'Saved Posts': undefined;
 };
 
 export type ProfileScreenParamList = {
   Profile: undefined;
 };
 
-export interface Review {
-  createdAt: string,
-  cuisine: string,
-  description: string,
-  dietaryOptions: Array<string>,
-  id: string,
-  imageUrl: string,
-  likes: Array<string>,
-  price: number,
-  rating: number,
-  restaurant: string,
-  userHandle: string,
+export type AuthStackParamList = {
+  Login: undefined;
+  Register: undefined;
 };
+
+export interface Review {
+  createdAt: string;
+  cuisine: string;
+  description: string;
+  dietaryOptions: Array<string>;
+  id: string;
+  imageUrl: string;
+  likes: Array<string>;
+  price: number;
+  rating: number;
+  restaurant: string;
+  userHandle: string;
+}

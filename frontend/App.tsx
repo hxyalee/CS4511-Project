@@ -6,6 +6,7 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import LoginScreen from './screens/LoginScreen';
+import { AuthNavigation } from './navigation/AuthNavigation';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -21,8 +22,12 @@ export default function App() {
   }, []);
   if (!isLoadingComplete) {
     return null;
-     } else if (token === null) {
-     return <LoginScreen />;
+  } else if (token === null) {
+    return (
+      <SafeAreaProvider>
+        <AuthNavigation />
+      </SafeAreaProvider>
+    );
   } else {
     return (
       <SafeAreaProvider>
