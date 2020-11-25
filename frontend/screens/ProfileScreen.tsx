@@ -19,10 +19,6 @@ const { width, height } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-interface ProfileScreenProps {
-  navigation: any;
-  props: any;
-}
 interface RouteProps {
   route: any;
 }

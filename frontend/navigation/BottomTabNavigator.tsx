@@ -116,6 +116,11 @@ function SearchScreenNavigator() {
         component={SearchScreen}
         options={{ headerTitle: 'Search' }}
       />
+      <SearchScreenStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerTitle: 'Search' }}
+      />
     </SearchScreenStack.Navigator>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { NavigationScreenProp } from 'react-navigation';
 interface SearchItemProps {
   id: number;
   name: string;
@@ -99,15 +100,20 @@ interface UserItemProps {
   name: string;
   handle: string;
   img: string;
+  navigation: any;
 }
 export const UserSearchItem: React.FC<UserItemProps> = ({
   id,
   img,
   name,
   handle,
+  navigation,
 }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.push('Profile', { username: handle })}
+    >
       {img ? (
         <Image style={styles.logo} source={{ uri: img }} />
       ) : (

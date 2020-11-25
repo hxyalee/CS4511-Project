@@ -10,8 +10,11 @@ import {
   handleUserSearchRequest,
 } from '../requests/search';
 import { SearchItem, UserSearchItem } from '../components/SearchItem';
-
-export default function SearchScreen() {
+import { NavigationScreenProp } from 'react-navigation';
+interface SearchScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+export default function SearchScreen({ navigation }: SearchScreenProps) {
   const [query, setQuery] = React.useState<string>('');
   const [isRestaurant, setIsRestaurant] = React.useState<boolean>(false);
   const [noData, setNoData] = React.useState<boolean>(false);
@@ -85,10 +88,12 @@ export default function SearchScreen() {
               />
             ) : (
               <UserSearchItem
+                navigation={navigation}
                 key={item.item.handle}
                 name={item.item.name}
                 handle={item.item.handle}
                 img={item.item.img}
+                id={item.item.handle}
               />
             )
           }
