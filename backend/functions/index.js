@@ -2,6 +2,15 @@ const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(
+  bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true,
+    parameterLimit: 1000000,
+  })
+);
 const admin = require('firebase-admin');
 
 app.use(cors());
@@ -48,4 +57,6 @@ app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
 app.get('/:handle/following', following);
 app.get('/:handle/follower', followers);
+
+app.post('/test', (req, res) => console.log(req.body));
 exports.api = functions.region('asia-east2').https.onRequest(app);
