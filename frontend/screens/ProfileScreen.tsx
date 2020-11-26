@@ -11,9 +11,15 @@ import {
   Text,
 } from 'react-native';
 import Post from '../components/Post';
-import { getSelf, getUserProfile } from '../requests/user';
+import {
+  getFollowers,
+  getSelf,
+  getUserProfile,
+  getFollowing,
+} from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { NavigationScreenProp } from 'react-navigation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -33,12 +39,13 @@ const ProfileScreen = (props: any) => {
   const [reviews, setReviews] = React.useState<any[]>([]);
   const [img, setImg] = React.useState('');
 
-  console.log(username);
+  const [followerObject, setFollowerObject] = React.useState<any>([]);
+  const [followingObject, setFollowingObject] = React.useState<any>([]);
+
   React.useEffect(() => {
     if (username) {
       getUserProfile(username)
         .then((res) => {
-          console.log(res);
           setName(res.user.handle);
           setDesc(res.user.description);
           setHandle(res.user.handle);
@@ -51,7 +58,7 @@ const ProfileScreen = (props: any) => {
     } else {
       getSelf()
         .then((res) => {
-          setName(res.user.handle);
+          setName(res.user.name);
           setDesc(res.user.description);
           setHandle(res.user.handle);
           setFollowing(res.user.following);
@@ -62,14 +69,15 @@ const ProfileScreen = (props: any) => {
         .catch((e) => console.log(e));
     }
   }, []);
+
+  React.useEffect(() => {
+    if (!handle) return;
+    getFollowers(handle).then((res) => setFollowerObject(res.users));
+    getFollowing(handle).then((res) => setFollowingObject(res.users));
+  }, [handle]);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
-        {/* <ImageBackground
-          source={require('../assets/images/profile-screen-bg.png')}
-          style={styles.profileContainer}
-          imageStyle={styles.profileBackground}
-        > */}
         <BackgroundDecoration
           style={{
             position: 'absolute',
@@ -88,7 +96,10 @@ const ProfileScreen = (props: any) => {
                   style={styles.avatar}
                 />
               ) : (
-                <Image source={{ uri: img }} style={styles.avatar} />
+                <Image
+                  source={{ uri: `data:image/gif;base64,${img}` }}
+                  style={styles.avatar}
+                />
               )}
             </View>
             <View style={{ display: 'flex', alignItems: 'center' }}>
@@ -132,7 +143,10 @@ const ProfileScreen = (props: any) => {
                   <Text>{followers.length}</Text>
                   <Text>Followers</Text>
                 </View>
-                <View
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.push('Following', { users: followingObject })
+                  }
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -141,12 +155,17 @@ const ProfileScreen = (props: any) => {
                 >
                   <Text>{following.length}</Text>
                   <Text>Following</Text>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
             {reviews &&
               reviews.map((review) => {
-                return <Post key={review.reviewId} data={review} />;
+                return (
+                  <Post
+                    key={Math.floor(Math.random() * 1000000) + 1}
+                    data={review}
+                  />
+                );
               })}
           </View>
         </ScrollView>
@@ -213,7 +232,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   nameInfo: {
-    marginTop: 35,
+    marginTop: 20,
     display: 'flex',
     alignItems: 'center',
   },

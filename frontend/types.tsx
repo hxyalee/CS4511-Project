@@ -28,6 +28,8 @@ export type SavedScreenParamList = {
 
 export type ProfileScreenParamList = {
   Profile: { username: null | string };
+  Followers: any;
+  Following: any;
 };
 
 export type AuthStackParamList = {
@@ -44,7 +46,7 @@ export interface Review {
   dietaryOptions: Array<string>;
   hearted: Array<string>;
   id: string;
-  images: Array<string>,
+  images: Array<string>;
   price: number;
   rating: number;
   restaurant: string;
