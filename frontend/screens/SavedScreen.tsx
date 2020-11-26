@@ -5,26 +5,26 @@ import { ScrollView } from 'react-native-gesture-handler';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { SavedCard } from '../components/SavedCard';
 import { Text, View } from '../components/Themed';
+import { getSaved } from '../requests/reviews';
 
 export default function SavedScreen(props: any) {
-  console.log(props);
+  const [reviews, setReviews] = React.useState([]);
+  React.useEffect(() => {
+    getSaved().then((res) => {
+      setReviews(res.reviews);
+    });
+  }, []);
   return (
     <ScrollView>
-      <View style={styles.separator}>
-        <SavedCard />
-      </View>
-      <View style={styles.separator}>
-        <SavedCard />
-      </View>
-      <View style={styles.separator}>
-        <SavedCard />
-      </View>
-      <View style={styles.separator}>
-        <SavedCard />
-      </View>
-      <View style={styles.separator}>
-        <SavedCard />
-      </View>
+      {reviews.length !== 0 ? (
+        reviews.map((review) => (
+          <View style={styles.separator}>
+            <SavedCard review={review} key={review.id} />
+          </View>
+        ))
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </ScrollView>
   );
 }

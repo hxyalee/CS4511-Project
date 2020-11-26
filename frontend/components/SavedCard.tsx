@@ -9,10 +9,11 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-
+import { ImageViewer } from './Post';
 interface SavedCardProps {}
 
-export const SavedCard = (props) => {
+export const SavedCard = (props:any) => {
+  const review = props.review;
   return (
     <TouchableOpacity>
       <View style={styles.container}>
@@ -23,11 +24,12 @@ export const SavedCard = (props) => {
             width={200}
             height={215}
           />
+          <ImageViewer images={review.images} />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.handle}>@hoyalee</Text>
+          <Text style={styles.handle}>@{review.userHandle}</Text>
           <Text style={styles.location}>Time for Thai</Text>
-          <Text style={styles.description}>Description.....</Text>
+          <Text style={styles.description}>{review.body}</Text>
         </View>
       </View>
     </TouchableOpacity>

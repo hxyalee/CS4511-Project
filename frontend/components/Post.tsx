@@ -99,7 +99,7 @@ function PostActionsContainer(
     );
 }
 
-function ImageViewer( props: { images: Array<string>}) {
+export function ImageViewer( props: { images: Array<string>}) {
   return (
     <Swiper loop={false} style={styles.imageSwiper}>
       { props.images.map((image, idx) => (
