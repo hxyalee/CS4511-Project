@@ -4,7 +4,7 @@ const {
   getFollowerUserHandles,
 } = require('../util/helpers');
 
-exports.getUser = (request, response) => {
+exports.getUserProfile = (request, response) => {
   let user = {};
   db.collection('users')
     .doc(request.params.handle)
@@ -69,6 +69,19 @@ exports.getSelf = (request, response) => {
       console.log(err);
       return response.status(500).json({ error: err.code });
     });
+};
+
+exports.getUser = (request, response) => {
+  db.collection('users')
+    .doc(request.params.handle)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        return response.json(doc.data());
+      } else {
+        return response.status(404).json({ error: 'user not found' });
+      }
+    })
 };
 
 /**

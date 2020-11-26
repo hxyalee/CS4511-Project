@@ -22,6 +22,7 @@ const {
 } = require('./routes/auth');
 const {
   getUser,
+  getUserProfile,
   follow,
   unfollow,
   search,
@@ -56,6 +57,7 @@ app.post('/unlike', TokenAuthentication, unlike);
 /* User related routes */
 app.get('/search', search);
 app.get('/user/:handle', getUser);
+app.get('/user/profile/:handle', getUserProfile);
 app.get('/user', TokenAuthentication, getSelf);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
