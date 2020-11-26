@@ -36,6 +36,8 @@ const {
   saveReview,
   unsaveReview,
   getSavedReviews,
+  like,
+  unlike,
 } = require('./routes/reviews');
 const { TokenAuthentication } = require('./util/authMiddleware');
 /* Authorisation related routes */
@@ -49,6 +51,8 @@ app.post('/createReview', TokenAuthentication, createReview);
 app.post('/save', TokenAuthentication, saveReview);
 app.post('/unsave', TokenAuthentication, unsaveReview);
 app.post('/reviews/saved', TokenAuthentication, getSavedReviews);
+app.post('/like', TokenAuthentication, like);
+app.post('/unlike', TokenAuthentication, unlike);
 /* User related routes */
 app.get('/search', search);
 app.get('/user/:handle', getUser);
