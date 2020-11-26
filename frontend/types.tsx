@@ -20,6 +20,7 @@ export type SearchScreenParamList = {
 };
 export type AddScreenParamList = {
   Add: undefined;
+  AddMoreInfo: undefined;
 };
 export type SavedScreenParamList = {
   'Saved Posts': undefined;

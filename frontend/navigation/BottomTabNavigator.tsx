@@ -11,6 +11,7 @@ import AddScreen from '../screens/AddScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SavedScreen from '../screens/SavedScreen';
 import SearchScreen from '../screens/SearchScreen';
+import AddMoreInfoScreen from '../screens/AddMoreInfoScreen';
 import {
   BottomTabParamList,
   HomeScreenParamList,
@@ -133,6 +134,11 @@ function AddScreenNavigator() {
         name="Add"
         component={AddScreen}
         options={{ headerTitle: 'Add reviews' }}
+      />
+      <AddScreenStack.Screen
+        name="AddMoreInfo"
+        component={AddMoreInfoScreen}
+        options={{ headerTitle: 'Add more information' }}
       />
     </AddScreenStack.Navigator>
   );
