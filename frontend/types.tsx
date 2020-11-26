@@ -36,13 +36,15 @@ export type AuthStackParamList = {
 };
 
 export interface Review {
+  body: string;
+  commentCount: number;
+  comments: Array<string>;
   createdAt: string;
-  cuisine: string;
-  description: string;
+  cuisine: Array<string>;
   dietaryOptions: Array<string>;
+  hearted: Array<string>;
   id: string;
-  imageUrl: string;
-  likes: Array<string>;
+  images: Array<string>,
   price: number;
   rating: number;
   restaurant: string;

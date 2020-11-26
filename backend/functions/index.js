@@ -22,6 +22,7 @@ const {
 } = require('./routes/auth');
 const {
   getUser,
+  getUserProfile,
   follow,
   unfollow,
   search,
@@ -36,6 +37,8 @@ const {
   saveReview,
   unsaveReview,
   getSavedReviews,
+  like,
+  unlike,
 } = require('./routes/reviews');
 const { TokenAuthentication } = require('./util/authMiddleware');
 /* Authorisation related routes */
@@ -49,14 +52,16 @@ app.post('/createReview', TokenAuthentication, createReview);
 app.post('/save', TokenAuthentication, saveReview);
 app.post('/unsave', TokenAuthentication, unsaveReview);
 app.post('/reviews/saved', TokenAuthentication, getSavedReviews);
+app.post('/like', TokenAuthentication, like);
+app.post('/unlike', TokenAuthentication, unlike);
 /* User related routes */
 app.get('/search', search);
 app.get('/user/:handle', getUser);
+app.get('/user/profile/:handle', getUserProfile);
 app.get('/user', TokenAuthentication, getSelf);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
 app.get('/:handle/following', following);
 app.get('/:handle/follower', followers);
 
-app.post('/test', (req, res) => console.log(req.body));
 exports.api = functions.region('asia-east2').https.onRequest(app);

@@ -11,7 +11,7 @@ import {
   Text,
 } from 'react-native';
 import Post from '../components/Post';
-import { getSelf, getUser } from '../requests/user';
+import { getSelf, getUserProfile } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { NavigationScreenProp } from 'react-navigation';
 
@@ -36,7 +36,7 @@ const ProfileScreen = (props: any) => {
   console.log(username);
   React.useEffect(() => {
     if (username) {
-      getUser(username)
+      getUserProfile(username)
         .then((res) => {
           console.log(res);
           setName(res.user.handle);

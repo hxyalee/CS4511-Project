@@ -1,3 +1,4 @@
+const { request, response } = require('express');
 const { db, admin } = require('../util/admin');
 const { getSavedArray } = require('../util/helpers');
 
@@ -53,11 +54,9 @@ exports.createReview = (request, response) => {
     price: request.body.price,
     userImage: request.user.imageURL,
     location: request.body.location,
-    hearted: [],
-    likeCount: 0,
+    liked: [],
     saved: [],
     comments: [], //not implementing
-    commentCount: 0, //not implementing
     dietary: [],
     cuisine: [],
   };
@@ -70,6 +69,26 @@ exports.createReview = (request, response) => {
     .catch((err) =>
       response.status(500).json({ error: 'something went wrong' })
     );
+};
+
+exports.like = (request, response) => {
+  const handle = request.user.handle;
+  const reviewId = request.body.postId;
+  db.collection('reviews')
+    .doc(reviewId)
+    .update({ liked: admin.firestore.FieldValue.arrayUnion(handle) })
+    .then(() => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
+};
+
+exports.unlike = (request, response) => {
+  const handle = request.user.handle;
+  const reviewId = request.body.postId;
+  db.collection('reviews')
+    .doc(reviewId)
+    .update({ liked: admin.firestore.FieldValue.arrayRemove(handle) })
+    .then(() => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
 };
 /**
  * HEADERS = {token}

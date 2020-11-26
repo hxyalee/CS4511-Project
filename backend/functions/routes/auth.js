@@ -65,7 +65,7 @@ exports.signup = (request, response) => {
         following: [],
         reviews: [],
         saved: [],
-        imageURL: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/no-image.png?alt=media`,
+        imageURL: '',
         blocked: [],
         createdAt: new Date().toISOString(),
       };
