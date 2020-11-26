@@ -58,5 +58,4 @@ app.post('/unfollow', TokenAuthentication, unfollow);
 app.get('/:handle/following', following);
 app.get('/:handle/follower', followers);
 
-app.post('/test', (req, res) => console.log(req.body));
 exports.api = functions.region('asia-east2').https.onRequest(app);
