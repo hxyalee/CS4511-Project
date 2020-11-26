@@ -81,7 +81,7 @@ exports.getUser = (request, response) => {
       } else {
         return response.status(404).json({ error: 'user not found' });
       }
-    })
+    });
 };
 
 /**

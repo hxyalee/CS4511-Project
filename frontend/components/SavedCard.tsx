@@ -7,14 +7,15 @@ import {
   TouchableWithoutFeedback,
   View,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 
 interface SavedCardProps {}
 
-export const SavedCard: React.FC<SavedCardProps> = ({}) => {
+export const SavedCard = (props) => {
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback>
+    <TouchableOpacity>
+      <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
             source={require('../assets/images/nopic.jpeg')}
@@ -23,13 +24,13 @@ export const SavedCard: React.FC<SavedCardProps> = ({}) => {
             height={215}
           />
         </View>
-      </TouchableWithoutFeedback>
-      <View style={styles.textContainer}>
-        <Text style={styles.handle}>@hoyalee</Text>
-        <Text style={styles.location}>Time for Thai</Text>
-        <Text style={styles.description}>Description.....</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.handle}>@hoyalee</Text>
+          <Text style={styles.location}>Time for Thai</Text>
+          <Text style={styles.description}>Description.....</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

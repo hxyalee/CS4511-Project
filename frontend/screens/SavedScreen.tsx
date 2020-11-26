@@ -6,7 +6,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { SavedCard } from '../components/SavedCard';
 import { Text, View } from '../components/Themed';
 
-export default function SavedScreen() {
+export default function SavedScreen(props: any) {
+  console.log(props);
   return (
     <ScrollView>
       <View style={styles.separator}>

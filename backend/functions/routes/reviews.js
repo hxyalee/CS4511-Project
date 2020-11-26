@@ -94,7 +94,7 @@ exports.unlike = (request, response) => {
  * HEADERS = {token}
  * BODY = {}
  */
-exports.getSavedReviews = (request, response) => {
+exports.getSavedReview = (request, response) => {
   getSavedArray(request.user.handle).then((saved) => {
     let reviews = [];
     const allReviews = [];
