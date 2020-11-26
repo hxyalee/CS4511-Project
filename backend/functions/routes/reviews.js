@@ -77,7 +77,8 @@ exports.like = (request, response) => {
   db.collection('reviews')
     .doc(reviewId)
     .update({ liked: admin.firestore.FieldValue.arrayUnion(handle) })
-    .then(() => response.json({}));
+    .then(() => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
 };
 
 exports.unlike = (request, response) => {
@@ -86,7 +87,8 @@ exports.unlike = (request, response) => {
   db.collection('reviews')
     .doc(reviewId)
     .update({ liked: admin.firestore.FieldValue.arrayRemove(handle) })
-    .then(() => response.json({}));
+    .then(() => response.json({}))
+    .catch((e) => response.status(400).json({ error: e.code }));
 };
 /**
  * HEADERS = {token}
