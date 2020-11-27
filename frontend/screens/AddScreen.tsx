@@ -13,10 +13,15 @@ import { ExpandingTextInput } from '../components/ExpandingTextInput';
 import { Text, View } from '../components/Themed';
 import * as FileSystem from 'expo-file-system';
 import { NavigationScreenProp } from 'react-navigation';
+import { Picker } from '@react-native-picker/picker';
+import { addReview } from '../requests/reviews';
 
 export default function AddScreen({ navigation }: any) {
   const [restaurant, setRestaurant] = React.useState('');
   const [image, setImage] = React.useState<string | null>(null);
+  const [description, setDescription] = React.useState('');
+  const [price, setPrice] = React.useState(0);
+  const [rating, setRating] = React.useState(5);
   React.useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -48,6 +53,20 @@ export default function AddScreen({ navigation }: any) {
       .catch((e) => console.log(e));
   };
 
+  const handleSubmit = () => {
+    const body = {
+      rating: rating,
+      body: description,
+      price: price,
+      location: restaurant,
+      image: image,
+    };
+    if (description === '') return;
+    // TODO: Error checks; please check if the fields are empty
+
+    addReview(body).then((res) => console.log(res));
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -71,18 +90,30 @@ export default function AddScreen({ navigation }: any) {
         <AirbnbRating
           count={5}
           reviews={['Terrible', 'Bad', 'OK', 'Good', 'Amazing']}
-          defaultRating={5}
+          defaultRating={rating}
+          onFinishRating={(e) => setRating(e)}
           size={20}
         />
-        <Input placeholder="Write your review here..." />
       </View>
+      <Input
+        placeholder="Write your review here..."
+        onChangeText={(e) => setDescription(e)}
+      />
+      <Picker
+        selectedValue={price}
+        style={{ height: 50, width: 100 }}
+        onValueChange={(itemValue, itemIndex) => setPrice(itemIndex)}
+      >
+        <Picker.Item label="$" value={0} />
+        <Picker.Item label="$$" value={1} />
+        <Picker.Item label="$$$" value={2} />
+      </Picker>
       <Button title="Add photo(s)" onPress={pickImage} />
-      {/* Need to npm install @react-navigation/native */}
-      {/* npm install --save-dev @types/react-navigation */}
       <Button
         title="Add more information"
         onPress={() => navigation.navigate('AddMoreInfo')}
       />
+      <Button title="Subimti" onPress={handleSubmit} />
     </View>
   );
 }

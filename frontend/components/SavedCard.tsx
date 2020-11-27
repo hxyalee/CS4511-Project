@@ -12,18 +12,13 @@ import {
 import { ImageViewer } from './Post';
 interface SavedCardProps {}
 
-export const SavedCard = (props:any) => {
+export const SavedCard = (props: any) => {
   const review = props.review;
+  console.log(review);
   return (
     <TouchableOpacity>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image
-            source={require('../assets/images/nopic.jpeg')}
-            style={styles.image}
-            width={200}
-            height={215}
-          />
           <ImageViewer images={review.images} />
         </View>
         <View style={styles.textContainer}>
@@ -39,7 +34,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#eee',
-    elevation: 5,
     borderRadius: 20,
     paddingHorizontal: 30,
     display: 'flex',
@@ -84,12 +78,5 @@ const styles = StyleSheet.create({
   },
   fullImage: {
     height: 215,
-  },
-  shadow: {
-    // shadowColor: theme.COLORS.BLACK,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    shadowOpacity: 0.1,
-    elevation: 2,
   },
 });
