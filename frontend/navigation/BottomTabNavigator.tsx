@@ -121,11 +121,22 @@ function SearchScreenNavigator() {
       <SearchScreenStack.Screen
         name="Profile"
         component={ProfileScreen}
-        options={{ headerTitle: 'Search' }}
+        options={{ headerTitle: 'Profile' }}
+      />
+      <SearchScreenStack.Screen
+        name="Followers"
+        component={ProfilePeopleList}
+        options={{ headerTitle: 'Followers' }}
+      />
+      <SearchScreenStack.Screen
+        name="Following"
+        component={ProfilePeopleList}
+        options={{ headerTitle: 'Following' }}
       />
     </SearchScreenStack.Navigator>
   );
 }
+
 const AddScreenStack = createStackNavigator<AddScreenParamList>();
 
 function AddScreenNavigator() {

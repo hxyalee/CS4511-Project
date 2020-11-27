@@ -17,6 +17,8 @@ export type HomeScreenParamList = {
 export type SearchScreenParamList = {
   Search: undefined;
   Profile: { username: string };
+  Following: any;
+  Followers: any;
 };
 export type AddScreenParamList = {
   Add: undefined;
@@ -24,6 +26,7 @@ export type AddScreenParamList = {
 };
 export type SavedScreenParamList = {
   'Saved Posts': undefined;
+  Profile: { username: any };
 };
 
 export type ProfileScreenParamList = {

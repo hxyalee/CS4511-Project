@@ -16,10 +16,13 @@ import {
   getSelf,
   getUserProfile,
   getFollowing,
+  getHandle,
 } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { NavigationScreenProp } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BaseRouter } from '@react-navigation/native';
+import { ButtonGroup } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -35,13 +38,13 @@ const ProfileScreen = (props: any) => {
   const [desc, setDesc] = React.useState('');
   const [handle, setHandle] = React.useState('');
   const [following, setFollowing] = React.useState([]);
-  const [followers, setFollowers] = React.useState([]);
+  const [followers, setFollowers] = React.useState<string>([]);
   const [reviews, setReviews] = React.useState<any[]>([]);
   const [img, setImg] = React.useState('');
-
   const [followerObject, setFollowerObject] = React.useState<any>([]);
   const [followingObject, setFollowingObject] = React.useState<any>([]);
-
+  const [isOwner, setIsOwner] = React.useState(false);
+  const [userHandle, setUserHandle] = React.useState('');
   React.useEffect(() => {
     if (username) {
       getUserProfile(username)
@@ -69,12 +72,21 @@ const ProfileScreen = (props: any) => {
         .catch((e) => console.log(e));
     }
   }, []);
-
+  React.useEffect(() => {
+    getHandle()
+      .then((res) => {
+        setUserHandle(res.user);
+        if (res.user === handle) setIsOwner(true);
+        else setIsOwner(false);
+      })
+      .catch((e) => console.log(e));
+  }, [handle]);
   React.useEffect(() => {
     if (!handle) return;
     getFollowers(handle).then((res) => setFollowerObject(res.users));
     getFollowing(handle).then((res) => setFollowingObject(res.users));
   }, [handle]);
+  console.log(followers);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
@@ -112,6 +124,13 @@ const ProfileScreen = (props: any) => {
                   <Text style={{ textAlign: 'center' }}>{desc}</Text>
                 )}
               </View>
+              {!isOwner && (
+                <Button
+                  title={`${
+                    followers.includes(userHandle) ? 'Unfollow' : 'Follow'
+                  } `}
+                />
+              )}
             </View>
             <View style={styles.info}>
               <View

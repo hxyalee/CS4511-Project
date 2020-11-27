@@ -24,6 +24,20 @@ export const getUser = (handle: string) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 };
+export const getHandle = () => {
+  return fetch(
+    'https://asia-east2-project-4d358.cloudfunctions.net/api/handle',
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/plain, */*', // It can be used to overcome cors errors
+        token,
+      },
+    }
+  )
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+};
 
 export const getUserProfile = (handle: string) => {
   return fetch(
