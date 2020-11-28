@@ -11,6 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Button, withTheme } from 'react-native-elements';
+import { StackScreenProps } from '@react-navigation/stack';
 import BackgroundDecoration from '../assets/images/login-detail.svg';
 import BurgerIcon from '../assets/images/burger.svg';
 import BurgerHeart from '../assets/images/burgerheart.svg';
@@ -18,11 +19,10 @@ import PasswordIcon from '../assets/images/passwordIcon.svg';
 import UsernameIcon from '../assets/images/usernameIcon.svg';
 import { NavigationScreenProp } from 'react-navigation';
 
-interface LoginScreenProps {
+interface RegisterScreenProps {
   navigation: NavigationScreenProp<any, any>;
 }
-
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   return (
@@ -57,17 +57,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button
-              title=" LOGIN "
-              onPress={() => console.log('LOG USER IN')}
-            />
+            <Button title=" Register " />
           </View>
           <Text style={styles.text}>
             Don't have an account?
-            <Text
-              style={styles.linkText}
-              onPress={() => navigation.navigate('Register')}
-            >
+            <Text style={styles.linkText} onPress={() => navigation.goBack()}>
               Sign up.
             </Text>
           </Text>

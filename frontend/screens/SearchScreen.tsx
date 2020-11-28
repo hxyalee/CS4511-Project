@@ -5,10 +5,16 @@ import { SearchBar, ButtonGroup, ElementObject } from 'react-native-elements';
 import useDebounce from '../hooks/useDebounce';
 import { Text, View } from '../components/Themed';
 import axios from 'axios';
-import { handleRestaurantSearchRequest } from '../requests/search';
-import { SearchItem } from '../components/SearchItem';
-
-export default function SearchScreen() {
+import {
+  handleRestaurantSearchRequest,
+  handleUserSearchRequest,
+} from '../requests/search';
+import { SearchItem, UserSearchItem } from '../components/SearchItem';
+import { NavigationScreenProp } from 'react-navigation';
+interface SearchScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+export default function SearchScreen({ navigation }: SearchScreenProps) {
   const [query, setQuery] = React.useState<string>('');
   const [isRestaurant, setIsRestaurant] = React.useState<boolean>(false);
   const [noData, setNoData] = React.useState<boolean>(false);
@@ -28,10 +34,13 @@ export default function SearchScreen() {
     // Make sure input not empty
     if (debouncedFetch) {
       if (isRestaurant)
-        handleRestaurantSearchRequest({ query }).then((res) =>
-          setListItems(res.restaurnts)
-        );
-      else return;
+        handleRestaurantSearchRequest({ query }).then((res) => {
+          setListItems(res.restaurnts);
+        });
+      else
+        handleUserSearchRequest({ query }).then((res) => {
+          setListItems(res);
+        });
     }
   }, [debouncedFetch]);
 
@@ -50,9 +59,15 @@ export default function SearchScreen() {
           value={query}
         />
         <ButtonGroup
-          onPress={(idx) =>
-            idx === 0 ? setIsRestaurant(false) : setIsRestaurant(true)
-          }
+          onPress={(idx) => {
+            setQuery('');
+            setListItems([]);
+            if (idx === 0) {
+              setIsRestaurant(false);
+            } else {
+              setIsRestaurant(true);
+            }
+          }}
           buttons={buttons}
           selectedIndex={isRestaurant ? 1 : 0}
           ref={buttonItem}
@@ -60,16 +75,28 @@ export default function SearchScreen() {
         />
         <FlatList
           data={listItems}
-          renderItem={(item) => (
-            <SearchItem
-              name={item.item.name}
-              id={item.item.id}
-              img={item.item.img}
-              location={item.item.location}
-              rating={item.item.rating}
-            />
-          )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => (isRestaurant ? item.id : item.handle)}
+          renderItem={(item) =>
+            isRestaurant ? (
+              <SearchItem
+                name={item.item.name}
+                id={item.item.id}
+                img={item.item.img}
+                location={item.item.location}
+                rating={item.item.rating}
+                key={item.item.id}
+              />
+            ) : (
+              <UserSearchItem
+                navigation={navigation}
+                key={item.item.handle}
+                name={item.item.name}
+                handle={item.item.handle}
+                img={item.item.img}
+                id={item.item.handle}
+              />
+            )
+          }
         />
       </View>
     </SafeAreaView>
@@ -79,6 +106,8 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    backgroundColor: '#333',
+    height: '100%',
   },
   buttongroup: {
     alignSelf: 'stretch',

@@ -15,9 +15,10 @@ Users:
     createdAt:   DateTime -- when the account was created
 
 Reviews:
+    reviewId     int      -- unique review identifier
     createdAt:   dateTime -- when the post was uploaded
     rating:      int      -- between 0 and 5 to indicate restaurant rating
-    userHandle:  User     -- who posted the review 
+    creator:     User     -- who posted the review 
     body:        text     -- review description/critique from uploader
     hearted:     [User]   -- list of users who have heart reacted the post 
     likeCount:   int      -- number of people who liked/hearted the post

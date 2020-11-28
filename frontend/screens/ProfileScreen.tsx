@@ -10,101 +10,185 @@ import {
   View,
   Text,
 } from 'react-native';
+import Post from '../components/Post';
+import {
+  getFollowers,
+  getSelf,
+  getUserProfile,
+  getFollowing,
+  getHandle,
+} from '../requests/user';
+import BackgroundDecoration from '../assets/images/background-circles.svg';
+import { NavigationScreenProp } from 'react-navigation';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BaseRouter } from '@react-navigation/native';
+import { ButtonGroup } from 'react-native-elements';
 
 const { width, height } = Dimensions.get('screen');
 
 const thumbMeasure = (width - 48 - 32) / 3;
 
-const ProfileScreen = () => {
+interface RouteProps {
+  route: any;
+}
+const ProfileScreen = (props: any) => {
+  const navigation = props.navigation;
+  const username = props.route.params.username;
+  const [name, setName] = React.useState('');
+  const [desc, setDesc] = React.useState('');
+  const [handle, setHandle] = React.useState('');
+  const [following, setFollowing] = React.useState([]);
+  const [followers, setFollowers] = React.useState<string>([]);
+  const [reviews, setReviews] = React.useState<any[]>([]);
+  const [img, setImg] = React.useState('');
+  const [followerObject, setFollowerObject] = React.useState<any>([]);
+  const [followingObject, setFollowingObject] = React.useState<any>([]);
+  const [isOwner, setIsOwner] = React.useState(false);
+  const [userHandle, setUserHandle] = React.useState('');
+  React.useEffect(() => {
+    if (username) {
+      getUserProfile(username)
+        .then((res) => {
+          setName(res.user.handle);
+          setDesc(res.user.description);
+          setHandle(res.user.handle);
+          setFollowing(res.user.following);
+          setFollowers(res.user.followers);
+          setReviews(res.reviews);
+          setImg(res.user.imageURL);
+        })
+        .catch((e) => console.log(e));
+    } else {
+      getSelf()
+        .then((res) => {
+          setName(res.user.name);
+          setDesc(res.user.description);
+          setHandle(res.user.handle);
+          setFollowing(res.user.following);
+          setFollowers(res.user.followers);
+          setReviews(res.reviews);
+          setImg(res.user.imageURL);
+        })
+        .catch((e) => console.log(e));
+    }
+  }, []);
+  React.useEffect(() => {
+    getHandle()
+      .then((res) => {
+        setUserHandle(res.user);
+        if (res.user === handle) setIsOwner(true);
+        else setIsOwner(false);
+      })
+      .catch((e) => console.log(e));
+  }, [handle]);
+  React.useEffect(() => {
+    if (!handle) return;
+    getFollowers(handle).then((res) => setFollowerObject(res.users));
+    getFollowing(handle).then((res) => setFollowingObject(res.users));
+  }, [handle]);
+  console.log(followers);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
-        <ImageBackground
-          source={require('../assets/images/profile-screen-bg.png')}
-          style={styles.profileContainer}
-          imageStyle={styles.profileBackground}
-        >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ width, marginTop: '25%' }}
-          >
-            <View style={styles.profileCard}>
-              <View style={styles.avatarContainer}>
+        <BackgroundDecoration
+          style={{
+            position: 'absolute',
+            top: -40,
+            left: -40,
+            right: 0,
+            bottom: 0,
+          }}
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.profileCard}>
+            <View style={styles.avatarContainer}>
+              {img === '' ? (
                 <Image
-                  source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
+                  source={require('../assets/images/nopic.jpeg')}
                   style={styles.avatar}
                 />
+              ) : (
+                <Image
+                  source={{ uri: `data:image/gif;base64,${img}` }}
+                  style={styles.avatar}
+                />
+              )}
+            </View>
+            <View style={{ display: 'flex', alignItems: 'center' }}>
+              <View style={styles.nameInfo}>
+                <Text>{handle}</Text>
+                <Text>Sydney, Australia</Text>
               </View>
-              <View style={styles.info}>
+              <View>
+                {desc !== '' && (
+                  <Text style={{ textAlign: 'center' }}>{desc}</Text>
+                )}
+              </View>
+              {!isOwner && (
+                <Button
+                  title={`${
+                    followers.includes(userHandle) ? 'Unfollow' : 'Follow'
+                  } `}
+                />
+              )}
+            </View>
+            <View style={styles.info}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  marginTop: 20,
+                }}
+              >
                 <View
                   style={{
-                    marginTop: 20,
-                    paddingBottom: 24,
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
-                  <Button title="Follow" />
+                  <Text>{reviews.length}</Text>
+                  <Text>Reviews</Text>
                 </View>
                 <View
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    width: '100%',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                   }}
                 >
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>15</Text>
-                    <Text>Posts</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>15</Text>
-                    <Text>Followers</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Text>15</Text>
-                    <Text>Following</Text>
-                  </View>
+                  <Text>{followers.length}</Text>
+                  <Text>Followers</Text>
                 </View>
-              </View>
-              <View style={{ display: 'flex', alignItems: 'center' }}>
-                <View style={styles.nameInfo}>
-                  <Text>Hoya Lee</Text>
-                  <Text>Sydney, Australia</Text>
-                </View>
-                <View style={{ marginTop: 30, marginBottom: 16 }}>
-                  <View style={styles.divider} />
-                </View>
-                <View>
-                  <Text style={{ textAlign: 'center' }}>
-                    This is my bio.... my name is hoya and I am blah b;lah
-                    blaj......
-                  </Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.push('Following', { users: followingObject })
+                  }
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text>{following.length}</Text>
+                  <Text>Following</Text>
+                </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
-        </ImageBackground>
+            {reviews &&
+              reviews.map((review) => {
+                return (
+                  <Post
+                    key={Math.floor(Math.random() * 1000000) + 1}
+                    data={review}
+                  />
+                );
+              })}
+          </View>
+        </ScrollView>
+        {/* </ImageBackground> */}
       </View>
     </View>
   );
@@ -116,6 +200,7 @@ const styles = StyleSheet.create({
     // marginBottom: -HeaderHeight * 2,
     flex: 1,
     display: 'flex',
+    backgroundColor: '#333',
   },
   profileContainer: {
     width: width,
@@ -135,11 +220,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 15,
     position: 'relative',
+    marginBottom: 20,
     // padding: theme.SIZES.BASE,
     // marginHorizontal: theme.SIZES.BASE,
     marginTop: 65,
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
+    borderRadius: 10,
     // backgroundColor: theme.COLORS.WHITE,
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 0 },
@@ -161,11 +246,12 @@ const styles = StyleSheet.create({
   avatar: {
     width: 124,
     height: 124,
-    borderRadius: 62,
+    borderRadius: 100,
+    marginTop: 20,
     borderWidth: 0,
   },
   nameInfo: {
-    marginTop: 35,
+    marginTop: 20,
     display: 'flex',
     alignItems: 'center',
   },

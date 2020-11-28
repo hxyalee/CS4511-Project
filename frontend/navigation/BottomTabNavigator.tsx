@@ -11,7 +11,16 @@ import AddScreen from '../screens/AddScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SavedScreen from '../screens/SavedScreen';
 import SearchScreen from '../screens/SearchScreen';
-import { BottomTabParamList, HomeScreenParamList, SearchScreenParamList, AddScreenParamList, SavedScreenParamList, ProfileScreenParamList } from '../types';
+import AddMoreInfoScreen from '../screens/AddMoreInfoScreen';
+import {
+  BottomTabParamList,
+  HomeScreenParamList,
+  SearchScreenParamList,
+  AddScreenParamList,
+  SavedScreenParamList,
+  ProfileScreenParamList,
+} from '../types';
+import { ProfilePeopleList } from '../screens/ProfilePeopleList';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -21,40 +30,54 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{
+        activeTintColor: Colors[colorScheme].tint,
+        style: { backgroundColor: '#333' },
+      }}
+    >
       <BottomTab.Screen
         name="Home"
         component={HomeScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-home" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
         name="Search"
         component={SearchScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-search" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-search" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Add"
         component={AddScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-add-circle-outline" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-add-circle-outline" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Saved Posts"
         component={SavedScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-bookmark" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-bookmark" color={color} />
+          ),
         }}
       />
-       <BottomTab.Screen
+      <BottomTab.Screen
         name="Profile"
         component={ProfileScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-contact" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="ios-contact" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
@@ -77,7 +100,9 @@ function HomeScreenNavigator() {
       <HomeScreenStack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerTitle: 'Feed' }}
+        options={{
+          headerTitle: 'Feed',
+        }}
       />
     </HomeScreenStack.Navigator>
   );
@@ -93,9 +118,25 @@ function SearchScreenNavigator() {
         component={SearchScreen}
         options={{ headerTitle: 'Search' }}
       />
+      <SearchScreenStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerTitle: 'Profile' }}
+      />
+      <SearchScreenStack.Screen
+        name="Followers"
+        component={ProfilePeopleList}
+        options={{ headerTitle: 'Followers' }}
+      />
+      <SearchScreenStack.Screen
+        name="Following"
+        component={ProfilePeopleList}
+        options={{ headerTitle: 'Following' }}
+      />
     </SearchScreenStack.Navigator>
   );
 }
+
 const AddScreenStack = createStackNavigator<AddScreenParamList>();
 
 function AddScreenNavigator() {
@@ -105,6 +146,11 @@ function AddScreenNavigator() {
         name="Add"
         component={AddScreen}
         options={{ headerTitle: 'Add reviews' }}
+      />
+      <AddScreenStack.Screen
+        name="AddMoreInfo"
+        component={AddMoreInfoScreen}
+        options={{ headerTitle: 'Add more information' }}
       />
     </AddScreenStack.Navigator>
   );
@@ -130,7 +176,20 @@ function ProfileScreenNavigator() {
       <ProfileScreenStack.Screen
         name="Profile"
         component={ProfileScreen}
+        initialParams={{ username: null }}
         options={{ headerTitle: 'Profile' }}
+      />
+      <ProfileScreenStack.Screen
+        name="Followers"
+        component={ProfilePeopleList}
+        initialParams={{ username: null }}
+        options={{ headerTitle: 'Followers' }}
+      />
+      <ProfileScreenStack.Screen
+        name="Following"
+        component={ProfilePeopleList}
+        initialParams={{ username: null }}
+        options={{ headerTitle: 'Following' }}
       />
     </ProfileScreenStack.Navigator>
   );
