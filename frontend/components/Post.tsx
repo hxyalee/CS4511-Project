@@ -1,24 +1,35 @@
 import React, { useState } from "react";
-import { Text, Image, StyleSheet, View, Dimensions } from "react-native";
-import { Avatar, Card, Icon } from "react-native-elements";
+import { Text, Image, StyleSheet, View, Dimensions, TouchableHighlight } from "react-native";
+import { Card, Button, Icon, Rating } from "react-native-elements";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Swiper from 'react-native-swiper';
-import { getUser } from "../requests/user";
+import { useNavigation } from '@react-navigation/native';
 
 import { Review } from '../types';
+import UserProfileImage from './UserProfileImage';
 
 export default function Post ( props: { data: Review } ) {
     const [liked, setLiked] = useState(false);
     const [saved, setSaved] = useState(false);
+    const navigation = useNavigation();
 
     return(
         <Card containerStyle={styles.post}>
             <View style={styles.postHeader}>
-                <PostAvatar user={props.data.userHandle} />
-                <Text style={styles.username}>{ props.data.userHandle }</Text>
-                <PostRating value={props.data.rating} />
+                <UserProfileImage user={props.data.userHandle} size={50}/>
+                <View style={styles.postHeaderInfo}>
+                  <Text style={styles.username}>{props.data.userHandle}</Text>
+                  <Text style={styles.restaurantName}>{props.data.restaurant}</Text>
+                  <Rating 
+                    startingValue={props.data.rating}
+                    imageSize={15}
+                    showRating={false}
+                    readonly
+                  />
+                </View>
             </View>
-            <View style={styles.imageViewer}>
-              <ImageViewer images={props.data.images}/>
+            <View style={styles.imageViewer}>   
+              <ImageViewer images={props.data.images} data={props.data} />
             </View>
             <View style={styles.bottomContainer}>
                 <PostActionsContainer 
@@ -30,44 +41,14 @@ export default function Post ( props: { data: Review } ) {
                 <Text 
                   style={styles.description}
                   numberOfLines={2}
-                  ellipsizeMode='tail'>
+                  ellipsizeMode='tail'
+                  onPress={() => navigation.navigate('Review', { review: props.data })}
+                >
                     { props.data.body }
                 </Text>
             </View>
         </Card>
     );
-}
-
-function PostAvatar(props: {user: string}) {
-  const [loading, setLoading] = useState(true);
-  const [userImage, setUserImage] = useState("");
-
-  React.useEffect(() => {
-    setLoading(true);
-    getUser(props.user).then((userData) => {
-      setLoading(false);
-      setUserImage(userData.imageURL);
-    }).catch(e => console.log('Failed to get user'))
-  }, [props.user]);
-
-  const defaultAvatar = (<Avatar rounded 
-                          title={ props.user[0].toUpperCase() } 
-                          overlayContainerStyle={{backgroundColor: '#BDBDBD'}}
-                        />);
-
-  return (
-    loading || !userImage ? defaultAvatar : 
-    <Avatar rounded source={{ uri: `data:image/gif;base64,${userImage}` }}/>
-  );
-}
-
-function PostRating(props: { value: number }) {
-  return (
-    <View style={styles.ratingContainer}>
-      <Text style={styles.ratingValue}>{props.value}</Text>
-      <Icon size={35} name="star" color="#EAC400" />
-    </View>
-  );
 }
 
 function PostActionsContainer(
@@ -98,15 +79,21 @@ function PostActionsContainer(
     );
 }
 
-export function ImageViewer( props: { images: Array<string>}) {
+function ImageViewer( props: { images: Array<string>, data: Review}) {
+  const navigation = useNavigation();
+
   return (
-    <Swiper loop={false} paginationStyle={styles.pagination}>
-      { props.images.map((image, idx) => (
-        <View key={idx}>
-          <Image source={{uri: `data:image/gif;base64,${image}`}} style={styles.image}/>
-        </View>
-      ))}
-    </Swiper>
+      <Swiper loop={false} paginationStyle={styles.pagination}>
+          { props.images.map((image, idx) => (
+            <View key={idx}>
+              <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('Review', { review: props.data })}
+              >
+                <Image source={{uri: `data:image/gif;base64,${image}`}} style={styles.image} />
+              </TouchableWithoutFeedback>
+            </View>
+          ))}
+        </Swiper>    
   );
 }
 
@@ -120,23 +107,23 @@ const styles = StyleSheet.create({
   postHeader: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
   },
+  postHeaderInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginLeft: 15,
+  },
   username: {
-    marginLeft: 10,
     fontWeight: 'bold',
     fontSize: 18,
     flexGrow: 1,
   },
-  ratingValue: {
-    fontSize: 18,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+  restaurantName: {
+    color: '#28A5FF',
+},
   bottomContainer: {
     marginBottom: 10,
   },

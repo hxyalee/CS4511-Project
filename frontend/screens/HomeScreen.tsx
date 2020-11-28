@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
-import { Card } from 'react-native-elements';
+import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { View, Text } from '../components/Themed';
@@ -53,13 +52,12 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* change to flat list */}
-      <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
         <BackgroundDecoration
           style={{
             position: 'absolute',
           }}
         />
+      <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
         {reviews &&
           reviews.map((review) => {
             return <Post key={review.id} data={review} />;
@@ -71,10 +69,8 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#333',
+    height: '100%',
   },
   feed: {
     alignItems: 'center',

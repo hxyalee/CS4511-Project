@@ -21,7 +21,7 @@ import {
   ProfileScreenParamList,
 } from '../types';
 import { ProfilePeopleList } from '../screens/ProfilePeopleList';
-import { SavedPostDetails } from '../screens/SavedPostDetails';
+import ReviewScreen from '../screens/ReviewScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -105,6 +105,13 @@ function HomeScreenNavigator() {
           headerTitle: 'Feed',
         }}
       />
+      <HomeScreenStack.Screen
+        name="Review"
+        component={ReviewScreen}
+        options={{
+          headerTitle: '',
+        }}
+      />
     </HomeScreenStack.Navigator>
   );
 }
@@ -168,7 +175,7 @@ function SavedScreenNavigator() {
       />
       <SavedScreenStack.Screen
         name="Post Details"
-        component={SavedPostDetails}
+        component={SavedScreen}
         options={{ headerTitle: 'Posts' }}
       />
       <SavedScreenStack.Screen

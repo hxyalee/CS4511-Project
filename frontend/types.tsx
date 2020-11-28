@@ -13,6 +13,7 @@ export type BottomTabParamList = {
 
 export type HomeScreenParamList = {
   Home: undefined;
+  Review: { reviewId: string };
 };
 export type SearchScreenParamList = {
   Search: undefined;
@@ -45,16 +46,16 @@ export type AuthStackParamList = {
 
 export interface Review {
   body: string;
-  commentCount: number;
   comments: Array<string>;
   createdAt: string;
   cuisine: Array<string>;
-  dietaryOptions: Array<string>;
-  hearted: Array<string>;
+  dietary: Array<string>;
   id: string;
   images: Array<string>;
+  liked: Array<string>;
   price: number;
   rating: number;
   restaurant: string;
+  saved: Array<string>;
   userHandle: string;
 }
