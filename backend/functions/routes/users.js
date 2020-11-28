@@ -195,7 +195,9 @@ exports.unfollow = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
-
+exports.getHandle = (request, response) => {
+  return response.json({ user: request.user.handle });
+};
 exports.search = (request, response) => {
   const query = request.query.q.toLowerCase();
   db.collection('users')

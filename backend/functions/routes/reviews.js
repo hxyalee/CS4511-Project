@@ -46,6 +46,9 @@ exports.getReview = (request, response) => {
 };
 
 exports.createReview = (request, response) => {
+  if (!request.body.body) {
+    return response.status(500).json({ error: 'empty' });
+  }
   const newReview = {
     createdAt: new Date().toISOString(),
     rating: request.body.rating,
@@ -54,12 +57,13 @@ exports.createReview = (request, response) => {
     price: request.body.price,
     userImage: request.user.imageURL,
     location: request.body.location,
+    images: [request.body.image],
     liked: [],
-    saved: [],
     comments: [], //not implementing
     dietary: [],
     cuisine: [],
   };
+  console.log(newReview);
 
   db.collection('reviews')
     .add(newReview)
