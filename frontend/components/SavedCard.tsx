@@ -14,9 +14,11 @@ interface SavedCardProps {}
 
 export const SavedCard = (props: any) => {
   const review = props.review;
-  console.log(review);
+  const navigation = props.navigation;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Post Details', { review: review })}
+    >
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <ImageViewer images={review.images} />

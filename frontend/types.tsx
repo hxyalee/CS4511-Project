@@ -26,7 +26,10 @@ export type AddScreenParamList = {
 };
 export type SavedScreenParamList = {
   'Saved Posts': undefined;
+  'Post Details': any;
   Profile: { username: any };
+  Following: any;
+  Followers: any;
 };
 
 export type ProfileScreenParamList = {

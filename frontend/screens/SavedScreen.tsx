@@ -9,28 +9,32 @@ import { getSaved } from '../requests/reviews';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 
 export default function SavedScreen(props: any) {
+  const navigation = props.navigation;
   const [reviews, setReviews] = React.useState([]);
   React.useEffect(() => {
-    getSaved().then((res) => {
-      setReviews(res.reviews);
-    });
+    getSaved()
+      .then((res) => {
+        console.log(res);
+        setReviews(res.reviews);
+      })
+      .catch((e) => console.log(e));
   }, []);
   return (
     <View style={styles.root}>
       <BackgroundDecoration
         style={{
           position: 'absolute',
-          top: -40,
-          left: -40,
-          right: 0,
-          bottom: 0,
         }}
       />
       <ScrollView>
-        {reviews.length !== 0 ? (
+        {reviews && reviews.length !== 0 ? (
           reviews.map((review: any) => (
             <View style={styles.separator} key={review.id}>
-              <SavedCard review={review} key={review.id} />
+              <SavedCard
+                review={review}
+                key={review.id}
+                navigation={navigation}
+              />
             </View>
           ))
         ) : (

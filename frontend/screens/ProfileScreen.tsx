@@ -86,7 +86,6 @@ const ProfileScreen = (props: any) => {
     getFollowers(handle).then((res) => setFollowerObject(res.users));
     getFollowing(handle).then((res) => setFollowingObject(res.users));
   }, [handle]);
-  console.log(followers);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>

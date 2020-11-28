@@ -21,7 +21,9 @@ export const getSaved = () => {
         token,
       },
     }
-  ).then((res) => res.json());
+  )
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
 };
 
 export const addReview = (payload: any) => {
