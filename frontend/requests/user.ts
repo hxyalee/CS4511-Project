@@ -30,7 +30,6 @@ export const getHandle = () => {
     {
       method: 'GET',
       headers: {
-        Accept: 'application/json, text/plain, */*', // It can be used to overcome cors errors
         token,
       },
     }

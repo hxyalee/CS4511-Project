@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Image, StyleSheet, View } from "react-native";
+import { Text, Image, StyleSheet, View, Dimensions } from "react-native";
 import { Avatar, Card, Icon } from "react-native-elements";
 import Swiper from 'react-native-swiper';
 import { getUser } from "../requests/user";
@@ -17,7 +17,7 @@ export default function Post ( props: { data: Review } ) {
                 <Text style={styles.username}>{ props.data.userHandle }</Text>
                 <PostRating value={props.data.rating} />
             </View>
-            <View style={{height: 300}}>
+            <View style={styles.imageViewer}>
               <ImageViewer images={props.data.images}/>
             </View>
             <View style={styles.bottomContainer}>
@@ -47,7 +47,6 @@ function PostAvatar(props: {user: string}) {
     getUser(props.user).then((userData) => {
       setLoading(false);
       setUserImage(userData.imageURL);
-      // console.log(userData);
     }).catch(e => console.log('Failed to get user'))
   }, [props.user]);
 
@@ -86,14 +85,14 @@ function PostActionsContainer(
                 type='font-awesome'
                 color={heartColor}
                 onPress={() => props.setLiked(!props.liked)}
-                style={styles.actionIcon}
+                containerStyle={styles.actionIcon}
             />
             <Icon
                 size={40}
                 name={saved}
                 type='font-awesome'
                 onPress={() => props.setSaved(!props.saved)}
-                style={styles.actionIcon}
+                containerStyle={styles.actionIcon}
             />
         </View>
     );
@@ -101,7 +100,7 @@ function PostActionsContainer(
 
 export function ImageViewer( props: { images: Array<string>}) {
   return (
-    <Swiper loop={false} style={styles.imageSwiper}>
+    <Swiper loop={false} paginationStyle={styles.pagination}>
       { props.images.map((image, idx) => (
         <View key={idx}>
           <Image source={{uri: `data:image/gif;base64,${image}`}} style={styles.image}/>
@@ -149,11 +148,15 @@ const styles = StyleSheet.create({
   actionIcon: {
     marginLeft: 10,
   },
-  imageSwiper: {
+  pagination: {
+    position: 'relative',
+    top: 20,
+  },
+  imageViewer: {
     height: 400,
   },
   image: {
-    height: 300,
+    height: '100%',
   },
   description: {
     margin: 10,
