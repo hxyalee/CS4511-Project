@@ -63,12 +63,12 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             />
           </View>
           <Text style={styles.text}>
-            Don't have an account?
+            Don't have an account?  
             <Text
               style={styles.linkText}
               onPress={() => navigation.navigate('Register')}
             >
-              Sign up.
+                Sign up.
             </Text>
           </Text>
         </View>
@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    top: 90,
+    top: 120,
+  
   },
   passwordicon: {
     position: 'absolute',

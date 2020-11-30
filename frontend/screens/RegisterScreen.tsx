@@ -42,6 +42,12 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
           <BurgerHeart style={styles.burgerheart} />
           <BurgerIcon style={styles.burgericon} />
           <TextInput
+            placeholder="Username"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            style={styles.textInput}
+          ></TextInput>
+          <TextInput
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
@@ -55,14 +61,21 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             style={styles.textInput}
             secureTextEntry={true}
           />
+          <TextInput
+          placeholder="Confirm Password"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          style={styles.textInput}
+          secureTextEntry={true}
+        />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button title=" Register " />
+            <Button title=" CREATE MY ACCOUNT " />
           </View>
           <Text style={styles.text}>
-            Don't have an account?
+            Already have an account?
             <Text style={styles.linkText} onPress={() => navigation.goBack()}>
-              Sign up.
+              Login
             </Text>
           </Text>
         </View>
@@ -89,14 +102,14 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     margin: 5,
     backgroundColor: 'white',
-    top: 58,
-    marginBottom: 17,
+    top: 112,
+    marginBottom: 11,
   },
   button: {
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    top: 80,
+    top: 112,
     fontSize: 14,
   },
   linkText: {
@@ -122,7 +135,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    top: 90,
+    top: 120,
   },
   passwordicon: {
     position: 'absolute',
