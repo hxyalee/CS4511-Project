@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: '#eee',
-    borderRadius: 20,
+    backfaceVisibility: 'hidden',
     paddingHorizontal: 30,
     display: 'flex',
     flexDirection: 'column',

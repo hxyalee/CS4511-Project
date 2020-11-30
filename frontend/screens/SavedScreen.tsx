@@ -14,7 +14,6 @@ export default function SavedScreen(props: any) {
   React.useEffect(() => {
     getSaved()
       .then((res) => {
-        console.log(res);
         setReviews(res.reviews);
       })
       .catch((e) => console.log(e));

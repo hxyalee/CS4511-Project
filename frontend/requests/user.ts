@@ -73,3 +73,32 @@ export const getFollowing = (handle: string) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 };
+
+export const follow = (handle: string) => {
+  return fetch(
+    `https://asia-east2-project-4d358.cloudfunctions.net/api/follow`,
+    {
+      method: 'POST',
+      headers: {
+        token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ handle }),
+    }
+  ).then((res) => res.json());
+};
+export const unfollow = (handle: string) => {
+  return fetch(
+    `https://asia-east2-project-4d358.cloudfunctions.net/api/unfollow`,
+    {
+      method: 'POST',
+      headers: {
+        token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ handle }),
+    }
+  ).then((res) => res.json());
+};

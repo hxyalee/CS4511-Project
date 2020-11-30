@@ -17,6 +17,8 @@ import {
   getUserProfile,
   getFollowing,
   getHandle,
+  unfollow,
+  follow,
 } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { NavigationScreenProp } from 'react-navigation';
@@ -45,6 +47,7 @@ const ProfileScreen = (props: any) => {
   const [followingObject, setFollowingObject] = React.useState<any>([]);
   const [isOwner, setIsOwner] = React.useState(false);
   const [userHandle, setUserHandle] = React.useState('');
+  const [myFollowing, setMyFollowing] = React.useState('');
   React.useEffect(() => {
     if (username) {
       getUserProfile(username)
@@ -73,6 +76,9 @@ const ProfileScreen = (props: any) => {
     }
   }, []);
   React.useEffect(() => {
+    getSelf().then((res) => setMyFollowing(res.user.following));
+  }, []);
+  React.useEffect(() => {
     getHandle()
       .then((res) => {
         setUserHandle(res.user);
@@ -86,6 +92,16 @@ const ProfileScreen = (props: any) => {
     getFollowers(handle).then((res) => setFollowerObject(res.users));
     getFollowing(handle).then((res) => setFollowingObject(res.users));
   }, [handle]);
+
+  const handleFollowUser = () => {
+    if (myFollowing.includes(userHandle)) {
+      unfollow(userHandle);
+    } else {
+      follow(userHandle);
+    }
+    navigation.goBack();
+  };
+  console.log(navigation);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
@@ -127,7 +143,8 @@ const ProfileScreen = (props: any) => {
                 <Button
                   title={`${
                     followers.includes(userHandle) ? 'Unfollow' : 'Follow'
-                  } `}
+                  }`}
+                  onPress={handleFollowUser}
                 />
               )}
             </View>
@@ -151,7 +168,15 @@ const ProfileScreen = (props: any) => {
                   <Text>{reviews.length}</Text>
                   <Text>Reviews</Text>
                 </View>
-                <View
+
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.push('Followers', {
+                      users: followerObject,
+                      followingUsers: following,
+                      myFollowing: myFollowing,
+                    })
+                  }
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -160,10 +185,14 @@ const ProfileScreen = (props: any) => {
                 >
                   <Text>{followers.length}</Text>
                   <Text>Followers</Text>
-                </View>
+                </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.push('Following', { users: followingObject })
+                    navigation.push('Following', {
+                      users: followingObject,
+                      followingUsers: following,
+                      myFollowing: myFollowing,
+                    })
                   }
                   style={{
                     display: 'flex',

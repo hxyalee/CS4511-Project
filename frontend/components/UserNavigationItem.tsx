@@ -1,11 +1,23 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
+import { follow, unfollow } from '../requests/user';
 import { Text, View } from './Themed';
 
 export const UserNavigationItem = (props: any) => {
   const user = props.user;
   const navigation = props.navigation;
+  const [following, setFollowing] = React.useState([...props.following]);
+  const buttonOutline = following.includes(user.handle) ? 'outline' : 'solid';
+  const handleButtonPress = () => {
+    if (following.includes(user.handle)) {
+      unfollow(user.handle);
+      setFollowing(following.filter((u) => user.handle !== u));
+    } else {
+      follow(user.handle);
+      setFollowing([...following, user.handle]);
+    }
+  };
   return (
     <TouchableOpacity
       style={styles.container}
@@ -23,7 +35,11 @@ export const UserNavigationItem = (props: any) => {
         <Text style={styles.subhandle}>{user.name}</Text>
       </View>
       <View style={{ position: 'absolute', right: 5 }}>
-        <Button title="Following" />
+        <Button
+          title={`${following.includes(user.handle) ? 'Following' : 'Follow'}`}
+          type={buttonOutline}
+          onPress={handleButtonPress}
+        />
       </View>
     </TouchableOpacity>
   );
