@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Keyboard,
   Text,
@@ -18,6 +18,9 @@ import BurgerHeart from '../assets/images/burgerheart.svg';
 import PasswordIcon from '../assets/images/passwordIcon.svg';
 import UsernameIcon from '../assets/images/usernameIcon.svg';
 import { NavigationScreenProp } from 'react-navigation';
+import { AppLoading } from 'expo';
+import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
+import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 
 interface RegisterScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -25,6 +28,15 @@ interface RegisterScreenProps {
 export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  let [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+    OpenSans_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+  
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -74,9 +86,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
           </View>
           <Text style={styles.text}>
             Already have an account?
-            <Text style={styles.linkText} onPress={() => navigation.goBack()}>
-              Login
-            </Text>
+            <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In</Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -132,10 +142,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: 80,
     position: 'absolute',
+    fontFamily: 'Righteous_400Regular',
   },
   text: {
     color: 'white',
     top: 120,
+    fontFamily: 'OpenSans_700Bold',
   },
   passwordicon: {
     position: 'absolute',

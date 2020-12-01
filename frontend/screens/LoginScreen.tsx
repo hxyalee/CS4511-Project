@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Keyboard,
   Text,
@@ -17,6 +17,10 @@ import BurgerHeart from '../assets/images/burgerheart.svg';
 import PasswordIcon from '../assets/images/passwordIcon.svg';
 import UsernameIcon from '../assets/images/usernameIcon.svg';
 import { NavigationScreenProp } from 'react-navigation';
+import { AppLoading } from 'expo';
+import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
+import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
+
 
 interface LoginScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -25,6 +29,37 @@ interface LoginScreenProps {
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  let [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+    OpenSans_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+  /* const fetchFonts = () => {
+    return Font.loadAsync({
+    'OpenSans-Bold': require('../assets/fonts/OpenSans-Bold.ttf'),
+    });
+  };
+  const [fontloaded,setfontloaded] = React.useState(false);
+  if (!fontloaded) {
+    return(
+      <AppLoading
+      startAsync = { fetchFonts }
+      onFinish = { () => { setfontloaded(true) }}
+      onError = { console.warn }/>
+    )
+  } */
+
+
+  /* let [fontsLoaded] = useFonts({
+    OpenSans_700Bold,
+  });
+  if (!fontsLoaded) {
+    return <AppLoading/>
+  }  */
+  
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -56,9 +91,10 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             secureTextEntry={true}
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
+
           <View style={styles.button}>
             <Button
-              title=" LOGIN "
+              title="LOGIN"
               onPress={() => console.log('LOG USER IN')}
             />
           </View>
@@ -67,9 +103,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             <Text
               style={styles.linkText}
               onPress={() => navigation.navigate('Register')}
-            >
-                Sign up.
-            </Text>
+            > Sign up</Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -78,6 +112,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   /* const login = (email, pass) =>  */
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -99,11 +134,14 @@ const styles = StyleSheet.create({
     marginBottom: 17,
   },
   button: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: '40%',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     top: 80,
-    fontSize: 14,
+    fontSize: 10,
+    //fontSize: 50,
+    
+    //ontFamily: 'OpenSans_700Bold',
   },
   linkText: {
     fontSize: 14,
@@ -125,11 +163,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     top: 80,
     position: 'absolute',
+    fontFamily: 'Righteous_400Regular',
   },
   text: {
     color: 'white',
     top: 120,
-  
+    fontFamily: 'OpenSans_700Bold',
   },
   passwordicon: {
     position: 'absolute',
