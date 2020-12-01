@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
-    top: 120,
+    top: 140,
     fontFamily: 'OpenSans_700Bold',
   },
   passwordicon: {
