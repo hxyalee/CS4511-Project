@@ -160,9 +160,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',/* 
+    justifyContent: 'center', */
     backgroundColor: 'black',
+    height: '100%',
   },
   restaurantSearch: {
     paddingHorizontal: 10,
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     margin: 10,
     fontSize: 16,
+    padding: 10,
   },
   button: {
     backgroundColor: '#F7FAFC',
