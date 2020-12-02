@@ -82,7 +82,9 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
         />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button title=" CREATE MY ACCOUNT " />
+            <Button 
+              title="CREATE MY ACCOUNT"
+              onPress={() => console.log('CREATE NEW ACCOUNT')}/>
           </View>
           <Text style={styles.text}>
             Already have an account?
@@ -117,8 +119,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    //justifyContent: 'center',
+    //alignItems: 'center',
     top: 112,
     fontSize: 14,
   },

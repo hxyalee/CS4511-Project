@@ -6,6 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { ExpandingTextInput } from "../components/ExpandingTextInput";
 import { Text, View } from "../components/Themed";
 
+
 export default function AddMoreInfoScreen() {
   React.useEffect(() => {
     (async () => {
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: 'black',
   },
   restaurantSearch: {
     paddingHorizontal: 10,
@@ -79,5 +81,7 @@ const styles = StyleSheet.create({
   },
   promptText: {
     fontSize: 20,
+    backgroundColor: 'black',
+    color: 'white',
   },
 });
