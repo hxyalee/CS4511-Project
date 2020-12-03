@@ -113,6 +113,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   /* const login = (email, pass) =>  */
 }
 
+/* Handle Login */
+
 
 
 const styles = StyleSheet.create({

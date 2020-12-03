@@ -21,17 +21,37 @@ import { NavigationScreenProp } from 'react-navigation';
 import { AppLoading } from 'expo';
 import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
 import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
+import { registerUser } from '../requests/authenticate';
 
 interface RegisterScreenProps {
   navigation: NavigationScreenProp<any, any>;
 }
 export default function RegisterScreen({ navigation }: RegisterScreenProps) {
+  const [handle, setHandle] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
   });
+
+  /* Handle Registration */
+  const handleRegister = () => {
+    const body = {
+      handle: handle,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+    }
+    // Error checks
+    /* if (handle === "") {
+      console.log("Handle must not be empty");
+      return;
+    } */
+    registerUser(body).then((res) => console.log(res)); 
+    console.log(body);
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -55,28 +75,33 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
           <BurgerIcon style={styles.burgericon} />
           <TextInput
             placeholder="Username"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
+            onChangeText={(text) => setHandle(text)}
+            //value={email}
+            autoCompleteType={'off'}
+            autoCapitalize={'none'}
+            autoCorrect={false}
             style={styles.textInput}
           ></TextInput>
           <TextInput
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
-            value={email}
+            //value={email}
+            autoCompleteType={'off'}
+            autoCapitalize={'none'}
             style={styles.textInput}
           ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
             onChangeText={(text) => setPassword(text)}
-            value={password}
+            //value={password}
             style={styles.textInput}
             secureTextEntry={true}
           />
           <TextInput
           placeholder="Confirm Password"
-          onChangeText={(text) => setPassword(text)}
-          value={password}
+          onChangeText={(text) => setConfirmPassword(text)}
+          //value={password}
           style={styles.textInput}
           secureTextEntry={true}
         />
@@ -84,7 +109,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
           <View style={styles.button}>
             <Button 
               title="CREATE MY ACCOUNT"
-              onPress={() => console.log('CREATE NEW ACCOUNT')}/>
+              onPress={handleRegister}/>
           </View>
           <Text style={styles.text}>
             Already have an account?
@@ -96,7 +121,11 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   );
 
   /* const login = (email, pass) =>  */
+
+  
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -118,7 +147,7 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
   button: {
-    width: '100%',
+    width: '80%',
     //justifyContent: 'center',
     //alignItems: 'center',
     top: 112,
