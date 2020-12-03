@@ -5,6 +5,11 @@ exports.isValidEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+exports.hasWhiteSpace = (handle) => {
+  if (handle.indexOf(' ') >= 0) return true;
+  else return false;
+}
+
 exports.getSavedArray = async (user) => {
   let saved;
   return await db
