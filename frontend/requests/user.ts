@@ -1,6 +1,4 @@
-import { token } from './TOKEN';
-
-export const getSelf = () => {
+export const getSelf = (token: string) => {
   return fetch('https://asia-east2-project-4d358.cloudfunctions.net/api/user', {
     method: 'GET',
     headers: {
@@ -11,7 +9,7 @@ export const getSelf = () => {
     .catch((e) => console.log(e));
 };
 
-export const getUser = (handle: string) => {
+export const getUser = (token: string, handle: string) => {
   return fetch(
     `https://asia-east2-project-4d358.cloudfunctions.net/api/user/${handle}`,
     {
@@ -24,7 +22,7 @@ export const getUser = (handle: string) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 };
-export const getHandle = () => {
+export const getHandle = (token: string) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/handle',
     {
@@ -38,7 +36,7 @@ export const getHandle = () => {
     .catch((e) => console.log(e));
 };
 
-export const getUserProfile = (handle: string) => {
+export const getUserProfile = (token: string, handle: string) => {
   return fetch(
     `https://asia-east2-project-4d358.cloudfunctions.net/api/user/profile/${handle}`,
     {
@@ -73,7 +71,7 @@ export const getFollowing = (handle: string) => {
     .catch((e) => console.log(e));
 };
 
-export const follow = (handle: string) => {
+export const follow = (token: string, handle: string) => {
   return fetch(
     `https://asia-east2-project-4d358.cloudfunctions.net/api/follow`,
     {
@@ -87,7 +85,7 @@ export const follow = (handle: string) => {
     }
   ).then((res) => res.json());
 };
-export const unfollow = (handle: string) => {
+export const unfollow = (token: string, handle: string) => {
   return fetch(
     `https://asia-east2-project-4d358.cloudfunctions.net/api/unfollow`,
     {

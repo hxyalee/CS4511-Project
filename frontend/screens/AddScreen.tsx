@@ -17,13 +17,29 @@ import { Picker } from '@react-native-picker/picker';
 import { addReview } from '../requests/reviews';
 import { useFonts, OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { AppLoading } from 'expo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const wait = (timeout: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+};
 export default function AddScreen({ navigation }: any) {
   const [restaurant, setRestaurant] = React.useState('');
   const [image, setImage] = React.useState<string | null>(null);
   const [description, setDescription] = React.useState('');
   const [price, setPrice] = React.useState(0);
   const [rating, setRating] = React.useState(5);
+  const [token, setToken] = React.useState<null | string>('');
+  const [refreshing, setRefreshing] = React.useState(false);
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      setToken(token);
+    } catch {
+      console.log('no token');
+    }
+  };
   React.useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -35,6 +51,14 @@ export default function AddScreen({ navigation }: any) {
         }
       }
     })();
+  }, []);
+  React.useEffect(() => {
+    getToken();
+  }, [token]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
   }, []);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -49,6 +73,7 @@ export default function AddScreen({ navigation }: any) {
         return FileSystem.readAsStringAsync(filepath, {
           encoding: FileSystem.EncodingType.Base64,
         }).then((base64) => {
+          console.log(base64[0] + base64[1] + base64[2] + base64[3]);
           setImage(base64);
         });
       })
@@ -60,16 +85,26 @@ export default function AddScreen({ navigation }: any) {
       rating: rating,
       body: description,
       price: price,
-      location: restaurant,
+      restaurant,
       image: image,
     };
     if (description === '') return;
     // TODO: Error checks; please check if the fields are empty
-
-    addReview(body).then((res) => console.log(res));
+    if (!token) return;
+    addReview(token, body).then((res) => {
+      if (res.status === 'success') {
+        setRestaurant('');
+        setImage(null);
+        setDescription('');
+        setPrice(0);
+        setRating(5);
+        navigation.goBack();
+      }
+      console.log(res);
+    });
   };
   let [fontsLoaded] = useFonts({
-    OpenSans_700Bold
+    OpenSans_700Bold,
   });
 
   if (!fontsLoaded) {
@@ -88,70 +123,130 @@ export default function AddScreen({ navigation }: any) {
           round
           lightTheme
           inputStyle={{
-            color: 'black',
+            color: '#333',
             backgroundColor: 'white',
             fontSize: 16,
           }}
           inputContainerStyle={{
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
           value={restaurant}
           containerStyle={{
             backgroundColor:
-              'black' /*Edit according to app theme (background color) */,
+              '#333' /*Edit according to app theme (background color) */,
           }}
         />
       </View>
       <View style={styles.rating}>
         <Text style={styles.promptText}>What did you think?</Text>
-        {/* note: rating is still in progress: will use rest of documentation here: https://reactnativeelements.com/docs/rating/ */}
-        <AirbnbRating
-          count={5}
-          reviews={['Terrible', 'Bad', 'OK', 'Good', 'Amazing']}
-          defaultRating={rating}
-          onFinishRating={(e) => setRating(e)}
-          size={20}
-          starStyle={{
-            backgroundColor: 'black',
+        {/* note: rating is still in progress: will use rest of documentation here:
+         https://reactnativeelements.com/docs/rating/ */}
+        <View
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            backgroundColor: '#333',
           }}
-        />
+        >
+          <AirbnbRating
+            count={5}
+            reviews={['Terrible', 'Bad', 'OK', 'Good', 'Amazing']}
+            defaultRating={rating}
+            onFinishRating={(e) => setRating(e)}
+            size={16}
+            starStyle={{
+              backgroundColor: '#333',
+            }}
+          />
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              marginTop: 20,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ color: 'white' }}>Choose Price Range</Text>
+            <Picker
+              selectedValue={price}
+              style={{ height: 50, width: 100, color: 'white' }}
+              onValueChange={(itemValue, itemIndex) => setPrice(itemIndex)}
+            >
+              <Picker.Item label="$" value={0} />
+              <Picker.Item label="$$" value={1} />
+              <Picker.Item label="$$$" value={2} />
+            </Picker>
+          </View>
+        </View>
       </View>
-      <Input
-        style={styles.input}
-        placeholder="Write your review here..."
-        onChangeText={(e) => setDescription(e)}
-      />
-      {/* <Picker
-        selectedValue={price}
-        style={{ height: 50, width: 100 }}
-        onValueChange={(itemValue, itemIndex) => setPrice(itemIndex)}
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          backgroundColor: 'transparent',
+        }}
       >
-        <Picker.Item label="$" value={0} />
-        <Picker.Item label="$$" value={1} />
-        <Picker.Item label="$$$" value={2} />
-      </Picker> */}
-      <View style={styles.button}>
-        <Button 
-          title="Add photo(s)" 
-          onPress={pickImage}
-          color='black'
+        <Input
+          style={styles.input}
+          placeholder="Write your review here..."
+          onChangeText={(e) => setDescription(e)}
+          containerStyle={{ width: '70%', maxHeight: 120 }}
+          multiline
+          maxLength={100}
         />
+        {image ? (
+          <Image
+            source={{
+              uri: `data:image/gif;base64,${image}`,
+            }}
+            width={100}
+            height={100}
+            style={{
+              width: 100,
+              height: 100,
+              backgroundColor: '#333',
+            }}
+          />
+        ) : (
+          <View
+            style={{
+              height: 100,
+              width: 100,
+              backgroundColor: 'white',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+            }}
+          >
+            <Text>No Image </Text>
+          </View>
+        )}
       </View>
+
       <View style={styles.button}>
-        <Button
-          title="Add more information"
-          color='black'
-          onPress={() => navigation.navigate('AddMoreInfo')}
-        />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+          }}
+        >
+          {/* {image &&} */}
+          <Button title="Add photo" color="#374bcc" onPress={pickImage} />
+        </View>
       </View>
+
       <View style={styles.submitButton}>
-        <Button 
-          title="Preview post" 
-          onPress={handleSubmit} 
-          color='white'
-        />
+        <Button title="Post Review" onPress={handleSubmit} color="#5a5f99" />
       </View>
-      
     </View>
   );
 }
@@ -160,27 +255,27 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',/* 
-    justifyContent: 'center', */
-    backgroundColor: 'black',
+    alignItems: 'center',
+    // justifyContent: 'space-between',
+    backgroundColor: '#333',
     height: '100%',
   },
   restaurantSearch: {
     paddingHorizontal: 10,
     width: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#333',
   },
   promptText: {
     fontSize: 16,
     fontFamily: 'OpenSans_700Bold',
-    backgroundColor: 'black',
+    backgroundColor: '#333',
     color: 'white',
     textAlign: 'center',
     margin: 10,
     top: 10,
   },
   text: {
-    backgroundColor: 'black',
+    backgroundColor: '#333',
     color: 'white',
   },
   input: {
@@ -191,17 +286,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: '#F7FAFC',
     borderRadius: 50,
     width: '80%',
+    backgroundColor: 'transparent',
     margin: 10,
   },
   rating: {
-    backgroundColor: 'black',
+    backgroundColor: '#333',
   },
   submitButton: {
     backgroundColor: '#9378FF',
     borderRadius: 60,
-    width: '50%',
-  }
+    width: '70%',
+    margin: 20,
+  },
 });

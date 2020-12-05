@@ -1,6 +1,4 @@
-import { token } from './TOKEN';
-
-export const getReviews = () => {
+export const getReviews = (token: string) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/getReviews',
     {
@@ -12,7 +10,7 @@ export const getReviews = () => {
   ).then((res) => res.json());
 };
 
-export const getSaved = () => {
+export const getSaved = (token: string) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/reviews/saved',
     {
@@ -26,7 +24,7 @@ export const getSaved = () => {
     .catch((e) => console.log(e));
 };
 
-export const addReview = (payload: any) => {
+export const addReview = (token: string, payload: any) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/createReview',
     {
