@@ -20,7 +20,7 @@ return fetch('https://asia-east2-project-4d358.cloudfunctions.net/api/login', {
     Accept: 'application/json',
     'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ payload }),
+    body: JSON.stringify( payload ),
 })
     .then((res) => res.json())
     .catch((e) => console.log(e));

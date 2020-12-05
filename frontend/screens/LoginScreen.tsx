@@ -20,7 +20,13 @@ import { NavigationScreenProp } from 'react-navigation';
 import { AppLoading } from 'expo';
 import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
 import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
-
+import { logUser } from '../requests/authenticate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Navigation from '../navigation';
+import BottomTabNavigator from '../navigation/BottomTabNavigator';
+import useColorScheme from '../hooks/useColorScheme';
+import { StatusBar } from 'expo-status-bar';
 
 interface LoginScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -29,12 +35,51 @@ interface LoginScreenProps {
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [token, setToken] = React.useState('');//eact.useState<string | null>('');
+  const colorScheme = useColorScheme();
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
   });
 
+  /* Stores Token in AsyncStorage */
+  const storeData = async () => {
+    try {
+      console.log("Storing data");
+      await AsyncStorage.setItem('token', token)
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  /* Handle Login */
+  const handleLogin = () => {
+    console.log("LOGIN")
+    const body = {
+      email: email,
+      password: password,
+    }
+    logUser(body).then((res) => {
+      //console.log(res);
+      setToken(res); // Set token
+      console.log(token);
+    });
+    //console.log("token",token);
+    if (token === "") {
+      // Empty token => error
+      console.log("Login Failed");
+    } else {
+      storeData;
+      console.log("Success login")
+      return (
+        <BottomTabNavigator/>
+      );
+      //navigation.navigate('Home');
+    }
+  }
+
   if (!fontsLoaded) {
+    // If fonts don't load, return loading
     return <AppLoading />;
   }
   /* const fetchFonts = () => {
@@ -52,13 +97,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     )
   } */
 
-
-  /* let [fontsLoaded] = useFonts({
-    OpenSans_700Bold,
-  });
-  if (!fontsLoaded) {
-    return <AppLoading/>
-  }  */
   
   return (
     <KeyboardAvoidingView>
@@ -80,6 +118,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
+            autoCompleteType={'off'}
+            autoCapitalize={'none'}
+            autoCorrect={false}
             style={styles.textInput}
           ></TextInput>
           {/* <UsernameIcon/> */}
@@ -95,7 +136,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <View style={styles.button}>
             <Button
               title="LOGIN"
-              onPress={() => console.log('LOG USER IN')}
+              onPress={handleLogin}
             />
           </View>
           <Text style={styles.text}>

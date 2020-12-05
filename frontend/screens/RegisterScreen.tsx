@@ -22,6 +22,7 @@ import { AppLoading } from 'expo';
 import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
 import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { registerUser } from '../requests/authenticate';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface RegisterScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -36,6 +37,27 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     OpenSans_700Bold,
   });
 
+  const [token, setToken] = React.useState<string | null>('');
+  React.useEffect(() => {
+    const hasToken = async () => {
+      const v = await AsyncStorage.getItem('token');
+      if (v !== null) setToken(v);
+      else setToken(null);
+    };
+     hasToken();
+   }, []); 
+
+  React.useEffect(() => {
+    const storeToken = async (token: string) => {
+      try {
+        await AsyncStorage.setItem('token', token)
+        console.log('Stored token:', token);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }, []);
+
   /* Handle Registration */
   const handleRegister = () => {
     const body = {
@@ -49,8 +71,12 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       console.log("Handle must not be empty");
       return;
     } */
-    registerUser(body).then((res) => console.log(res)); 
-    console.log(body);
+    registerUser(body).then((res) => setToken(res));
+
+    //console.log(res)); 
+    //console.log(body);
+    console.log(token);
+    
   };
 
   if (!fontsLoaded) {
@@ -115,6 +141,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             Already have an account?
             <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In</Text>
           </Text>
+          {/* <Text onPress={() => console.log(token)}>Check Storage</Text> */}
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
