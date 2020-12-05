@@ -55,11 +55,7 @@ export default function AddScreen({ navigation }: any) {
   React.useEffect(() => {
     getToken();
   }, [token]);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
 
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -89,6 +85,7 @@ export default function AddScreen({ navigation }: any) {
       image: image,
     };
     if (description === '') return;
+    if (restaurant === '') return;
     // TODO: Error checks; please check if the fields are empty
     if (!token) return;
     addReview(token, body).then((res) => {

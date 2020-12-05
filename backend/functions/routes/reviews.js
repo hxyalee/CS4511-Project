@@ -56,7 +56,7 @@ exports.createReview = (request, response) => {
     body: request.body.body,
     price: request.body.price,
     userImage: request.user.imageURL,
-    location: request.body.location,
+    restaurant: request.body.restaurant,
     images: [request.body.image],
     liked: [],
     comments: [], //not implementing
