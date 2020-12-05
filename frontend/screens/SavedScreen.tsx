@@ -7,17 +7,32 @@ import { SavedCard } from '../components/SavedCard';
 import { Text, View } from '../components/Themed';
 import { getSaved } from '../requests/reviews';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
+import Post from '../components/Post';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SavedScreen(props: any) {
   const navigation = props.navigation;
   const [reviews, setReviews] = React.useState([]);
+  const [token, setToken] = React.useState<null | string>('');
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      setToken(token);
+    } catch {
+      console.log('no token');
+    }
+  };
   React.useEffect(() => {
-    getSaved()
+    getToken();
+  }, []);
+  React.useEffect(() => {
+    if (!token) return;
+    getSaved(token)
       .then((res) => {
         setReviews(res.reviews);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [token]);
   return (
     <View style={styles.root}>
       <BackgroundDecoration
@@ -25,17 +40,9 @@ export default function SavedScreen(props: any) {
           position: 'absolute',
         }}
       />
-      <ScrollView>
+      <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
         {reviews && reviews.length !== 0 ? (
-          reviews.map((review: any) => (
-            <View style={styles.separator} key={review.id}>
-              <SavedCard
-                review={review}
-                key={review.id}
-                navigation={navigation}
-              />
-            </View>
-          ))
+          reviews.map((review: any) => <Post data={review} key={review.id} />)
         ) : (
           <Text>Loading...</Text>
         )}
@@ -48,9 +55,14 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: '#333',
     height: '100%',
+    width: '100%',
   },
   separator: {
     margin: 20,
+  },
+  feed: {
+    alignItems: 'center',
+    margin: 10,
   },
 });
 

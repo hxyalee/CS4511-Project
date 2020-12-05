@@ -10,27 +10,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { ImageViewer } from './Post';
+import Post from './Post';
 interface SavedCardProps {}
 
 export const SavedCard = (props: any) => {
   const review = props.review;
   const navigation = props.navigation;
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('Post Details', { review: review })}
-    >
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <ImageViewer images={review.images} />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.handle}>@{review.userHandle}</Text>
-          <Text style={styles.location}>Time for Thai</Text>
-          <Text style={styles.description}>{review.body}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
+  return <Post data={review} />;
 };
 const styles = StyleSheet.create({
   container: {

@@ -20,7 +20,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { AppLoading } from 'expo';
 import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
 import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface LoginScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -29,6 +29,7 @@ interface LoginScreenProps {
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
@@ -37,29 +38,34 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-  /* const fetchFonts = () => {
-    return Font.loadAsync({
-    'OpenSans-Bold': require('../assets/fonts/OpenSans-Bold.ttf'),
-    });
+  const handleLogin = () => {
+    fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/login`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        if (Object.keys(res).includes('error')) console.log(res);
+        else {
+          console.log(res);
+          await storeData(res.token);
+          await navigation.navigate('Main');
+        }
+      });
   };
-  const [fontloaded,setfontloaded] = React.useState(false);
-  if (!fontloaded) {
-    return(
-      <AppLoading
-      startAsync = { fetchFonts }
-      onFinish = { () => { setfontloaded(true) }}
-      onError = { console.warn }/>
-    )
-  } */
 
+  const storeData = async (token: string) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch {
+      console.log('Try again');
+    }
+  };
 
-  /* let [fontsLoaded] = useFonts({
-    OpenSans_700Bold,
-  });
-  if (!fontsLoaded) {
-    return <AppLoading/>
-  }  */
-  
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -73,6 +79,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               bottom: 0,
             }}
           />
+
           <Text style={styles.feedlogo}>Feed</Text>
           <BurgerHeart style={styles.burgerheart} />
           <BurgerIcon style={styles.burgericon} />
@@ -91,19 +98,22 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             secureTextEntry={true}
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
-
+          {error.length !== 0 && (
+            <View>
+              <Text>{error}</Text>
+            </View>
+          )}
           <View style={styles.button}>
-            <Button
-              title="LOGIN"
-              onPress={() => console.log('LOG USER IN')}
-            />
+            <Button title="LOGIN" onPress={handleLogin} />
           </View>
           <Text style={styles.text}>
-            Don't have an account?  
+            Don't have an account?
             <Text
               style={styles.linkText}
               onPress={() => navigation.navigate('Register')}
-            > Sign up</Text>
+            >
+              Sign up
+            </Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -112,8 +122,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   /* const login = (email, pass) =>  */
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -141,7 +149,7 @@ const styles = StyleSheet.create({
     top: 80,
     fontSize: 10,
     //fontSize: 50,
-    
+
     //ontFamily: 'OpenSans_700Bold',
   },
   linkText: {

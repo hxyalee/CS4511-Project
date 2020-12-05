@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -9,16 +10,54 @@ export const UserNavigationItem = (props: any) => {
   const navigation = props.navigation;
   const [following, setFollowing] = React.useState([...props.following]);
   const buttonOutline = following.includes(user.handle) ? 'outline' : 'solid';
+  const [token, setToken] = React.useState<null | string>('');
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      setToken(token);
+    } catch {
+      console.log('no token');
+    }
+  };
+  React.useEffect(() => {
+    getToken();
+  }, []);
   const handleButtonPress = () => {
+    if (!token) return;
     if (following.includes(user.handle)) {
-      unfollow(user.handle);
+      unfollow(token, user.handle);
       setFollowing(following.filter((u) => user.handle !== u));
     } else {
-      follow(user.handle);
+      follow(token, user.handle);
       setFollowing([...following, user.handle]);
     }
   };
   return (
+    // <TouchableOpacity
+    //   style={styles.container}
+    //   onPress={() => navigation.push('Profile', { username: handle })}
+    // >
+    //   {img ? (
+    //     <Image style={styles.logo} source={{ uri: img }} />
+    //   ) : (
+    //     <Image
+    //       style={styles.logo}
+    //       source={require('../static/images/empty_user.png')}
+    //     />
+    //   )}
+    //   <View>
+    //     <Text style={{ color: 'black' }}>{handle}</Text>
+    //     <View
+    //       style={{
+    //         display: 'flex',
+    //         flexDirection: 'row',
+    //         alignContent: 'center',
+    //       }}
+    //     >
+    //       <Text style={styles.subtext}>{name}</Text>
+    //     </View>
+    //   </View>
+    // </TouchableOpacity>
     <TouchableOpacity
       style={styles.container}
       onPress={() => navigation.push('Profile', { username: user.handle })}
@@ -47,7 +86,7 @@ export const UserNavigationItem = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: '#333',
+    backgroundColor: '#eee',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -63,6 +102,9 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     borderRadius: 100,
+    width: 65,
+    height: 65,
+    position: 'absolute',
   },
   handle: {
     backgroundColor: 'transparent',

@@ -1,110 +1,111 @@
-import React, { useState } from "react";
-import { Text, Image, StyleSheet, View } from "react-native";
-import { Avatar, Card, Icon } from "react-native-elements";
+import React, { useState } from 'react';
+import {
+  Text,
+  Image,
+  StyleSheet,
+  View,
+  Dimensions,
+  TouchableHighlight,
+} from 'react-native';
+import { Card, Button, Icon, Rating } from 'react-native-elements';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
-import { getUser } from "../requests/user";
+import { useNavigation } from '@react-navigation/native';
 
 import { Review } from '../types';
+import UserProfileImage from './UserProfileImage';
 
-export default function Post ( props: { data: Review } ) {
-    const [liked, setLiked] = useState(false);
-    const [saved, setSaved] = useState(false);
-
-    return(
-        <Card containerStyle={styles.post}>
-            <View style={styles.postHeader}>
-                <PostAvatar user={props.data.userHandle} />
-                <Text style={styles.username}>{ props.data.userHandle }</Text>
-                <PostRating value={props.data.rating} />
-            </View>
-            <View style={{height: 300}}>
-              <ImageViewer images={props.data.images}/>
-            </View>
-            <View style={styles.bottomContainer}>
-                <PostActionsContainer 
-                  liked={liked}
-                  setLiked={setLiked}
-                  saved={saved}
-                  setSaved={setSaved}
-                />
-                <Text 
-                  style={styles.description}
-                  numberOfLines={2}
-                  ellipsizeMode='tail'>
-                    { props.data.body }
-                </Text>
-            </View>
-        </Card>
-    );
-}
-
-function PostAvatar(props: {user: string}) {
-  const [loading, setLoading] = useState(true);
-  const [userImage, setUserImage] = useState("");
-
-  React.useEffect(() => {
-    setLoading(true);
-    getUser(props.user).then((userData) => {
-      setLoading(false);
-      setUserImage(userData.imageURL);
-      // console.log(userData);
-    }).catch(e => console.log('Failed to get user'))
-  }, [props.user]);
-
-  const defaultAvatar = (<Avatar rounded 
-                          title={ props.user[0].toUpperCase() } 
-                          overlayContainerStyle={{backgroundColor: '#BDBDBD'}}
-                        />);
+export default function Post(props: { data: Review }) {
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const navigation = useNavigation();
 
   return (
-    loading || !userImage ? defaultAvatar : 
-    <Avatar rounded source={{ uri: `data:image/gif;base64,${userImage}` }}/>
+    <Card containerStyle={styles.post}>
+      <View style={styles.postHeader}>
+        <UserProfileImage user={props.data.userHandle} size={50} />
+        <View style={styles.postHeaderInfo}>
+          <Text style={styles.username}>{props.data.userHandle}</Text>
+          <Text style={styles.restaurantName}>{props.data.restaurant}</Text>
+          <Rating
+            startingValue={props.data.rating}
+            imageSize={15}
+            showRating={false}
+            readonly
+          />
+        </View>
+      </View>
+      <View style={styles.imageViewer}>
+        <ImageViewer images={props.data.images} data={props.data} />
+      </View>
+      <View style={styles.bottomContainer}>
+        <PostActionsContainer
+          liked={liked}
+          setLiked={setLiked}
+          saved={saved}
+          setSaved={setSaved}
+        />
+        <Text
+          style={styles.description}
+          numberOfLines={2}
+          ellipsizeMode="tail"
+          onPress={() => navigation.navigate('Review', { review: props.data })}
+        >
+          {props.data.body}
+        </Text>
+      </View>
+    </Card>
   );
 }
 
-function PostRating(props: { value: number }) {
+function PostActionsContainer(props: {
+  liked: boolean;
+  setLiked: any;
+  saved: boolean;
+  setSaved: any;
+}) {
+  const heart = props.liked ? 'heart' : 'heart-o';
+  const heartColor = props.liked ? '#DC0000' : '#000000';
+  const saved = props.saved ? 'bookmark' : 'bookmark-o';
+
   return (
-    <View style={styles.ratingContainer}>
-      <Text style={styles.ratingValue}>{props.value}</Text>
-      <Icon size={35} name="star" color="#EAC400" />
+    <View style={styles.actionContainer}>
+      <Icon
+        size={40}
+        name={heart}
+        type="font-awesome"
+        color={heartColor}
+        onPress={() => props.setLiked(!props.liked)}
+        containerStyle={styles.actionIcon}
+      />
+      <Icon
+        size={40}
+        name={saved}
+        type="font-awesome"
+        onPress={() => props.setSaved(!props.saved)}
+        containerStyle={styles.actionIcon}
+      />
     </View>
   );
 }
+// Please keep this export coz im using it
+export function ImageViewer(props: { images: Array<string>; data: Review }) {
+  const navigation = useNavigation();
 
-function PostActionsContainer(
-    props: {liked: boolean, setLiked: any, saved: boolean, setSaved: any}) {
-    
-    const heart = (props.liked) ? 'heart' : 'heart-o';
-    const heartColor = (props.liked) ? '#DC0000' : '#000000';
-    const saved = (props.saved) ? 'bookmark' : 'bookmark-o';
-
-    return (
-        <View style={styles.actionContainer}>
-            <Icon 
-                size={40}
-                name={heart}
-                type='font-awesome'
-                color={heartColor}
-                onPress={() => props.setLiked(!props.liked)}
-                style={styles.actionIcon}
-            />
-            <Icon
-                size={40}
-                name={saved}
-                type='font-awesome'
-                onPress={() => props.setSaved(!props.saved)}
-                style={styles.actionIcon}
-            />
-        </View>
-    );
-}
-
-export function ImageViewer( props: { images: Array<string>}) {
   return (
-    <Swiper loop={false} style={styles.imageSwiper}>
-      { props.images.map((image, idx) => (
+    <Swiper loop={false} paginationStyle={styles.pagination}>
+      {props.images.map((image, idx) => (
         <View key={idx}>
-          <Image source={{uri: `data:image/gif;base64,${image}`}} style={styles.image}/>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate('Review', { review: props.data })
+            }
+          >
+            <Image
+              source={{ uri: `data:image/gif;base64,${image}` }}
+              style={styles.image}
+            />
+          </TouchableWithoutFeedback>
         </View>
       ))}
     </Swiper>
@@ -121,22 +122,22 @@ const styles = StyleSheet.create({
   postHeader: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
   },
+  postHeaderInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginLeft: 15,
+  },
   username: {
-    marginLeft: 10,
     fontWeight: 'bold',
     fontSize: 18,
     flexGrow: 1,
   },
-  ratingValue: {
-    fontSize: 18,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  restaurantName: {
+    color: '#28A5FF',
   },
   bottomContainer: {
     marginBottom: 10,
@@ -149,11 +150,15 @@ const styles = StyleSheet.create({
   actionIcon: {
     marginLeft: 10,
   },
-  imageSwiper: {
+  pagination: {
+    position: 'relative',
+    top: 20,
+  },
+  imageViewer: {
     height: 400,
   },
   image: {
-    height: 300,
+    height: '100%',
   },
   description: {
     margin: 10,
