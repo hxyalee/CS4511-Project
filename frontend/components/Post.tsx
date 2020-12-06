@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Image, StyleSheet, View, Dimensions, TouchableHighlight } from "react-native";
+import { Text, Image, StyleSheet, View, Dimensions } from "react-native";
 import { Card, Button, Icon, Rating } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Swiper from 'react-native-swiper';
@@ -103,9 +103,12 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 0,
     marginBottom: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
   },
   postHeader: {
-    flex: 1,
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
@@ -140,7 +143,8 @@ const styles = StyleSheet.create({
     top: 20,
   },
   imageViewer: {
-    height: 400,
+    backgroundColor: 'pink',
+    height: Dimensions.get('window').height * 0.5,
   },
   image: {
     height: '100%',
