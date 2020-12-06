@@ -37,6 +37,15 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     OpenSans_700Bold,
   });
   const handleRegister = () => {
+    if (undefined(email)) {
+      setEmail("Please enter valid input");
+      return;
+    }
+    if (undefined(handle)) {
+      setHandle("Please enter valid input");
+      return;
+    }
+
     if (password !== confirmPassword) return;
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/signup`, {
       method: 'POST',
@@ -49,7 +58,9 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       .then((res) => res.json())
       .then(async (res) => {
         console.log(res);
-        if (Object.keys(res).includes('error')) console.log(res);
+        if (Object.keys(res).includes('error')) {
+          console.log(res);
+        }
         else {
           await storeData(res.token);
           await navigation.navigate('Main');
@@ -63,6 +74,11 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       console.log('Try again');
     }
   };
+
+  const undefined = (field: string) => {
+    if (field.trim().length == 0 || field == "Please enter valid input") return true;
+    else return false;
+  }
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -92,7 +108,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             style={styles.textInput}
           />
           <TextInput
-            placeholder="Username/Handle"
+            placeholder="Username"
             onChangeText={(text) => setHandle(text)}
             value={handle}
             style={styles.textInput}
@@ -125,13 +141,17 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             secureTextEntry={true}
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
-          <View style={styles.button}>
-            {/* <Button title="     ">
+          <TouchableOpacity style={styles.button}>
+            <Button title="            " onPress={handleRegister}/>
+            <Text style={styles.buttonText}>CREATE MY ACCOUNT</Text>
+          </TouchableOpacity>
+          {/* <View style={styles.button}>
+             <Button title="     ">
               CREATE
-            </Button> */}
+            </Button> 
             <Button title="          " onPress={handleRegister}/>
             <Text style={styles.buttonText}>CREATE MY ACCOUNT</Text>
-          </View>
+          </View> */}
           <Text style={styles.text}>
             Already have an account?
             <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In

@@ -109,10 +109,14 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               <Text>{error}</Text>
             </View>
           )}
-          <View style={styles.button}>
+          <TouchableOpacity style={styles.button}>
             <Button title="     " onPress={handleLogin} />
             <Text style={styles.buttonText}>LOG IN</Text>
-          </View>
+          </TouchableOpacity>
+          {/* <View style={styles.button}>
+            <Button title="     " onPress={handleLogin} />
+            <Text style={styles.buttonText}>LOG IN</Text>
+          </View> */}
           <Text style={styles.text}>
             Don't have an account?
             <Text
@@ -164,11 +168,11 @@ const styles = StyleSheet.create({
   burgericon: {
     position: 'absolute',
     alignItems: 'center',
-    top: 195,
+    top: 205,
   },
   burgerheart: {
     position: 'absolute',
-    top: 175,
+    top: 180,
     left: 130,
   },
   feedlogo: {
