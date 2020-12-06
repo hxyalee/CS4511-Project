@@ -32,54 +32,40 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const [confirmPassword, setConfirmpassword] = React.useState('');
   const [handle, setHandle] = React.useState('');
   const [name, setName] = React.useState('');
-  const [errorMsg, setErrorMsg] = React.useState('');
+  const [error, setError] = React.useState('');
 
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
   });
 
-  /* const toggleErrPass = () => {
-    if (errorPassword == true) {
-      console.log('true')
-      return (
-        <Text style={styles.errorShow}>Passwords do not match</Text>
-      )
-    } else {
-      return null;
-    }
-  } */
-
-
 
   const handleRegister = () => {
     console.log('Register')
     if (undefined(name)) {
-      setErrorMsg("Name cannot be empty")
-      return (
-        <Text style={styles.error}>ERROR: <Text style={{color: 'white'}}>{errorMsg}</Text></Text>
-      );
-    }
-    /*if (undefined(email)) {
-      setEmail("Please enter valid input");
-      error=1;
+      setError("Name cannot be empty");
+      return;
     }
     if (undefined(handle)) {
-      setHandle("Please enter valid input");
-      error=1;
+      setError("Username cannot be empty");
+      return;
+    }
+    if (undefined(email)) {
+      setError("Email cannot be empty");
+      return;
     }
     if (handle.indexOf(' ') >= 0) {
-      setHandle("Username cannot have spaces");
-      error=1;
+      setError("Username cannot contain spaces");
+      return;
     }
-    if (undefined(password)) {
-      setPassword("Please enter valid input");
+    if (undefined(password) || undefined(confirmPassword)) {
+      setError("Password cannot be empty");
+      return;
     }
-
     if (password !== confirmPassword) {
-      setConfirmpassword("Passwords do not match")
-    } */
-    //if (error == 1) return;
+      setError("Passwords do not match");
+      return;
+    } 
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/signup`, {
       method: 'POST',
       headers: {
@@ -90,12 +76,8 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     })
       .then((res) => res.json())
       .then(async (res) => {
-        //console.log(res);
-        
         if (Object.keys(res).includes('error')) {
-          //console.log(res);
-          console.log(res.console.error());
-          //console.log(res.error)
+          if (Object.keys(res).includes('error')) setError(res.error);
         }
         else {
           await storeData(res.token);
@@ -185,7 +167,11 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             />
           </TouchableWithoutFeedback>
           
-          {/* <PasswordIcon style={styles.passwordicon}/> */}
+          {error.length !== 0 && (
+            <View style={styles.error} >
+             <Text style={{color: '#ff4e4e'}}>Error: {error}</Text>
+            </View>
+          )}
           <TouchableOpacity style={styles.button}>
             <Button title="            " onPress={handleRegister}/>
             <Text style={styles.buttonText}>CREATE MY ACCOUNT</Text>
@@ -195,7 +181,6 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In
             </Text>
           </Text>
-          <Text style={styles.error}>ERROR: <Text style={{color: 'white'}}>{errorMsg}</Text></Text>
         </View>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>

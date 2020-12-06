@@ -38,7 +38,30 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+
+  const undefined = (field: string) => {
+    if (field.trim().length == 0) return true;
+    else return false;
+  }
+  const isValidEmail = (e: string) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
   const handleLogin = () => {
+    setError('');
+    if (undefined(email)) {
+      setError("Email must not be empty");
+      return;
+    }
+    if (undefined(password)){
+      setError("Password must not be empty");
+      return;
+    }
+    if (!isValidEmail(email)){
+      setError("Invalid email");
+      return;
+    }
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/login`, {
       method: 'POST',
       headers: {
@@ -83,16 +106,19 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <Text style={styles.feedlogo}>Feed</Text>
           <BurgerHeart style={styles.burgerheart} />
           <BurgerIcon style={styles.burgericon} />
-          <TextInput
-            placeholder="Email"
-            placeholderTextColor="#ADB5BD"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            style={styles.textInput}
-            autoCapitalize={'none'}
-            autoCorrect={false}
-            autoCompleteType={'off'}
-          ></TextInput>
+          <TouchableWithoutFeedback onPress={() => setError('')}>
+            <TextInput
+              placeholder="Email"
+              placeholderTextColor="#ADB5BD"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              style={styles.textInput}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              autoCompleteType={'off'}
+            ></TextInput>
+          </TouchableWithoutFeedback>
+          
           {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
@@ -107,26 +133,16 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           {error.length !== 0 && (
-            <View>
-              <Text>{error}</Text>
+            <View style={styles.error} >
+             <Text style={{color: '#ff4e4e'}}>Error: {error}</Text>
             </View>
           )}
           <TouchableOpacity style={styles.button}>
             <Button title="     " onPress={handleLogin} />
             <Text style={styles.buttonText}>LOG IN</Text>
           </TouchableOpacity>
-          {/* <View style={styles.button}>
-            <Button title="     " onPress={handleLogin} />
-            <Text style={styles.buttonText}>LOG IN</Text>
-          </View> */}
-          <Text style={styles.text}>
-            Don't have an account?
-            <Text
-              style={styles.linkText}
-              onPress={() => navigation.navigate('Register')}
-            >
-              Sign up
-            </Text>
+          <Text style={styles.text}>Don't have an account?
+          <Text style={styles.linkText} onPress={() => navigation.navigate('Register')}> Sign up</Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -156,14 +172,9 @@ const styles = StyleSheet.create({
     marginBottom: 17,
   },
   button: {
-    width: '40%',
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    top: 85,
+    width: '30%',
+    top: 90,
     fontSize: 10,
-    //fontSize: 50,
-
-    //ontFamily: 'OpenSans_700Bold',
   },
   linkText: {
     fontSize: 14,
@@ -207,4 +218,9 @@ const styles = StyleSheet.create({
     color: 'white',
     top: -30,
   },
+  error: {
+    position: 'absolute',
+    top: 430,
+    color: '#cf5b5b'
+  }
 });
