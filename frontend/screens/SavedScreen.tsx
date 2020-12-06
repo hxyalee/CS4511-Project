@@ -15,6 +15,9 @@ export default function SavedScreen(props: any) {
       setReviews(res.reviews);
     });
   }, []);
+
+  
+
   return (
     <View style={styles.root}>
       <BackgroundDecoration
@@ -27,7 +30,7 @@ export default function SavedScreen(props: any) {
         }}
       />
       <ScrollView>
-        {reviews.length !== 0 ? (
+        {reviews && reviews.length !== 0 ? (
           reviews.map((review: any) => (
             <View style={styles.separator} key={review.id}>
               <SavedCard review={review} key={review.id} />
@@ -41,15 +44,21 @@ export default function SavedScreen(props: any) {
   );
 }
 
+
+
+
+
 const styles = StyleSheet.create({
   root: {
     backgroundColor: '#333',
     height: '100%',
   },
   separator: {
-    margin: 20,
+    margin: 30,
   },
 });
+
+
 
 // fetch('http://localhost:5000/project-4d358/asia-east2/api/getReviews')
 //  method:'POST',
