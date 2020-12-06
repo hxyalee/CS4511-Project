@@ -48,7 +48,7 @@ const ProfileScreen = (props: any) => {
   const [desc, setDesc] = React.useState('');
   const [handle, setHandle] = React.useState('');
   const [following, setFollowing] = React.useState([]);
-  const [followers, setFollowers] = React.useState<string>([]);
+  const [followers, setFollowers] = React.useState([]);
   const [reviews, setReviews] = React.useState<any[]>([]);
   const [img, setImg] = React.useState('');
   const [followerObject, setFollowerObject] = React.useState<any>([]);

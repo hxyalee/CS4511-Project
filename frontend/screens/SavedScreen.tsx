@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { SavedCard } from '../components/SavedCard';
 import { Text, View } from '../components/Themed';
@@ -9,13 +8,15 @@ import { getSaved } from '../requests/reviews';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import Post from '../components/Post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SaveTile } from '../components/SaveTile';
+import { Review } from '../types';
 import { useNavigation } from '@react-navigation/native';
 
 export default function SavedScreen(props: any) {
-  const navigation = props.navigation;
+  const navigator = useNavigation();
   const [reviews, setReviews] = React.useState([]);
   const [token, setToken] = React.useState<null | string>('');
-  const navigator = useNavigation();
+  const [loading, setLoading] = React.useState(true);
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -24,6 +25,7 @@ export default function SavedScreen(props: any) {
       console.log('no token');
     }
   };
+
   React.useEffect(() => {
     getToken();
     navigator.addListener('focus', () => {
@@ -35,6 +37,7 @@ export default function SavedScreen(props: any) {
         .catch((e) => console.log(e));
     });
   }, []);
+
   React.useEffect(() => {
     console.log('click');
     if (!token) return;
@@ -42,9 +45,23 @@ export default function SavedScreen(props: any) {
       .then((res) => {
         console.log(res.reviews.length);
         setReviews(res.reviews);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, [token]);
+
+  if (loading) {
+    return (
+      <View style={styles.root}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  const removeSelf = (reviewId: string) => {
+    setReviews(reviews.filter((review: Review) => review.id !== reviewId));
+  };
+
   return (
     <View style={styles.root}>
       <BackgroundDecoration
@@ -54,9 +71,12 @@ export default function SavedScreen(props: any) {
       />
       <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
         {reviews && reviews.length !== 0 ? (
-          reviews.map((review: any) => <Post data={review} key={review.id} />)
+          reviews.map((review: any, idx) => <SaveTile key={idx} review={review} removeSelf={removeSelf} />)
         ) : (
-          <Text>Loading...</Text>
+          <View style={styles.emptyList}>
+            <Text style={styles.heading}>You have no saved posts</Text>
+            <Text style={{ color: 'white' }}>Start your list by saving a post from the feed. </Text>
+          </View>
         )}
       </ScrollView>
     </View>
@@ -68,6 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     height: '100%',
     width: '100%',
+    paddingTop: 10,
   },
   separator: {
     margin: 20,
@@ -75,6 +96,19 @@ const styles = StyleSheet.create({
   feed: {
     alignItems: 'center',
     margin: 10,
+  },
+  emptyList: {
+    backgroundColor: 'transparent',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  heading: {
+    fontSize: 28,
+    color: 'white',
+    marginVertical: 10,
   },
 });
 

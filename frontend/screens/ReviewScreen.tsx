@@ -50,7 +50,7 @@ export default function ReviewScreen(props: { route: { params: { review : Review
                             { review.restaurant }
                         </Text>
                         <Rating 
-                            startingValue={review.rating}
+                            startingValue={Number(review.rating)}
                             imageSize={20}
                             showRating={false}
                             tintColor={'#222'}
@@ -128,10 +128,6 @@ function PostActionsContainer(
                       });
                     }
                     props.setLiked(!props.liked);
-                    navigation.dispatch({
-                       ...CommonActions.setParams({hello: 'hi'}),
-                       source: 'Home',
-                    });
                   }}
             />
             <Icon
