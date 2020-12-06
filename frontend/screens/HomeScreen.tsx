@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { RefreshControl, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
 
 import { View, Text } from '../components/Themed';
 import Post from '../components/Post';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
-import { getReviews } from '../requests/reviews';
+import { getFeed } from '../requests/reviews';
 import { Review } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,6 +15,8 @@ export default function HomeScreen() {
   const [reviews, setReviews] = useState<Array<Review>>([]);
   const [loadingState, setLoadingState] = useState('loading');
   const [token, setToken] = useState<null | string>('');
+  const navigator = useNavigation();
+  
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -21,10 +25,26 @@ export default function HomeScreen() {
       console.log('no token');
     }
   };
+
+  React.useEffect(() => {
+    navigator.addListener('focus', () => {
+      if (!token) return;
+      getFeed(token).then(res => {
+        let diff = false;
+        reviews.forEach((review, index) => {
+          if (review.id !== res[index]) diff = true;
+        });
+        if (diff) {
+          setReviews(res);
+        }
+      });
+    });
+  }, []);
+
   React.useEffect(() => {
     getToken();
     if (!token) return;
-    getReviews(token)
+    getFeed(token)
       .then((res) => {
         setReviews(res);
         setLoadingState('success');
@@ -93,6 +113,15 @@ export default function HomeScreen() {
           reviews.map((review) => {
             return <Post key={review.id} data={review} />;
           })}
+        { reviews.length === 0 && (
+          <View style={styles.emptyFeed}>
+            <Text>You are not following anyone.</Text> 
+            <Text>Click on the Search 
+              <Icon style={{marginHorizontal: 10}} size={20} name='search' type="font-awesome" />
+              tab to find your friends and family.
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -107,4 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 10,
   },
+  emptyFeed: {
+    backgroundColor: 'transparent',
+  }
 });
