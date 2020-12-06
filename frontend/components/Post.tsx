@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, Image, StyleSheet, View, Dimensions } from "react-native";
 import { Card, Button, Icon, Rating } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -7,11 +7,30 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Review } from '../types';
 import UserProfileImage from './UserProfileImage';
+import { likeReview, saveReview, unlikeReview, unsaveReview } from "../requests/reviews";
+import { Asset } from "expo-asset";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getSelf } from "../requests/user";
 
 export default function Post(props: { data: Review }) {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    AsyncStorage.getItem('token').then(token => {
+      if (token !== null) {
+        getSelf(token).then((userData) => {
+          if (props.data.liked.includes(userData.user.handle)) {
+            setLiked(true);
+          }
+          if (userData.user.saved.includes(props.data.id)) {
+            setSaved(true);
+          }
+        });
+      }
+    });
+  }, []);
 
   return (
     <Card containerStyle={styles.post}>
@@ -37,6 +56,7 @@ export default function Post(props: { data: Review }) {
           setLiked={setLiked}
           saved={saved}
           setSaved={setSaved}
+          reviewId={props.data.id}
         />
         <Text
           style={styles.description}
@@ -56,6 +76,7 @@ function PostActionsContainer(props: {
   setLiked: any;
   saved: boolean;
   setSaved: any;
+  reviewId: string;
 }) {
   const heart = props.liked ? 'heart' : 'heart-o';
   const heartColor = props.liked ? '#DC0000' : '#000000';
@@ -68,14 +89,44 @@ function PostActionsContainer(props: {
         name={heart}
         type="font-awesome"
         color={heartColor}
-        onPress={() => props.setLiked(!props.liked)}
+        onPress={() => {
+          if (props.liked) {
+            AsyncStorage.getItem('token').then(token => {
+              if (token !== null) {
+                unlikeReview(token, props.reviewId);
+              }
+            });
+          } else {
+            AsyncStorage.getItem('token').then(token => {
+              if (token !== null) {
+                likeReview(token, props.reviewId);
+              }
+            });
+          }
+          props.setLiked(!props.liked);
+        }}
         containerStyle={styles.actionIcon}
       />
       <Icon
         size={40}
         name={saved}
         type="font-awesome"
-        onPress={() => props.setSaved(!props.saved)}
+        onPress={() => {
+          if (props.saved) {
+            AsyncStorage.getItem('token').then(token => {
+              if (token !== null) {
+                unsaveReview(token, props.reviewId);
+              }
+            });
+          } else {
+            AsyncStorage.getItem('token').then(token => {
+              if (token !== null) {
+                saveReview(token, props.reviewId);
+              }
+            });
+          }
+          props.setSaved(!props.saved);
+        }}
         containerStyle={styles.actionIcon}
       />
     </View>
