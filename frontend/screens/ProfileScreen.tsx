@@ -25,6 +25,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BaseRouter } from '@react-navigation/native';
 import { ButtonGroup } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -48,9 +49,22 @@ const ProfileScreen = (props: any) => {
   const [isOwner, setIsOwner] = React.useState(false);
   const [userHandle, setUserHandle] = React.useState('');
   const [myFollowing, setMyFollowing] = React.useState('');
+  const [token, setToken] = React.useState<null | string>('');
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      setToken(token);
+    } catch {
+      console.log('no token');
+    }
+  };
   React.useEffect(() => {
+    getToken();
+  }, []);
+  React.useEffect(() => {
+    if (!token) return;
     if (username) {
-      getUserProfile(username)
+      getUserProfile(token, username)
         .then((res) => {
           setName(res.user.handle);
           setDesc(res.user.description);
@@ -62,8 +76,9 @@ const ProfileScreen = (props: any) => {
         })
         .catch((e) => console.log(e));
     } else {
-      getSelf()
+      getSelf(token)
         .then((res) => {
+          console.log(res);
           setName(res.user.name);
           setDesc(res.user.description);
           setHandle(res.user.handle);
@@ -74,12 +89,14 @@ const ProfileScreen = (props: any) => {
         })
         .catch((e) => console.log(e));
     }
+  }, [token]);
+  React.useEffect(() => {
+    if (!token) return;
+    getSelf(token).then((res) => setMyFollowing(res.user.following));
   }, []);
   React.useEffect(() => {
-    getSelf().then((res) => setMyFollowing(res.user.following));
-  }, []);
-  React.useEffect(() => {
-    getHandle()
+    if (!token) return;
+    getHandle(token)
       .then((res) => {
         setUserHandle(res.user);
         if (res.user === handle) setIsOwner(true);
@@ -94,14 +111,14 @@ const ProfileScreen = (props: any) => {
   }, [handle]);
 
   const handleFollowUser = () => {
+    if (!token) return;
     if (myFollowing.includes(userHandle)) {
-      unfollow(userHandle);
+      unfollow(token, userHandle);
     } else {
-      follow(userHandle);
+      follow(token, userHandle);
     }
     navigation.goBack();
   };
-  console.log(navigation);
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>

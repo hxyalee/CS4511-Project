@@ -21,6 +21,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import { AppLoading } from 'expo';
 import { useFonts, Righteous_400Regular } from '@expo-google-fonts/righteous';
 import { OpenSans_700Bold } from '@expo-google-fonts/open-sans';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface RegisterScreenProps {
   navigation: NavigationScreenProp<any, any>;
@@ -28,15 +29,45 @@ interface RegisterScreenProps {
 export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmpassword] = React.useState('');
+  const [handle, setHandle] = React.useState('');
+  const [name, setName] = React.useState('');
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
   });
+  const handleRegister = () => {
+    if (password !== confirmPassword) return;
+    fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/signup`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password, handle, name, confirmPassword }),
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        console.log(res);
+        if (Object.keys(res).includes('error')) console.log(res);
+        else {
+          await storeData(res.token);
+          // await navigation.navigate('Main');
+        }
+      });
+  };
+  const storeData = async (token: string) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch {
+      console.log('Try again');
+    }
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-  
+
   return (
     <KeyboardAvoidingView>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -54,9 +85,9 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
           <BurgerHeart style={styles.burgerheart} />
           <BurgerIcon style={styles.burgericon} />
           <TextInput
-            placeholder="Username"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
+            placeholder="Username/Handle"
+            onChangeText={(text) => setHandle(text)}
+            value={handle}
             style={styles.textInput}
           ></TextInput>
           <TextInput
@@ -74,21 +105,27 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             secureTextEntry={true}
           />
           <TextInput
-          placeholder="Confirm Password"
-          onChangeText={(text) => setPassword(text)}
-          value={password}
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
+            placeholder="Confirm Password"
+            onChangeText={(text) => setConfirmpassword(text)}
+            value={confirmPassword}
+            style={styles.textInput}
+            secureTextEntry={true}
+          />
+          <TextInput
+            placeholder="Name"
+            onChangeText={(text) => setName(text)}
+            value={name}
+            style={styles.textInput}
+          />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button 
-              title="CREATE MY ACCOUNT"
-              onPress={() => console.log('CREATE NEW ACCOUNT')}/>
+            <Button title="CREATE MY ACCOUNT" onPress={handleRegister} />
           </View>
           <Text style={styles.text}>
             Already have an account?
-            <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In</Text>
+            <Text style={styles.linkText} onPress={() => navigation.goBack()}>
+              Log In
+            </Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>

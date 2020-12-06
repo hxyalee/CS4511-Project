@@ -42,6 +42,7 @@ export type ProfileScreenParamList = {
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
+  Main: any;
 };
 
 export interface Review {

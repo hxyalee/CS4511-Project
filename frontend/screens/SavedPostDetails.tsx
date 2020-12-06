@@ -5,6 +5,7 @@ import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { ImageViewer } from '../components/Post';
 import { getUserProfile } from '../requests/user';
 import { Avatar } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface SavedPostDetailsProps {}
 
@@ -13,8 +14,21 @@ export const SavedPostDetails = (props: any) => {
   const navigation = props.navigation;
   const [reviewAuthor, setReviewAuthor] = React.useState<any>({});
   const [allReviews, setAllReviews] = React.useState<any>({});
+  const [token, setToken] = React.useState<null | string>('');
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      setToken(token);
+    } catch {
+      console.log('no token');
+    }
+  };
   React.useEffect(() => {
-    getUserProfile(review.userHandle).then((res) => {
+    getToken();
+  }, []);
+  React.useEffect(() => {
+    if (!token) return;
+    getUserProfile(token, review.userHandle).then((res) => {
       setReviewAuthor(res.user);
       setAllReviews(res.reivews);
     });
@@ -63,7 +77,7 @@ export const SavedPostDetails = (props: any) => {
           </View>
         </View>
         <View style={styles.imageContainer}>
-          <ImageViewer images={review.images} />
+          <ImageViewer images={review.images} data={review} />
         </View>
         <View style={styles.detailContainer}>
           <Text>{review.body}</Text>
