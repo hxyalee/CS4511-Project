@@ -36,9 +36,11 @@ export default function SavedScreen(props: any) {
     });
   }, []);
   React.useEffect(() => {
+    console.log('click');
     if (!token) return;
     getSaved(token)
       .then((res) => {
+        console.log(res.reviews.length);
         setReviews(res.reviews);
       })
       .catch((e) => console.log(e));
