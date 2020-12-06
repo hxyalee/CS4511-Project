@@ -39,6 +39,15 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     return <AppLoading />;
   }
   const handleLogin = () => {
+    console.log('asd');
+    if (email === '') {
+      setError('Email cannot be empty');
+      return;
+    }
+    if (password === '') {
+      setError('Password cannot be empty');
+      return;
+    }
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/login`, {
       method: 'POST',
       headers: {
