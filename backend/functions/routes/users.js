@@ -107,7 +107,11 @@ exports.follow = (request, response) => {
         return response
           .status(400)
           .json({ error: `${toFollow} does not exist` });
+    })
+    .catch((err) => {
+      return response.status(500).json({ error: err.code });
     });
+
   const userRef = db.collection('users').doc(follower);
   const toFollowRef = db.collection('users').doc(toFollow);
   userRef

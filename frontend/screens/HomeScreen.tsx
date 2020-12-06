@@ -30,7 +30,8 @@ export default function HomeScreen() {
     navigator.addListener('focus', () => {
       if (!token) return;
       getFeed(token).then((res) => {
-          setReviews(res);
+        setReviews(res);
+        setLoadingState('success');
       });
     });
   }, []);
@@ -48,6 +49,7 @@ export default function HomeScreen() {
         setLoadingState('failed');
       });
   }, [token]);
+  console.log(reviews);
 
   if (loadingState === 'loading') {
     return (
@@ -104,6 +106,7 @@ export default function HomeScreen() {
         // }
       >
         {reviews &&
+          reviews.length > 0 &&
           reviews.map((review) => {
             return <Post key={review.id} data={review} refresh={refresh} setRefresh={setRefresh}/>;
           })}
