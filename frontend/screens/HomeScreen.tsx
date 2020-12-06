@@ -113,7 +113,7 @@ export default function HomeScreen() {
           })}
         {reviews.length === 0 && (
           <View style={styles.emptyFeed}>
-            <Text>You are not following anyone.</Text>
+            <Text style={{color: 'white', textAlign: 'center'}} >You are not following anyone.</Text>
             <Text>
               Click on the Search
               <Icon
