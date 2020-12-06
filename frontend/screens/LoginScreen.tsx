@@ -30,6 +30,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
+  const [active, setActive] = React.useState(true);
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
@@ -42,7 +43,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   const undefined = (field: string) => {
     if (field.trim().length == 0) return true;
     else return false;
-  }
+  };
   const isValidEmail = (e: string) => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
@@ -51,26 +52,18 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   const handleLogin = () => {
     setError('');
     if (undefined(email)) {
-      setError("Email must not be empty");
+      setError('Email must not be empty');
       return;
     }
-    if (undefined(password)){
-      setError("Password must not be empty");
+    if (undefined(password)) {
+      setError('Password must not be empty');
       return;
     }
-    if (!isValidEmail(email)){
-      setError("Invalid email");
+    if (!isValidEmail(email)) {
+      setError('Invalid email');
       return;
     }
-    /* console.log('asd');
-    if (email === '') {
-      setError('Email cannot be empty');
-      return;
-    }
-    if (password === '') {
-      setError('Password cannot be empty');
-      return;
-    } */
+
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/login`, {
       method: 'POST',
       headers: {
@@ -127,7 +120,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               autoCompleteType={'off'}
             ></TextInput>
           </TouchableWithoutFeedback>
-          
+
           {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
@@ -142,16 +135,23 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           {error.length !== 0 && (
-            <View style={styles.error} >
-             <Text style={{color: '#ff4e4e'}}>Error: {error}</Text>
+            <View style={styles.error}>
+              <Text style={{ color: '#ff4e4e' }}>Error: {error}</Text>
             </View>
           )}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Button title="     " onPress={handleLogin} />
             <Text style={styles.buttonText}>LOG IN</Text>
           </TouchableOpacity>
-          <Text style={styles.text}>Don't have an account?
-          <Text style={styles.linkText} onPress={() => navigation.navigate('Register')}> Sign up</Text>
+          <Text style={styles.text}>
+            Don't have an account?
+            <Text
+              style={styles.linkText}
+              onPress={() => navigation.navigate('Register')}
+            >
+              {' '}
+              Sign up
+            </Text>
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -230,6 +230,6 @@ const styles = StyleSheet.create({
   error: {
     position: 'absolute',
     top: 430,
-    color: '#cf5b5b'
-  }
+    color: '#cf5b5b',
+  },
 });

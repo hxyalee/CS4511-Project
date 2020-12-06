@@ -23,7 +23,11 @@ import {
   uploadPhoto,
 } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
-import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { BaseRouter } from '@react-navigation/native';
@@ -136,11 +140,64 @@ const ProfileScreen = (props: any) => {
   const handleFollowUser = () => {
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
-      unfollow(token, userHandle);
+      unfollow(token, userHandle).then(() => {
+        if (username) {
+          getUserProfile(token, username)
+            .then((res) => {
+              setName(res.user.handle);
+              setDesc(res.user.description);
+              setHandle(res.user.handle);
+              setFollowing(res.user.following);
+              setFollowers(res.user.followers);
+              setReviews(res.reviews);
+              setImg(res.user.imageURL);
+            })
+            .catch((e) => console.log(e));
+        } else {
+          getSelf(token)
+            .then((res) => {
+              setName(res.user.name);
+              setDesc(res.user.description);
+              0;
+              setHandle(res.user.handle);
+              setFollowing(res.user.following);
+              setFollowers(res.user.followers);
+              setReviews(res.reviews);
+              setImg(res.user.imageURL);
+            })
+            .catch((e) => console.log(e));
+        }
+      });
     } else {
-      follow(token, userHandle);
+      follow(token, userHandle).then(() => {
+        if (username) {
+          getUserProfile(token, username)
+            .then((res) => {
+              setName(res.user.handle);
+              setDesc(res.user.description);
+              setHandle(res.user.handle);
+              setFollowing(res.user.following);
+              setFollowers(res.user.followers);
+              setReviews(res.reviews);
+              setImg(res.user.imageURL);
+            })
+            .catch((e) => console.log(e));
+        } else {
+          getSelf(token)
+            .then((res) => {
+              setName(res.user.name);
+              setDesc(res.user.description);
+              0;
+              setHandle(res.user.handle);
+              setFollowing(res.user.following);
+              setFollowers(res.user.followers);
+              setReviews(res.reviews);
+              setImg(res.user.imageURL);
+            })
+            .catch((e) => console.log(e));
+        }
+      });
     }
-    navigation.goBack();
   };
 
   return (
@@ -164,24 +221,24 @@ const ProfileScreen = (props: any) => {
           }}
         >
           <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={{marginBottom: 10}}>
+            <View style={styles.modalView}>
+              <View style={{ marginBottom: 10 }}>
+                <Button
+                  title="Log out"
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                />
+              </View>
               <Button
-                title="Log out"
+                title="Cancel"
+                color="#FF5621"
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
               />
             </View>
-            <Button
-              title="Cancel"
-              color="#FF5621"
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            />
           </View>
-        </View>
         </Modal>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.profileCard}>
@@ -201,7 +258,13 @@ const ProfileScreen = (props: any) => {
               </TouchableOpacity>
             </View>
             <View style={styles.settingsContainer}>
-              <Icon color={'#ccc'} size={30} name='cog' type="font-awesome" onPress={() => setModalVisible(true)}/>
+              <Icon
+                color={'#ccc'}
+                size={30}
+                name="cog"
+                type="font-awesome"
+                onPress={() => setModalVisible(true)}
+              />
             </View>
             <View style={{ display: 'flex', alignItems: 'center' }}>
               <View style={styles.nameInfo}>
@@ -382,25 +445,25 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#222",
+    backgroundColor: '#222',
     borderRadius: 20,
     padding: 30,
     width: '80%',
-    alignItems: "center",
-    shadowColor: "#000",
+    alignItems: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
 });
 
