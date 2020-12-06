@@ -75,8 +75,6 @@ export default function AddScreen({ navigation }: any) {
           encoding: FileSystem.EncodingType.Base64,
         }).then((base64) => {
           setImage(base64);
-          if (!token) return;
-          console.log(uploadPhoto(token, base64));
         });
       })
       .catch((e) => console.log(e));

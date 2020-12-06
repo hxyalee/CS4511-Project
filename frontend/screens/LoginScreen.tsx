@@ -49,7 +49,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     })
       .then((res) => res.json())
       .then(async (res) => {
-        if (Object.keys(res).includes('error')) console.log(res);
+        if (Object.keys(res).includes('error')) setError(res.error);
         else {
           console.log(res);
           await storeData(res.token);
@@ -123,7 +123,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               style={styles.linkText}
               onPress={() => navigation.navigate('Register')}
             >
-              {' '}
               Sign up
             </Text>
           </Text>
