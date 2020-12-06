@@ -49,7 +49,6 @@ export default function HomeScreen() {
         setLoadingState('failed');
       });
   }, [token]);
-  console.log(reviews);
 
   if (loadingState === 'loading') {
     return (
