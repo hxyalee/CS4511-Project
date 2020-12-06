@@ -39,11 +39,9 @@ export default function SavedScreen(props: any) {
   }, []);
 
   React.useEffect(() => {
-    console.log('click');
     if (!token) return;
     getSaved(token)
       .then((res) => {
-        console.log(res.reviews.length);
         setReviews(res.reviews);
         setLoading(false);
       })
@@ -71,11 +69,15 @@ export default function SavedScreen(props: any) {
       />
       <ScrollView style={{ width: '100%' }} contentContainerStyle={styles.feed}>
         {reviews && reviews.length !== 0 ? (
-          reviews.map((review: any, idx) => <SaveTile key={idx} review={review} removeSelf={removeSelf} />)
+          reviews.map((review: any, idx) => (
+            <SaveTile key={idx} review={review} removeSelf={removeSelf} />
+          ))
         ) : (
           <View style={styles.emptyList}>
             <Text style={styles.heading}>You have no saved posts</Text>
-            <Text style={{ color: 'white' }}>Start your list by saving a post from the feed. </Text>
+            <Text style={{ color: 'white' }}>
+              Start your list by saving a post from the feed.{' '}
+            </Text>
           </View>
         )}
       </ScrollView>

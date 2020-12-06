@@ -108,7 +108,7 @@ export default function HomeScreen() {
         {reviews &&
           reviews.length > 0 &&
           reviews.map((review) => {
-            return <Post key={review.id} data={review}/>;
+            return <Post key={review.id} data={review} />;
           })}
         {reviews.length === 0 && (
           <View style={styles.emptyFeed}>
