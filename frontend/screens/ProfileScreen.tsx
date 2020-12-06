@@ -67,7 +67,6 @@ const ProfileScreen = (props: any) => {
       console.log('no token');
     }
   };
-  console.log(handle);
   React.useEffect(() => {
     getToken();
   }, []);
@@ -171,7 +170,6 @@ const ProfileScreen = (props: any) => {
       .catch((e) => console.log(e));
   };
   const handleFollowUser = () => {
-    console.log('asdasd');
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
       unfollow(token, username).then(() => {
@@ -203,7 +201,6 @@ const ProfileScreen = (props: any) => {
       });
     } else {
       follow(token, username).then((res) => {
-        console.log(res);
         if (username) {
           getUserProfile(token, username)
             .then((res) => {
