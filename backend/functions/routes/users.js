@@ -84,6 +84,14 @@ exports.getUser = (request, response) => {
     });
 };
 
+exports.updateProfilePhoto = (request, response) => {
+  db.collection('users')
+    .doc(request.user.handle)
+    .update({ imageURL: request.body.image })
+    .then(() => response.json({}))
+    .catch((e) => response.status(500).json({ error: 'Something went wrong' }));
+};
+
 /**
  * HEADERS: {token}
  * BODY: {handle}
