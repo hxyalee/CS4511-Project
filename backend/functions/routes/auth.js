@@ -1,5 +1,5 @@
 const { db, firebase, firebaseConfig } = require('../util/admin');
-const { isValidEmail } = require('../util/helpers');
+const { isValidEmail, hasWhiteSpace } = require('../util/helpers');
 
 /*
   PAGES & THEIR BACKEND FUNCTIONS:
@@ -36,6 +36,10 @@ exports.signup = (request, response) => {
     return response.status(400).json({ error: 'Invalid Email' });
   if (newUser.password != request.body.confirmPassword)
     return response.status(400).json({ error: "Passwords don't match" });
+  if (newUser.handle === "")
+    return response.status(400).json({ error: "Username cannot be empty" });
+  if (hasWhiteSpace(newUser.handle))
+    return response.status(400).json({ error: "Username cannot contain spaces" });
 
   db.doc(`users/${newUser.handle}`)
     .get()
