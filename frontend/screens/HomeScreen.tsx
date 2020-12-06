@@ -59,7 +59,7 @@ export default function HomeScreen() {
             position: 'absolute',
           }}
         />
-        <Text>Loading...</Text>
+        <Text style={{color: 'white', textAlign: 'center', top: 30}}>Loading...</Text>
       </View>
     );
   }
