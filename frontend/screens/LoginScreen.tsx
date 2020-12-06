@@ -85,6 +85,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <BurgerIcon style={styles.burgericon} />
           <TextInput
             placeholder="Email"
+            placeholderTextColor="#ADB5BD"
             onChangeText={(text) => setEmail(text)}
             value={email}
             style={styles.textInput}
@@ -95,6 +96,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           {/* <UsernameIcon/> */}
           <TextInput
             placeholder="Password"
+            placeholderTextColor="#ADB5BD"
             onChangeText={(text) => setPassword(text)}
             value={password}
             style={styles.textInput}
