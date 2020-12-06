@@ -30,13 +30,7 @@ export default function HomeScreen() {
     navigator.addListener('focus', () => {
       if (!token) return;
       getFeed(token).then((res) => {
-        let diff = false;
-        reviews.forEach((review, index) => {
-          if (review.id !== res[index]) diff = true;
-        });
-        if (diff) {
           setReviews(res);
-        }
       });
     });
   }, []);
@@ -111,7 +105,7 @@ export default function HomeScreen() {
       >
         {reviews &&
           reviews.map((review) => {
-            return <Post key={review.id} data={review} />;
+            return <Post key={review.id} data={review} refresh={refresh} setRefresh={setRefresh}/>;
           })}
         {reviews.length === 0 && (
           <View style={styles.emptyFeed}>

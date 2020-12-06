@@ -50,7 +50,7 @@ export default function ReviewScreen(props: { route: { params: { review : Review
                             { review.restaurant }
                         </Text>
                         <Rating 
-                            startingValue={review.rating}
+                            startingValue={Number(review.rating)}
                             imageSize={20}
                             showRating={false}
                             tintColor={'#222'}

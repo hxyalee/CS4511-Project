@@ -21,7 +21,7 @@ export function SaveTile(props: {review: Review, removeSelf: any}) {
                     <Text style={styles.restaurantName}>{review.restaurant}</Text>
                     <Text style={styles.userHandle}>{review.userHandle}</Text>
                     <Rating
-                        startingValue={review.rating}
+                        startingValue={Number(review.rating)}
                         imageSize={15}
                         showRating={false}
                         readonly

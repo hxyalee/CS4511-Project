@@ -39,7 +39,7 @@ export default function Post(props: { data: Review }) {
           <Text style={styles.username}>{props.data.userHandle}</Text>
           <Text style={styles.restaurantName}>{props.data.restaurant}</Text>
           <Rating
-            startingValue={props.data.rating}
+            startingValue={Number(props.data.rating)}
             imageSize={15}
             showRating={false}
             readonly
