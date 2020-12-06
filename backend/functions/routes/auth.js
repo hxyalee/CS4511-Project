@@ -61,6 +61,7 @@ exports.signup = (request, response) => {
         handle: newUser.handle,
         name: newUser.name,
         description: '',
+        userId: newUser.handle,
         followers: [],
         following: [],
         reviews: [],
@@ -106,78 +107,3 @@ exports.login = (request, response) => {
       return response.status(500).json({ error: err.code });
     });
 };
-/* 
-// ------------------------------------------------------------------------------
-// ----------------------------- ALL USERS --------------------------------------
-// ------------------------------------------------------------------------------
-// Test Function: check all the users in the database (used for debugging)
-exports.allUsers = (request, response) => {
-  db.collection('users')
-    .get()
-    .then((data) => {
-      let users = [];
-      data.forEach((doc) => {
-        // print the users username, real name, email and their password
-        users.push({
-          id: doc.id,
-          name: doc._fieldsProto.name.stringValue,
-          email: doc._fieldsProto.email.stringValue,
-          password: doc._fieldsProto.password.stringValue,
-          following: doc._fieldsProto.following,
-          ...doc.data,
-        });
-      });
-      return response.json(users);
-    })
-    .catch((err) => console.error(err));
-};
-
-// ------------------------------------------------------------------------------
-// ------------------------ ADD MORE USER DETAILS -------------------------------
-// ------------------------------------------------------------------------------
-//  - customize profile: add profile picture, name and description to users profile
-//  - NOTE: doesn't save the changes to database
-exports.addMoreUserDetails = (request, response) => {
-  const user = {
-    email: request.body.email,
-    name: request.body.name,
-    description: request.body.description,
-    image: request.body.image,
-  };
-  db.collection('users')
-    .get()
-    .then((data) => {
-      let users = [];
-      data.forEach((doc) => {
-        if (user.email == doc._fieldsProto.email.stringValue) {
-          console.log('----------------------');
-          console.log(doc._fieldsProto);
-          // updating the fields to match the input
-          doc._fieldsProto.name = {
-            stringValue: user.name,
-            valueType: 'stringValue',
-          };
-          doc._fieldsProto.description = {
-            stringValue: user.description,
-            valueType: 'stringValue',
-          };
-          doc._fieldsProto.imageURL = {
-            stringValue: user.image,
-            valueType: 'stringValue',
-          };
-          console.log('----------------------');
-          console.log(doc._fieldsProto);
-        }
-        users.push({
-          email: doc._fieldsProto.email.stringValue,
-          name: doc._fieldsProto.name.stringValue,
-          description: doc._fieldsProto.description.stringValue,
-          //image:       doc._fieldsProto.imageURL.stringValue,
-          ...doc.data,
-        });
-      });
-      return response.json(users);
-    })
-    .catch((err) => console.error(err));
-};
- */
