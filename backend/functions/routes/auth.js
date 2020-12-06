@@ -29,6 +29,7 @@ exports.signup = (request, response) => {
     //followers:       request.body.followers,
     //following:       request.body.following
   };
+  console.log(request.body);
   /**
    * Basic check
    */

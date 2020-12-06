@@ -173,7 +173,7 @@ const ProfileScreen = (props: any) => {
     console.log('asdasd');
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
-      unfollow(token, userHandle).then(() => {
+      unfollow(token, username).then(() => {
         if (username) {
           getUserProfile(token, username)
             .then((res) => {
@@ -201,7 +201,7 @@ const ProfileScreen = (props: any) => {
         }
       });
     } else {
-      follow(token, userHandle).then((res) => {
+      follow(token, username).then((res) => {
         console.log(res);
         if (username) {
           getUserProfile(token, username)
