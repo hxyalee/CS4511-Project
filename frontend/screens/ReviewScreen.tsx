@@ -128,10 +128,6 @@ function PostActionsContainer(
                       });
                     }
                     props.setLiked(!props.liked);
-                    navigation.dispatch({
-                       ...CommonActions.setParams({hello: 'hi'}),
-                       source: 'Home',
-                    });
                   }}
             />
             <Icon
