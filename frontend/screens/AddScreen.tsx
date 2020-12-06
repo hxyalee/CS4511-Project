@@ -81,6 +81,7 @@ export default function AddScreen({ navigation }: any) {
   };
 
   const handleSubmit = () => {
+    setRefreshing(true);
     const body = {
       rating: rating,
       body: description,
@@ -88,8 +89,14 @@ export default function AddScreen({ navigation }: any) {
       restaurant,
       image: image,
     };
-    if (description === '') return;
-    if (restaurant === '') return;
+    if (description === '') {
+      setRefreshing(false);
+      return;
+    }
+    if (restaurant === '') {
+      setRefreshing(false);
+      return;
+    }
     // TODO: Error checks; please check if the fields are empty
     if (!token) return;
     addReview(token, body).then((res) => {
@@ -99,9 +106,10 @@ export default function AddScreen({ navigation }: any) {
         setDescription('');
         setPrice(0);
         setRating(5);
+        setRefreshing(false);
+
         navigation.goBack();
       }
-      console.log(res);
     });
   };
   let [fontsLoaded] = useFonts({
@@ -253,7 +261,12 @@ export default function AddScreen({ navigation }: any) {
       </View>
 
       <View style={styles.submitButton}>
-        <Button title="Post Review" onPress={handleSubmit} color="#5a5f99" />
+        <Button
+          disabled={refreshing}
+          title="Post Review"
+          onPress={handleSubmit}
+          color="#5a5f99"
+        />
       </View>
     </View>
   );
