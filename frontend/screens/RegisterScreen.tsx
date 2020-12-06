@@ -114,15 +114,6 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             }}
           />
           <Text style={styles.feedlogo}>Feed</Text>
-          <TouchableWithoutFeedback /* onPress={styles.errorHide} */>
-            <TextInput
-              placeholder="Name"
-              placeholderTextColor="#ADB5BD"
-              onChangeText={(text) => setName(text)}
-              value={name}
-              style={styles.textInput}
-            />
-          </TouchableWithoutFeedback>
 
           <TextInput
             placeholder="Username"
@@ -164,7 +155,15 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
               secureTextEntry={true}
             />
           </TouchableWithoutFeedback>
-
+          <TouchableWithoutFeedback /* onPress={styles.errorHide} */>
+            <TextInput
+              placeholder="Name"
+              placeholderTextColor="#ADB5BD"
+              onChangeText={(text) => setName(text)}
+              value={name}
+              style={styles.textInput}
+            />
+          </TouchableWithoutFeedback>
           {error.length !== 0 && (
             <View style={styles.error}>
               <Text style={{ color: '#ff4e4e' }}>Error: {error}</Text>

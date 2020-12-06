@@ -169,8 +169,8 @@ const ProfileScreen = (props: any) => {
       })
       .catch((e) => console.log(e));
   };
-  console.log(following)
   const handleFollowUser = () => {
+    console.log('asdasd');
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
       unfollow(token, userHandle).then(() => {
@@ -202,7 +202,7 @@ const ProfileScreen = (props: any) => {
       });
     } else {
       follow(token, userHandle).then((res) => {
-        console.log(res)
+        console.log(res);
         if (username) {
           getUserProfile(token, username)
             .then((res) => {
@@ -314,12 +314,22 @@ const ProfileScreen = (props: any) => {
                 )}
               </View>
               {!isOwner && (
-                <Button
-                  title={`${
-                    followers.includes(userHandle) ? 'Unfollow' : 'Follow'
-                  }`}
+                <TouchableOpacity
                   onPress={handleFollowUser}
-                />
+                  style={{
+                    backgroundColor: '#618eff',
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                    margin: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>
+                    {`${
+                      followers.includes(userHandle) ? 'Unfollow' : 'Follow'
+                    }`}
+                  </Text>
+                </TouchableOpacity>
               )}
             </View>
             <View style={styles.info}>

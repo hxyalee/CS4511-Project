@@ -54,6 +54,7 @@ export default function HomeScreen() {
         setLoadingState('failed');
       });
   }, [token]);
+  console.log(reviews);
 
   if (loadingState === 'loading') {
     return (
@@ -110,6 +111,7 @@ export default function HomeScreen() {
         // }
       >
         {reviews &&
+          reviews.length > 0 &&
           reviews.map((review) => {
             return <Post key={review.id} data={review} />;
           })}
