@@ -63,11 +63,19 @@ export const UserNavigationItem = (props: any) => {
       onPress={() => navigation.push('Profile', { username: user.handle })}
     >
       <View style={styles.avatarContainer}>
-        <Image
-          source={require('../assets/images/nopic.jpeg')}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        {user.imageURL ? (
+          <Image
+            source={{ uri: `data:image/gif;base64,${user.imageURL}` }}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        ) : (
+          <Image
+            source={require('../assets/images/nopic.jpeg')}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        )}
       </View>
       <View style={styles.handle}>
         <Text style={{ fontSize: 18 }}>@{user.handle}</Text>

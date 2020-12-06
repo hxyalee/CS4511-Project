@@ -67,6 +67,7 @@ const ProfileScreen = (props: any) => {
       console.log('no token');
     }
   };
+  console.log(handle);
   React.useEffect(() => {
     getToken();
   }, []);
