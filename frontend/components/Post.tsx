@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Review } from '../types';
 import UserProfileImage from './UserProfileImage';
 import { likeReview, saveReview, unlikeReview, unsaveReview } from "../requests/reviews";
-import { Asset } from "expo-asset";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSelf } from "../requests/user";
 

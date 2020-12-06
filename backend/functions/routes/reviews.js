@@ -45,6 +45,38 @@ exports.getReview = (request, response) => {
     });
 };
 
+exports.getFeed = (request, response) => {
+  db.collection('users')
+    .doc(request.user.handle)
+    .get()
+    .then((data) => {
+      if (data.exists) {
+        const userData = data.data();
+        db.collection('reviews')
+          .orderBy('createdAt', 'desc')
+          .get()
+          .then((data) => {
+            let feed = [];
+            data.forEach((doc) => {
+              if (doc.data) {
+                const reviewData = doc.data();
+                if (userData.following.includes(reviewData.userHandle)) {
+                  feed.push({
+                    id: doc.id,
+                    ...doc.data(),
+                  });
+                }
+              }
+            });
+            return response.json(feed);
+          })
+          .catch((err) => console.error(err));
+      } else {
+        return response.status(404).json({ error: 'user not found' });
+      }
+    }).catch((err) => console.error(err));
+}
+
 exports.createReview = (request, response) => {
   if (!request.body.body) {
     return response.status(500).json({ error: 'empty' });

@@ -24,6 +24,18 @@ export const getReviewById = (token: string, reviewId: string) => {
   ).then((res) => res.json());
 };
 
+export const getFeed = (token: string) => {
+  return fetch(
+    'https://asia-east2-project-4d358.cloudfunctions.net/api/feed',
+    {
+      method: 'POST',
+      headers: {
+        token,
+      },
+    }
+  ).then((res) => res.json());
+};
+
 export const getSaved = (token: string) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/reviews/saved',
