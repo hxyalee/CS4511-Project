@@ -1,15 +1,12 @@
 # CS4511-Project\
 
-## Front end 
-1. run yarn inside the fronend folder to install all the dependencies used
-2. run yarn start to start the application
+## Frontend 
+1. run ```yarn``` inside the fronend folder to install all the dependencies used
+2. run ```yarn``` start to start the application
 3. Open an emulator or scan the QR code generated with your mobile device
 
 ## Backend
-### Running the backend server
-1. Navigate to the backend folder `cd backend`
-2. If you are running the backend for the first time run `npm install` inside the backend/functions directory.
-3. To run the backend execute `firebase serve` from inside the backend folder.
+* The backend is deployed and nothing is required to serve the backend
 
 ## Limitations
 * Some screens are not updated even if the actions are triggered due to state management limitations. State management tools like Redux were not used because of different contraints.
