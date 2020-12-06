@@ -39,7 +39,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     return <AppLoading />;
   }
   const handleLogin = () => {
-    console.log('asd');
     if (email === '') {
       setError('Email cannot be empty');
       return;
