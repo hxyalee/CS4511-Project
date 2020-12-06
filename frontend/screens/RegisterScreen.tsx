@@ -52,7 +52,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
         if (Object.keys(res).includes('error')) console.log(res);
         else {
           await storeData(res.token);
-          // await navigation.navigate('Main');
+          await navigation.navigate('Main');
         }
       });
   };
@@ -82,19 +82,32 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             }}
           />
           <Text style={styles.feedlogo}>Feed</Text>
-          <BurgerHeart style={styles.burgerheart} />
+          {/* <BurgerHeart style={styles.burgerheart} />
           <BurgerIcon style={styles.burgericon} />
+ */}
+          <TextInput
+            placeholder="Name"
+            onChangeText={(text) => setName(text)}
+            value={name}
+            style={styles.textInput}
+          />
           <TextInput
             placeholder="Username/Handle"
             onChangeText={(text) => setHandle(text)}
             value={handle}
             style={styles.textInput}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            autoCompleteType={"off"}
           ></TextInput>
           <TextInput
             placeholder="Email"
             onChangeText={(text) => setEmail(text)}
             value={email}
             style={styles.textInput}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            autoCompleteType={"off"}
           ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
@@ -111,20 +124,17 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             style={styles.textInput}
             secureTextEntry={true}
           />
-          <TextInput
-            placeholder="Name"
-            onChangeText={(text) => setName(text)}
-            value={name}
-            style={styles.textInput}
-          />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           <View style={styles.button}>
-            <Button title="CREATE MY ACCOUNT" onPress={handleRegister} />
+            {/* <Button title="     ">
+              CREATE
+            </Button> */}
+            <Button title="          " onPress={handleRegister}/>
+            <Text style={styles.buttonText}>CREATE MY ACCOUNT</Text>
           </View>
           <Text style={styles.text}>
             Already have an account?
-            <Text style={styles.linkText} onPress={() => navigation.goBack()}>
-              Log In
+            <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In
             </Text>
           </Text>
         </View>
@@ -151,15 +161,8 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     margin: 5,
     backgroundColor: 'white',
-    top: 112,
-    marginBottom: 11,
-  },
-  button: {
-    width: '100%',
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    top: 112,
-    fontSize: 14,
+    top: 60,
+    marginBottom: 14,
   },
   linkText: {
     fontSize: 14,
@@ -168,24 +171,24 @@ const styles = StyleSheet.create({
   burgericon: {
     position: 'absolute',
     alignItems: 'center',
-    top: 205,
+    top: 180,
   },
   burgerheart: {
     position: 'absolute',
-    top: 185,
+    top: 160,
     left: 130,
   },
   feedlogo: {
     fontSize: 90,
     color: 'white',
     textAlign: 'center',
-    top: 80,
+    top: 70,
     position: 'absolute',
     fontFamily: 'Righteous_400Regular',
   },
   text: {
     color: 'white',
-    top: 140,
+    top: 80,
     fontFamily: 'OpenSans_700Bold',
   },
   passwordicon: {
@@ -196,5 +199,18 @@ const styles = StyleSheet.create({
   emailIcon: {
     position: 'absolute',
     left: 60,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontFamily: 'OpenSans_700Bold',
+    color: 'white',
+    top: -30,
+  },
+  button: {
+    width: '50%',
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    top: 80,
+    fontSize: 10,
   },
 });

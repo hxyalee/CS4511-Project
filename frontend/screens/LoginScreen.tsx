@@ -88,6 +88,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             onChangeText={(text) => setEmail(text)}
             value={email}
             style={styles.textInput}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            autoCompleteType={"off"}
           ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
@@ -96,6 +99,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             value={password}
             style={styles.textInput}
             secureTextEntry={true}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            autoCompleteType={"off"}
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           {error.length !== 0 && (
@@ -104,15 +110,14 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             </View>
           )}
           <View style={styles.button}>
-            <Button title="LOGIN" onPress={handleLogin} />
+            <Button title="     " onPress={handleLogin} />
+            <Text style={styles.buttonText}>LOG IN</Text>
           </View>
           <Text style={styles.text}>
             Don't have an account?
             <Text
               style={styles.linkText}
-              onPress={() => navigation.navigate('Register')}
-            >
-              Sign up
+              onPress={() => navigation.navigate('Register')}> Sign up
             </Text>
           </Text>
         </View>
@@ -139,14 +144,14 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     margin: 5,
     backgroundColor: 'white',
-    top: 58,
+    top: 70,
     marginBottom: 17,
   },
   button: {
     width: '40%',
     //justifyContent: 'center',
     //alignItems: 'center',
-    top: 80,
+    top: 85,
     fontSize: 10,
     //fontSize: 50,
 
@@ -159,18 +164,18 @@ const styles = StyleSheet.create({
   burgericon: {
     position: 'absolute',
     alignItems: 'center',
-    top: 205,
+    top: 195,
   },
   burgerheart: {
     position: 'absolute',
-    top: 185,
+    top: 175,
     left: 130,
   },
   feedlogo: {
     fontSize: 90,
     color: 'white',
     textAlign: 'center',
-    top: 80,
+    top: 70,
     position: 'absolute',
     fontFamily: 'Righteous_400Regular',
   },
@@ -187,5 +192,11 @@ const styles = StyleSheet.create({
   emailIcon: {
     position: 'absolute',
     left: 60,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontFamily: 'OpenSans_700Bold',
+    color: 'white',
+    top: -30,
   },
 });
