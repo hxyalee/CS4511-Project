@@ -19,11 +19,11 @@ export default function Navigation({
 }: {
   colorScheme: ColorSchemeName;
 }) {
-  const handleBack = () => true;
-  React.useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', handleBack);
-    return BackHandler.removeEventListener('hardwareBackPress', handleBack);
-  }, []);
+  // const handleBack = () => true;
+  // React.useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', handleBack);
+  //   return BackHandler.removeEventListener('hardwareBackPress', handleBack);
+  // }, []);
   return (
     <NavigationContainer
       independent
