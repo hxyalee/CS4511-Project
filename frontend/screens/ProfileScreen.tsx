@@ -19,10 +19,13 @@ import {
   getHandle,
   unfollow,
   follow,
+  uploadPhoto,
 } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import { NavigationScreenProp } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
 import { BaseRouter } from '@react-navigation/native';
 import { ButtonGroup } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -78,9 +81,9 @@ const ProfileScreen = (props: any) => {
     } else {
       getSelf(token)
         .then((res) => {
-          console.log(res);
           setName(res.user.name);
           setDesc(res.user.description);
+          0;
           setHandle(res.user.handle);
           setFollowing(res.user.following);
           setFollowers(res.user.followers);
@@ -89,7 +92,7 @@ const ProfileScreen = (props: any) => {
         })
         .catch((e) => console.log(e));
     }
-  }, [token]);
+  }, [token, img]);
   React.useEffect(() => {
     if (!token) return;
     getSelf(token).then((res) => setMyFollowing(res.user.following));
@@ -109,7 +112,26 @@ const ProfileScreen = (props: any) => {
     getFollowers(handle).then((res) => setFollowerObject(res.users));
     getFollowing(handle).then((res) => setFollowingObject(res.users));
   }, [handle]);
-
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    })
+      .then((res) => {
+        if (res.cancelled) return;
+        const filepath = res.uri;
+        return FileSystem.readAsStringAsync(filepath, {
+          encoding: FileSystem.EncodingType.Base64,
+        }).then((base64) => {
+          setImg(base64);
+          if (!token) return;
+          uploadPhoto(token, base64).then((res) => console.log(res));
+        });
+      })
+      .catch((e) => console.log(e));
+  };
   const handleFollowUser = () => {
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
@@ -134,21 +156,26 @@ const ProfileScreen = (props: any) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.profileCard}>
             <View style={styles.avatarContainer}>
-              {img === '' ? (
-                <Image
-                  source={require('../assets/images/nopic.jpeg')}
-                  style={styles.avatar}
-                />
-              ) : (
-                <Image
-                  source={{ uri: `data:image/gif;base64,${img}` }}
-                  style={styles.avatar}
-                />
-              )}
+              <TouchableOpacity onPress={pickImage}>
+                {img === '' ? (
+                  <Image
+                    source={require('../assets/images/nopic.jpeg')}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Image
+                    source={{ uri: `data:image/gif;base64,${img}` }}
+                    style={styles.avatar}
+                  />
+                )}
+              </TouchableOpacity>
             </View>
             <View style={{ display: 'flex', alignItems: 'center' }}>
               <View style={styles.nameInfo}>
-                <Text>{handle}</Text>
+                <Text style={{ fontSize: 20 }}>{name}</Text>
+                <Text style={{ fontSize: 16, fontStyle: 'italic' }}>
+                  {handle.length > 0 && `@${handle}`}
+                </Text>
                 <Text>Sydney, Australia</Text>
               </View>
               <View>

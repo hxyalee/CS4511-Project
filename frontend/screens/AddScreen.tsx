@@ -18,6 +18,7 @@ import { addReview } from '../requests/reviews';
 import { useFonts, OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadPhoto } from '../requests/user';
 
 const wait = (timeout: number) => {
   return new Promise((resolve) => {
@@ -69,8 +70,9 @@ export default function AddScreen({ navigation }: any) {
         return FileSystem.readAsStringAsync(filepath, {
           encoding: FileSystem.EncodingType.Base64,
         }).then((base64) => {
-          console.log(base64[0] + base64[1] + base64[2] + base64[3]);
           setImage(base64);
+          if (!token) return;
+          console.log(uploadPhoto(token, base64));
         });
       })
       .catch((e) => console.log(e));
@@ -196,6 +198,7 @@ export default function AddScreen({ navigation }: any) {
           containerStyle={{ width: '70%', maxHeight: 120 }}
           multiline
           maxLength={100}
+          blurOnSubmit
         />
         {image ? (
           <Image
@@ -221,7 +224,7 @@ export default function AddScreen({ navigation }: any) {
               borderRadius: 20,
             }}
           >
-            <Text>No Image </Text>
+            <Text style={{ color: '#000' }}>No Image </Text>
           </View>
         )}
       </View>
