@@ -30,6 +30,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
+  const [active, setActive] = React.useState(true);
   let [fontsLoaded] = useFonts({
     Righteous_400Regular,
     OpenSans_700Bold,
@@ -138,7 +139,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               <Text style={{ color: '#ff4e4e' }}>Error: {error}</Text>
             </View>
           )}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Button title="     " onPress={handleLogin} />
             <Text style={styles.buttonText}>LOG IN</Text>
           </TouchableOpacity>
