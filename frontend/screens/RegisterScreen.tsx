@@ -257,9 +257,9 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   error: {
-    position: 'absolute',
+    /* position: 'absolute', */
     color: 'red',
-    top: 510,
+    top: 70,
     alignContent: 'center',
   },
 });

@@ -228,8 +228,9 @@ const styles = StyleSheet.create({
     top: -30,
   },
   error: {
-    position: 'absolute',
-    top: 430,
+    /* position: 'absolute',
+    top: 430, */
+    top: 80,
     color: '#cf5b5b',
   },
 });
