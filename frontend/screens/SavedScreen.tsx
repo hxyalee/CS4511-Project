@@ -51,7 +51,7 @@ export default function SavedScreen(props: any) {
   if (loading) {
     return (
       <View style={styles.root}>
-        <Text>Loading...</Text>
+        <Text style={{color: 'white', textAlign: 'center', top: 30}} >Loading...</Text>
       </View>
     );
   }
