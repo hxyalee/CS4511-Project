@@ -18,6 +18,11 @@ import { addReview } from '../requests/reviews';
 import { useFonts, OpenSans_700Bold } from '@expo-google-fonts/open-sans';
 import { AppLoading } from 'expo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadPhoto } from '../requests/user';
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 
 const wait = (timeout: number) => {
   return new Promise((resolve) => {
@@ -69,7 +74,6 @@ export default function AddScreen({ navigation }: any) {
         return FileSystem.readAsStringAsync(filepath, {
           encoding: FileSystem.EncodingType.Base64,
         }).then((base64) => {
-          console.log(base64[0] + base64[1] + base64[2] + base64[3]);
           setImage(base64);
         });
       })
@@ -196,6 +200,7 @@ export default function AddScreen({ navigation }: any) {
           containerStyle={{ width: '70%', maxHeight: 120 }}
           multiline
           maxLength={100}
+          blurOnSubmit
         />
         {image ? (
           <Image
@@ -211,18 +216,20 @@ export default function AddScreen({ navigation }: any) {
             }}
           />
         ) : (
-          <View
-            style={{
-              height: 100,
-              width: 100,
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 20,
-            }}
-          >
-            <Text>No Image </Text>
-          </View>
+          <TouchableOpacity onPress={pickImage}>
+            <View
+              style={{
+                height: 100,
+                width: 100,
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 20,
+              }}
+            >
+              <Text style={{ color: '#000' }}>No Image </Text>
+            </View>
+          </TouchableOpacity>
         )}
       </View>
 
@@ -237,7 +244,11 @@ export default function AddScreen({ navigation }: any) {
           }}
         >
           {/* {image &&} */}
-          <Button title="Add photo" color="#374bcc" onPress={pickImage} />
+          <Button
+            title={` ${image ? 'Change Photo' : 'Add photo'}`}
+            color="#374bcc"
+            onPress={pickImage}
+          />
         </View>
       </View>
 

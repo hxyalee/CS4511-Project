@@ -45,11 +45,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: email.trim(), password }),
     })
       .then((res) => res.json())
       .then(async (res) => {
-        if (Object.keys(res).includes('error')) console.log(res);
+        if (Object.keys(res).includes('error')) setError(res.error);
         else {
           console.log(res);
           await storeData(res.token);
@@ -89,9 +89,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             onChangeText={(text) => setEmail(text)}
             value={email}
             style={styles.textInput}
-            autoCapitalize={"none"}
+            autoCapitalize={'none'}
             autoCorrect={false}
-            autoCompleteType={"off"}
+            autoCompleteType={'off'}
           ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
@@ -101,9 +101,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             value={password}
             style={styles.textInput}
             secureTextEntry={true}
-            autoCapitalize={"none"}
+            autoCapitalize={'none'}
             autoCorrect={false}
-            autoCompleteType={"off"}
+            autoCompleteType={'off'}
           />
           {/* <PasswordIcon style={styles.passwordicon}/> */}
           {error.length !== 0 && (
@@ -123,7 +123,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             Don't have an account?
             <Text
               style={styles.linkText}
-              onPress={() => navigation.navigate('Register')}> Sign up
+              onPress={() => navigation.navigate('Register')}
+            >
+              Sign up
             </Text>
           </Text>
         </View>

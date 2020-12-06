@@ -22,6 +22,22 @@ export const getUser = (token: string, handle: string) => {
     .then((res) => res.json())
     .catch((e) => console.log(e));
 };
+export const uploadPhoto = (token: string, image: string) => {
+  return fetch(
+    `https://asia-east2-project-4d358.cloudfunctions.net/api/userPhoto`,
+    {
+      method: 'POST',
+      headers: {
+        token,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ image }),
+    }
+  )
+    .then((res) => res.json())
+    .catch((e) => console.log(e));
+};
 export const getHandle = (token: string) => {
   return fetch(
     'https://asia-east2-project-4d358.cloudfunctions.net/api/handle',

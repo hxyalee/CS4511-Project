@@ -30,6 +30,7 @@ const {
   followers,
   getSelf,
   getHandle,
+  updateProfilePhoto,
 } = require('./routes/users');
 const {
   getReviews,
@@ -60,6 +61,7 @@ app.get('/search', search);
 app.get('/user/:handle', getUser);
 app.get('/user/profile/:handle', getUserProfile);
 app.get('/user', TokenAuthentication, getSelf);
+app.post('/userPhoto', TokenAuthentication, updateProfilePhoto);
 app.post('/follow', TokenAuthentication, follow);
 app.post('/unfollow', TokenAuthentication, unfollow);
 app.get('/:handle/following', following);
