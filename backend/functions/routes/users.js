@@ -99,8 +99,6 @@ exports.updateProfilePhoto = (request, response) => {
 exports.follow = (request, response) => {
   const follower = request.user.handle;
   const toFollow = request.body.handle;
-  console.log(follower);
-  console.log('\n\n');
   db.collection('users')
     .doc(toFollow)
     .get()
