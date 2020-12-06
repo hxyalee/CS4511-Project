@@ -169,6 +169,7 @@ const ProfileScreen = (props: any) => {
       })
       .catch((e) => console.log(e));
   };
+  console.log(following)
   const handleFollowUser = () => {
     if (!token) return;
     if (myFollowing.includes(userHandle)) {
@@ -190,7 +191,6 @@ const ProfileScreen = (props: any) => {
             .then((res) => {
               setName(res.user.name);
               setDesc(res.user.description);
-              0;
               setHandle(res.user.handle);
               setFollowing(res.user.following);
               setFollowers(res.user.followers);
@@ -201,10 +201,12 @@ const ProfileScreen = (props: any) => {
         }
       });
     } else {
-      follow(token, userHandle).then(() => {
+      follow(token, userHandle).then((res) => {
+        console.log(res)
         if (username) {
           getUserProfile(token, username)
             .then((res) => {
+              console.log(res.user.followers);
               setName(res.user.handle);
               setDesc(res.user.description);
               setHandle(res.user.handle);
