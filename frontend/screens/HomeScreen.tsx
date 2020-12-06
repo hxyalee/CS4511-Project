@@ -58,7 +58,7 @@ export default function HomeScreen() {
             position: 'absolute',
           }}
         />
-        <Text>Loading...</Text>
+        <Text style={{color: 'white', textAlign: 'center', top: 30}}>Loading...</Text>
       </View>
     );
   }
@@ -75,6 +75,7 @@ export default function HomeScreen() {
       </View>
     );
   }
+  console.log(reviews);
   return (
     <View style={styles.container}>
       <BackgroundDecoration
@@ -111,7 +112,7 @@ export default function HomeScreen() {
           })}
         {reviews.length === 0 && (
           <View style={styles.emptyFeed}>
-            <Text>You are not following anyone.</Text>
+            <Text style={{color: 'white', textAlign: 'center'}} >You are not following anyone.</Text>
             <Text>
               Click on the Search
               <Icon
