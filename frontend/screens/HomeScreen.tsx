@@ -28,7 +28,6 @@ export default function HomeScreen() {
 
   React.useEffect(() => {
     navigator.addListener('focus', () => {
-      if (reviews.length === 0) setLoadingState('loading');
       if (!token) return;
       getFeed(token).then((res) => {
         setReviews(res);
