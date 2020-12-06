@@ -28,7 +28,6 @@ export default function HomeScreen() {
 
   React.useEffect(() => {
     navigator.addListener('focus', () => {
-      if (reviews.length === 0) setLoadingState('loading');
       if (!token) return;
       getFeed(token).then((res) => {
         setReviews(res);
@@ -59,7 +58,9 @@ export default function HomeScreen() {
             position: 'absolute',
           }}
         />
-        <Text style={{color: 'white', textAlign: 'center', top: 30}}>Loading...</Text>
+        <Text style={{ color: 'white', textAlign: 'center', top: 30 }}>
+          Loading...
+        </Text>
       </View>
     );
   }
@@ -113,14 +114,21 @@ export default function HomeScreen() {
           })}
         {reviews.length === 0 && (
           <View style={styles.emptyFeed}>
-            <Text style={{color: 'white', textAlign: 'center'}} >You are not following anyone.</Text>
-            <Text>
+            <Text style={{ color: 'white', textAlign: 'center' }}>
+              You are not following anyone.
+            </Text>
+            <Text style={{ color: 'white', textAlign: 'center' }}>
               Click on the Search
               <Icon
-                style={{ marginHorizontal: 10 }}
+                style={{
+                  marginHorizontal: 10,
+                  color: 'white',
+                  textAlign: 'center',
+                }}
                 size={20}
                 name="search"
                 type="font-awesome"
+                color="white"
               />
               tab to find your friends and family.
             </Text>
