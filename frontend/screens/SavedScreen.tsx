@@ -14,6 +14,7 @@ export default function SavedScreen(props: any) {
   const navigation = props.navigation;
   const [reviews, setReviews] = React.useState([]);
   const [token, setToken] = React.useState<null | string>('');
+  const [loading, setLoading] = React.useState(true);
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -30,9 +31,17 @@ export default function SavedScreen(props: any) {
     getSaved(token)
       .then((res) => {
         setReviews(res.reviews);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   }, [token]);
+
+  if (loading) {
+    return (
+      <Text>Loading...</Text>
+    );
+  }
+
   return (
     <View style={styles.root}>
       <BackgroundDecoration
@@ -44,7 +53,9 @@ export default function SavedScreen(props: any) {
         {reviews && reviews.length !== 0 ? (
           reviews.map((review: any) => <Post data={review} key={review.id} />)
         ) : (
-          <Text>Loading...</Text>
+          <View style={styles.emptyList}>
+            <Text style={styles.heading}>You have no saved posts</Text>
+          </View>
         )}
       </ScrollView>
     </View>
@@ -63,6 +74,17 @@ const styles = StyleSheet.create({
   feed: {
     alignItems: 'center',
     margin: 10,
+  },
+  emptyList: {
+    backgroundColor: '#333',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  heading: {
+    fontSize: 28,
   },
 });
 

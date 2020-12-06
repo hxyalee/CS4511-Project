@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
     top: 20,
   },
   imageViewer: {
-    backgroundColor: 'pink',
     height: Dimensions.get('window').height * 0.5,
   },
   image: {
