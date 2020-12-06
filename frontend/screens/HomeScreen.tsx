@@ -30,13 +30,8 @@ export default function HomeScreen() {
     navigator.addListener('focus', () => {
       if (!token) return;
       getFeed(token).then((res) => {
-        let diff = false;
-        reviews.forEach((review, index) => {
-          if (review.id !== res[index]) diff = true;
-        });
-        if (diff) {
-          setReviews(res);
-        }
+        setReviews(res);
+        setLoadingState('success');
       });
     });
   }, []);
