@@ -10,6 +10,7 @@ exports.TokenAuthentication = (request, response, next) => {
     .verifyIdToken(token)
     .then((decodedToken) => {
       request.user = decodedToken;
+      console.log(decodedToken);
       db.collection('users')
         .where('userId', '==', request.user.uid)
         .limit(1)

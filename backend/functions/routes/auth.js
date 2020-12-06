@@ -36,11 +36,13 @@ exports.signup = (request, response) => {
     return response.status(400).json({ error: 'Invalid Email' });
   if (newUser.password != request.body.confirmPassword)
     return response.status(400).json({ error: "Passwords don't match" });
-  if (newUser.handle === "")
-    return response.status(400).json({ error: "Username cannot be empty" });
+  if (newUser.handle === '')
+    return response.status(400).json({ error: 'Username cannot be empty' });
   if (hasWhiteSpace(newUser.handle))
-    return response.status(400).json({ error: "Username cannot contain spaces" });
-
+    return response
+      .status(400)
+      .json({ error: 'Username cannot contain spaces' });
+  let uid;
   db.doc(`users/${newUser.handle}`)
     .get()
     .then((doc) => {
@@ -57,6 +59,7 @@ exports.signup = (request, response) => {
           .createUserWithEmailAndPassword(newUser.email, newUser.password);
     })
     .then((data) => {
+      uid = data.user.uid;
       return data.user.getIdToken();
     })
     .then((tkn) => {
@@ -65,7 +68,7 @@ exports.signup = (request, response) => {
         handle: newUser.handle,
         name: newUser.name,
         description: '',
-        userId: newUser.handle,
+        userId: uid,
         followers: [],
         following: [],
         reviews: [],
