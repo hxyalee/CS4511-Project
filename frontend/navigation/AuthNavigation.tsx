@@ -12,10 +12,17 @@ import Navigation from './Navigation';
 import { StatusBar } from 'expo-status-bar';
 
 const Stack = createStackNavigator<AuthStackParamList>();
+const Nav = () => {
+  const colorScheme = useColorScheme();
+  return (
+    <SafeAreaProvider>
+      <Navigation colorScheme={colorScheme} />
+      <StatusBar />
+    </SafeAreaProvider>
+  );
+};
 
 export const AuthNavigation = () => {
-  const colorScheme = useColorScheme();
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -37,12 +44,7 @@ export const AuthNavigation = () => {
         />
         <Stack.Screen
           name="Main"
-          component={() => (
-            <SafeAreaProvider>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </SafeAreaProvider>
-          )}
+          component={Nav}
           options={{
             headerShown: false,
           }}

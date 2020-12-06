@@ -30,7 +30,7 @@ import {
 } from 'react-native-gesture-handler';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { BaseRouter } from '@react-navigation/native';
+import { BaseRouter, useNavigation } from '@react-navigation/native';
 import { ButtonGroup, Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -58,6 +58,7 @@ const ProfileScreen = (props: any) => {
   const [myFollowing, setMyFollowing] = React.useState('');
   const [token, setToken] = React.useState<null | string>('');
   const [modalVisible, setModalVisible] = React.useState(false);
+  const navigator = useNavigation();
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -69,6 +70,37 @@ const ProfileScreen = (props: any) => {
   React.useEffect(() => {
     getToken();
   }, []);
+  React.useEffect(() => {
+    navigator.addListener('focus', () => {
+      if (!token) return;
+      if (username) {
+        getUserProfile(token, username)
+          .then((res) => {
+            setName(res.user.handle);
+            setDesc(res.user.description);
+            setHandle(res.user.handle);
+            setFollowing(res.user.following);
+            setFollowers(res.user.followers);
+            setReviews(res.reviews);
+            setImg(res.user.imageURL);
+          })
+          .catch((e) => console.log(e));
+      } else {
+        getSelf(token)
+          .then((res) => {
+            setName(res.user.name);
+            setDesc(res.user.description);
+            0;
+            setHandle(res.user.handle);
+            setFollowing(res.user.following);
+            setFollowers(res.user.followers);
+            setReviews(res.reviews);
+            setImg(res.user.imageURL);
+          })
+          .catch((e) => console.log(e));
+      }
+    });
+  });
   React.useEffect(() => {
     if (!token) return;
     if (username) {

@@ -9,11 +9,13 @@ import { getSaved } from '../requests/reviews';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
 import Post from '../components/Post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SavedScreen(props: any) {
   const navigation = props.navigation;
   const [reviews, setReviews] = React.useState([]);
   const [token, setToken] = React.useState<null | string>('');
+  const navigator = useNavigation();
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -24,6 +26,14 @@ export default function SavedScreen(props: any) {
   };
   React.useEffect(() => {
     getToken();
+    navigator.addListener('focus', () => {
+      if (!token) return;
+      getSaved(token)
+        .then((res) => {
+          setReviews(res.reviews);
+        })
+        .catch((e) => console.log(e));
+    });
   }, []);
   React.useEffect(() => {
     if (!token) return;
