@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const [loadingState, setLoadingState] = useState('loading');
   const [token, setToken] = useState<null | string>('');
   const navigator = useNavigation();
-  
+
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -29,7 +29,7 @@ export default function HomeScreen() {
   React.useEffect(() => {
     navigator.addListener('focus', () => {
       if (!token) return;
-      getFeed(token).then(res => {
+      getFeed(token).then((res) => {
         let diff = false;
         reviews.forEach((review, index) => {
           if (review.id !== res[index]) diff = true;
@@ -113,11 +113,17 @@ export default function HomeScreen() {
           reviews.map((review) => {
             return <Post key={review.id} data={review} />;
           })}
-        { reviews.length === 0 && (
+        {reviews.length === 0 && (
           <View style={styles.emptyFeed}>
-            <Text>You are not following anyone.</Text> 
-            <Text>Click on the Search 
-              <Icon style={{marginHorizontal: 10}} size={20} name='search' type="font-awesome" />
+            <Text>You are not following anyone.</Text>
+            <Text>
+              Click on the Search
+              <Icon
+                style={{ marginHorizontal: 10 }}
+                size={20}
+                name="search"
+                type="font-awesome"
+              />
               tab to find your friends and family.
             </Text>
           </View>
@@ -138,5 +144,5 @@ const styles = StyleSheet.create({
   },
   emptyFeed: {
     backgroundColor: 'transparent',
-  }
+  },
 });

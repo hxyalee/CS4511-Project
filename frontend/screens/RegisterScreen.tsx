@@ -39,33 +39,31 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     OpenSans_700Bold,
   });
 
-
   const handleRegister = () => {
-    console.log('Register')
     if (undefined(name)) {
-      setError("Name cannot be empty");
+      setError('Name cannot be empty');
       return;
     }
     if (undefined(handle)) {
-      setError("Username cannot be empty");
+      setError('Username cannot be empty');
       return;
     }
     if (undefined(email)) {
-      setError("Email cannot be empty");
+      setError('Email cannot be empty');
       return;
     }
     if (handle.indexOf(' ') >= 0) {
-      setError("Username cannot contain spaces");
+      setError('Username cannot contain spaces');
       return;
     }
-    if (undefined(password) || undefined(confirmPassword)) {
-      setError("Password cannot be empty");
+    if (password.trim() === '') {
+      setError('Password cannot be empty');
       return;
     }
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError('Passwords do not match');
       return;
-    } 
+    }
     fetch(`https://asia-east2-project-4d358.cloudfunctions.net/api/signup`, {
       method: 'POST',
       headers: {
@@ -78,8 +76,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
       .then(async (res) => {
         if (Object.keys(res).includes('error')) {
           if (Object.keys(res).includes('error')) setError(res.error);
-        }
-        else {
+        } else {
           await storeData(res.token);
           await navigation.navigate('Main');
         }
@@ -94,9 +91,10 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   };
 
   const undefined = (field: string) => {
-    if (field.trim().length == 0 || field == "Please enter valid input") return true;
+    if (field.trim().length == 0 || field == 'Please enter valid input')
+      return true;
     else return false;
-  }
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -125,16 +123,16 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
               style={styles.textInput}
             />
           </TouchableWithoutFeedback>
-          
+
           <TextInput
             placeholder="Username"
             placeholderTextColor="#ADB5BD"
             onChangeText={(text) => setHandle(text)}
             value={handle}
             style={styles.textInput}
-            autoCapitalize={"none"}
+            autoCapitalize={'none'}
             autoCorrect={false}
-            autoCompleteType={"off"}
+            autoCompleteType={'off'}
           ></TextInput>
           <TextInput
             placeholder="Email"
@@ -142,9 +140,9 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             onChangeText={(text) => setEmail(text)}
             value={email}
             style={styles.textInput}
-            autoCapitalize={"none"}
+            autoCapitalize={'none'}
             autoCorrect={false}
-            autoCompleteType={"off"}
+            autoCompleteType={'off'}
           ></TextInput>
           {/* <UsernameIcon/> */}
           <TextInput
@@ -155,7 +153,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
             style={styles.textInput}
             secureTextEntry={true}
           />
-          <TouchableWithoutFeedback >
+          <TouchableWithoutFeedback>
             {/* <Text style={styles.errorShow} >Passwords do not match</Text> */}
             <TextInput
               placeholder="Confirm Password"
@@ -166,19 +164,21 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
               secureTextEntry={true}
             />
           </TouchableWithoutFeedback>
-          
+
           {error.length !== 0 && (
-            <View style={styles.error} >
-             <Text style={{color: '#ff4e4e'}}>Error: {error}</Text>
+            <View style={styles.error}>
+              <Text style={{ color: '#ff4e4e' }}>Error: {error}</Text>
             </View>
           )}
-          <TouchableOpacity style={styles.button}>
-            <Button title="            " onPress={handleRegister}/>
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Button title="            " onPress={handleRegister} />
             <Text style={styles.buttonText}>CREATE MY ACCOUNT</Text>
           </TouchableOpacity>
           <Text style={styles.text}>
             Already have an account?
-            <Text style={styles.linkText} onPress={() => navigation.goBack()}> Log In
+            <Text style={styles.linkText} onPress={() => navigation.goBack()}>
+              {' '}
+              Log In
             </Text>
           </Text>
         </View>

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
-
 import EditScreenInfo from '../components/EditScreenInfo';
 import { SavedCard } from '../components/SavedCard';
 import { Text, View } from '../components/Themed';
@@ -12,6 +10,7 @@ import Post from '../components/Post';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SaveTile } from '../components/SaveTile';
 import { Review } from '../types';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SavedScreen(props: any) {
   const navigator = useNavigation();
@@ -29,6 +28,14 @@ export default function SavedScreen(props: any) {
 
   React.useEffect(() => {
     getToken();
+    navigator.addListener('focus', () => {
+      if (!token) return;
+      getSaved(token)
+        .then((res) => {
+          setReviews(res.reviews);
+        })
+        .catch((e) => console.log(e));
+    });
   }, []);
 
   React.useEffect(() => {
@@ -40,25 +47,6 @@ export default function SavedScreen(props: any) {
       })
       .catch((e) => console.log(e));
   }, [token]);
-
-  React.useEffect(() => {
-    navigator.addListener('focus', () => {
-      if (!token) return;
-      getSaved(token).then(res => {
-        let diff = false;
-        if (res.length != reviews.length) {
-          diff = true;
-        } else {
-          reviews.forEach((review: Review, index) => {
-            if (review.id !== res[index]) diff = true;
-          });
-        }
-        if (diff) {
-          setReviews(res);
-        }
-      }).catch(e => console.log(e));
-    });
-  }, []);
 
   if (loading) {
     return (
