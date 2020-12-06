@@ -76,6 +76,7 @@ export default function HomeScreen() {
       </View>
     );
   }
+  console.log(reviews);
   return (
     <View style={styles.container}>
       <BackgroundDecoration
