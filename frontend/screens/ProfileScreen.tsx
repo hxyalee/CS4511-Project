@@ -9,6 +9,7 @@ import {
   Button,
   View,
   Text,
+  Modal,
 } from 'react-native';
 import Post from '../components/Post';
 import {
@@ -22,12 +23,11 @@ import {
   uploadPhoto,
 } from '../requests/user';
 import BackgroundDecoration from '../assets/images/background-circles.svg';
-import { NavigationScreenProp } from 'react-navigation';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { BaseRouter } from '@react-navigation/native';
-import { ButtonGroup } from 'react-native-elements';
+import { ButtonGroup, Icon } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('screen');
@@ -53,6 +53,7 @@ const ProfileScreen = (props: any) => {
   const [userHandle, setUserHandle] = React.useState('');
   const [myFollowing, setMyFollowing] = React.useState('');
   const [token, setToken] = React.useState<null | string>('');
+  const [modalVisible, setModalVisible] = React.useState(false);
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -141,6 +142,7 @@ const ProfileScreen = (props: any) => {
     }
     navigation.goBack();
   };
+
   return (
     <View style={styles.profile}>
       <View style={{ display: 'flex' }}>
@@ -153,6 +155,34 @@ const ProfileScreen = (props: any) => {
             bottom: 0,
           }}
         />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{marginBottom: 10}}>
+              <Button
+                title="Log out"
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              />
+            </View>
+            <Button
+              title="Cancel"
+              color="#FF5621"
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            />
+          </View>
+        </View>
+        </Modal>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.profileCard}>
             <View style={styles.avatarContainer}>
@@ -169,6 +199,9 @@ const ProfileScreen = (props: any) => {
                   />
                 )}
               </TouchableOpacity>
+            </View>
+            <View style={styles.settingsContainer}>
+              <Icon color={'#ccc'} size={30} name='cog' type="font-awesome" onPress={() => setModalVisible(true)}/>
             </View>
             <View style={{ display: 'flex', alignItems: 'center' }}>
               <View style={styles.nameInfo}>
@@ -338,6 +371,36 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: thumbMeasure,
     height: thumbMeasure,
+  },
+  settingsContainer: {
+    position: 'absolute',
+    top: 10,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "#222",
+    borderRadius: 20,
+    padding: 30,
+    width: '80%',
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   },
 });
 
